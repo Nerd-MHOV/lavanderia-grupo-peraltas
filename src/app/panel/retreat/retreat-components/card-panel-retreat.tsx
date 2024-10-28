@@ -1,0 +1,113 @@
+'use client'
+import ItemList from '@/components/interface/card-item-list/ItemLIst'
+import { CardPanel } from '@/components/interface/CardPanel'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { ScrollText, Shirt } from 'lucide-react'
+import React, { useEffect } from 'react'
+import SearchModal from './search-modal'
+import useScanDetection from 'use-scan-detection'
+import useSelectedProductsRetreat from './useSelectedProductsRetreat'
+
+
+interface CardPanelRetreatProps {
+  products: CardRetreatProducts[]
+}
+
+export interface CardRetreatProducts {
+  product: string;
+  id: string;
+  service: string;
+  type: string;
+  size: string;
+  unitary_value: number;
+  createdAt: Date;
+  updatedAt: Date;
+  BarCodes: {
+    code: string;
+    createdAt: Date;
+    updatedAt: Date;
+    product_id: string;
+  }[];
+  quantity?: number;
+}
+
+const CardPanelRetreat = ({ products }: CardPanelRetreatProps) => {
+  const {
+    addProduct,
+    removeProduct,
+    itemFocused,
+    selectedProduct
+  } = useSelectedProductsRetreat();
+
+
+  useScanDetection({
+    onComplete: (barcode) => {
+      const find = products.find(prod => prod.BarCodes.some(bc => bc.code === barcode))
+      if (find) addProduct(find)
+    },
+    minLength: 7
+  })
+
+  useEffect(() => {
+    const handleKeyOpen = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        (document.querySelector('.open-modal') as HTMLElement)?.click()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyOpen)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyOpen)
+    }
+  }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      const newItem = document.getElementById('newItemRef')
+      if (newItem) {
+        newItem.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        newItem.focus()
+      }
+    }, 300)
+  }, [selectedProduct])
+
+  return (
+    <Dialog>
+      <SearchModal products={products} addProduct={addProduct} />
+      <CardPanel title='Retiradas' Icon={ScrollText}>
+        <div className='flex flex-col gap-2 my-4 '>
+          {selectedProduct.map((product) => <ItemList
+            id={itemFocused === product.id ? 'newItemRef' : undefined}
+            key={product.id}
+            title={product.product}
+            describe={`${product.size} -- ${product.service} -- ${product.type}`}
+            buttons={{
+              delete: () => { removeProduct(product) },
+              add: () => { addProduct(product) },
+              quantity: product.quantity || 0
+            }}
+            Icon={Shirt} />
+          )}
+        </div>
+        <div className='flex w-full justify-end mt-4 gap-2'>
+          {
+            selectedProduct.length > 0 &&
+            <Button type='submit' className='font-bold text-md drop-shadow-md ' >Retirar</Button>
+          }
+          <DialogTrigger asChild>
+            <Button type='button' className='open-modal font-bold drop-shadow-md text-md bg-btnOrange hover:bg-btnOrangeHover'>Buscar</Button>
+          </DialogTrigger>
+        </div>
+      </CardPanel>
+      < input type='hidden' value={JSON.stringify(selectedProduct)} name='products' />
+    </Dialog>
+  )
+}
+
+
+
+
+export default CardPanelRetreat

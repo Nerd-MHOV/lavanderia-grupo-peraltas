@@ -1,0 +1,227 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(uuid())
+  first_name    String
+  last_name     String
+  email         String
+  user          String          @unique
+  passwd        String
+  level         Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Output        Output[]
+  OutputHistory OutputHistory[]
+  Return        Return[]
+
+  @@map("users")
+}
+
+model Collaborator {
+  id                   String          @id @default(uuid())
+  name                 String
+  cpf                  String
+  isDiarist            Boolean
+  active               Boolean         @default(true)
+  department           String
+  Department           Department      @relation(fields: [department], references: [department])
+  Leader               Leader[]
+  Outputs              Output[]        @relation("collaborator")
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  OutputHistory        OutputHistory[] @relation("collaborator")
+  ResponsibleReturnIn  Return[]        @relation("responsible_in")
+  ResponsibleReturnOut Return[]        @relation("responsible_out")
+
+  @@map("collaborators")
+}
+
+model Department {
+  department        String              @id
+  Collaborator      Collaborator[]
+  Department_Leader Department_Leader[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@map("deparmtents")
+}
+
+model Leader {
+  id              String   @id @default(uuid())
+  collaborator_id String
+  email           String
+  phone           String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  Collaborator      Collaborator        @relation(fields: [collaborator_id], references: [id])
+  Department_Leader Department_Leader[]
+
+  @@map("leaders")
+}
+
+model Department_Leader {
+  id         String   @id @default(uuid())
+  leader_id  String
+  department String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  Leader     Leader     @relation(fields: [leader_id], references: [id])
+  Department Department @relation(fields: [department], references: [department])
+
+  @@map("departments_leaders")
+}
+
+model Inventory {
+  id         String   @id @default(uuid())
+  product_id String   @unique
+  amount     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  Product Product @relation(fields: [product_id], references: [id])
+
+  @@map("inventory")
+}
+
+model Input {
+  id         String   @id @default(uuid())
+  product_id String
+  amount     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  Product Product @relation(fields: [product_id], references: [id])
+
+  @@map("inputs")
+}
+
+model Output {
+  id              String   @id @default(uuid())
+  product_id      String
+  collaborator_id String
+  user_id         String
+  forSector       Boolean
+  amount          Int
+  status          Boolean
+  obs             String
+  expiration      Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  Product        Product      @relation(fields: [product_id], references: [id])
+  Collaborator   Collaborator @relation(fields: [collaborator_id], references: [id], name: "collaborator")
+  User           User         @relation(fields: [user_id], references: [id])
+  collaboratorId String?
+
+  @@map("outputs")
+}
+
+model OutputHistory {
+  id              String   @id @default(uuid())
+  product_id      String
+  collaborator_id String
+  user_id         String
+  forSector       Boolean
+  amount          Int
+  status          Boolean
+  obs             String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  Product        Product      @relation(fields: [product_id], references: [id])
+  Collaborator   Collaborator @relation(fields: [collaborator_id], references: [id], name: "collaborator")
+  User           User         @relation(fields: [user_id], references: [id])
+  collaboratorId String?
+
+  @@map("outputs_history")
+}
+
+model Return {
+  id                  String   @id @default(uuid())
+  product_id          String
+  forSector           Boolean
+  user_id             String
+  collaborator_id_in  String
+  collaborator_id_out String
+  amount_has          Int
+  amount              Int
+  amount_bad          Int
+  status_in           Boolean
+  status_out          Boolean
+  obs_in              String
+  obs_out             String
+  date_in             DateTime
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  Product         Product      @relation(fields: [product_id], references: [id])
+  CollaboratorIn  Collaborator @relation(fields: [collaborator_id_in], references: [id], name: "responsible_in")
+  CollaboratorOut Collaborator @relation(fields: [collaborator_id_out], references: [id], name: "responsible_out")
+  User            User         @relation(fields: [user_id], references: [id])
+
+  @@map("returns")
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  product       String
+  service       String
+  type          String
+  size          String
+  unitary_value Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  Inventory     Inventory[]
+  Input         Input[]
+  Output        Output[]
+  Service       Service         @relation(fields: [service], references: [service])
+  Type          Type            @relation(fields: [type], references: [type])
+  OutputHistory OutputHistory[]
+  Return        Return[]
+  BarCodes      BarCode[]
+
+  @@map("products")
+  @@unique([product, service, type, size])
+}
+
+model Service {
+  service   String    @id
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt 
+  Product   Product[]
+
+  @@map("services")
+}
+
+model Type {
+  type      String    @id
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Product   Product[]
+
+  @@map("types")
+}
+
+model BarCode {
+  code  String   @id
+  product_id String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product @relation(fields: [product_id], references: [id])
+
+  @@map("barcodes")
+}
