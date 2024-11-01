@@ -56,7 +56,7 @@ const Sidebar = () => {
 
                     {links.map((link, index) => (
                         <li key={index} className={cn('list-none rounded-l-full w-full text-panelWhite relative ' ,
-                            (link.link.includes(pathname) && pathname !== '/panel') || (pathname === link.link) ? `bg-panelWhite text-panelBlue 
+                            (pathname.includes(link.link) && link.link !== '/panel') || (pathname === link.link) ? `bg-panelWhite text-panelBlue 
                                 before:content-[" "] before:absolute before:right-0 
                                 before:w-12 before:h-12 before:rounded-full before:pointer-events-none
                                 before:top-[-48px] before:shadow-[35px_35px_0_10px_white]

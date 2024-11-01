@@ -4,7 +4,7 @@ import { DialogClose, DialogContent, DialogHeader } from '@/components/ui/dialog
 import { Input } from '@/components/ui/input'
 import { Search, Shirt } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { CardRetreatProducts } from '../card-panel-retreat'
+import { CardRetreatProducts } from './card-panel-retreat'
 import Fuse from 'fuse.js'
 import { DialogTitle } from '@radix-ui/react-dialog'
 

@@ -9,13 +9,17 @@ export interface FaceReader {
     time: string,
     success: string,
     device_id: string,
+    device_name: string,
     name: string,
     g_person: string,
     direction: string,
 }
 const useFaceReader = (dependences: React.DependencyList = []) => {
     const [resultReader, setResultReader] = useState<FaceReader | null>(null);
-    const onFind = (data: FaceReader) => { setResultReader(data) }
+    const onFind = (data: FaceReader) => {
+        if (data.device_name === "Lavanderia - leitor de faces")
+            setResultReader(data)
+    }
     const clear = () => { setResultReader(null) }
     useEffect(() => {
         const socket = io(process.env.NEXT_PUBLIC_IVMS_URL_SOCKET || '');

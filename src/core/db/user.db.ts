@@ -24,7 +24,7 @@ const dbUser = (db: PrismaClient) => ({
 
         if (!dbData) return null 
         return { user: dbData };
-    }
+    },
 })
 
 export default dbUser;
