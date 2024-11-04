@@ -7,6 +7,7 @@ import dbOutput from './outputs.db';
 import dbInventory from './inventory.db';
 import dbService from './service.db';
 import dbType from './type.db';
+import dbInput from './inputs.db';
 
 const prismaClient = new PrismaClient();
 
@@ -16,6 +17,7 @@ const db = ({
     product:  dbProduct(prismaClient),
     barcode: dbBarcodes(prismaClient),
     inventory: dbInventory(prismaClient),
+    input: dbInput(prismaClient),
     output: dbOutput(prismaClient),
     service: dbService(prismaClient),
     type: dbType(prismaClient),

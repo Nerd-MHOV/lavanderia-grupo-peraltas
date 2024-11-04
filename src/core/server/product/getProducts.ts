@@ -8,4 +8,24 @@ const getProducts = async () => {
     return { products };
 }
 
+export interface GetProductsInterface {
+    products: ({
+        BarCodes: {
+            product_id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            code: string;
+        }[];
+    } & {
+        product: string;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        service: string;
+        type: string;
+        size: string;
+        unitary_value: number;
+    })[]
+}
+
 export default getProducts;

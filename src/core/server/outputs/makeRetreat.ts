@@ -1,5 +1,6 @@
 import db from "@/core/db/db";
 import { verifySession } from "@/lib/session";
+import { revalidatePath } from "next/cache";
 
 const makeRetreat = async (products: {
     id: string,
@@ -33,13 +34,17 @@ const makeRetreat = async (products: {
     const retreat = productWithInventory.map(async product => {
         return await db.output.retreat({
             product,
-            inventory: product.inventory,
             user_id: isUser,
             collaborator_id,
             forSector,
         })
     })
 
+
+    //
+    revalidatePath('/panel/retreat')
+    revalidatePath('/panel/return')
+    revalidatePath('/panel/products')
     return retreat;
 }
 

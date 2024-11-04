@@ -36,3 +36,8 @@ export const RegisterBarcodeSchema = z.object({
     barcodes: z.string().min(5, { message: 'Informe os Códigos' } ),
 })
 
+export const AddInventoryProductSchema = z.object({
+    product_id: z.string().min(1, { message: 'Informe o id do produto' }),
+    amount: z.number().min(1, { message: 'Informe a quantidade' } ),
+})
+

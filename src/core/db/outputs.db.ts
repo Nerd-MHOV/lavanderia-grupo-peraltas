@@ -1,4 +1,4 @@
-import { Inventory, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 
 
@@ -7,7 +7,6 @@ interface RetreatODT {
         id: string,
         quantity: number
     },
-    inventory: Inventory,
     user_id: string,
     collaborator_id: string,
     forSector: boolean
@@ -35,7 +34,6 @@ const dbOutput = (db: PrismaClient) => ({
 
     async retreat({
         product,
-        inventory,
         user_id,
         collaborator_id,
         forSector,
@@ -54,7 +52,9 @@ const dbOutput = (db: PrismaClient) => ({
             db.inventory.update({
                 where: {product_id: product.id},
                 data: {
-                    amount: inventory.amount - product.quantity
+                    amount: {
+                        decrement: product.quantity
+                    }
                 }
             }),
             db.output.create({ data: dataOutput }),

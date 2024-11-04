@@ -100,12 +100,12 @@ model Input {
   id         String   @id @default(uuid())
   product_id String
   amount     Int
-  user       String
+  user_id       String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   Product Product @relation(fields: [product_id], references: [id])
-  User    User    @relation(fields: [user], references: [user])
+  User    User    @relation(fields: [user_id], references: [id])
 
   @@map("inputs")
 }

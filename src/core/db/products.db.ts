@@ -11,7 +11,11 @@ const dbProduct = (db: PrismaClient) => ({
     async getById(id: string) {
         return db.product.findUnique({ 
             where: { id },
-            include: { BarCodes: true, Input: true, Output: true, Inventory: true } 
+            include: { BarCodes: true, Input: {
+                include: { User: true }
+            }, Output: {
+                include: { Collaborator: true }
+            }, Inventory: true } 
         });
     },
     async create(data: {

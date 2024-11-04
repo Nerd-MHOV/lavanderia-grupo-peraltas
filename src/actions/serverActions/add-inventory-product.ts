@@ -1,19 +1,19 @@
 'use server'
-import registerBarcodes from "@/core/server/barcode/registerBarcode";
-import { RegisterBarcodeSchema } from "@/lib/definitions";
+import makeInput from "@/core/server/inputs/makeInput";
+import { AddInventoryProductSchema } from "@/lib/definitions";
 import { revalidatePath } from "next/cache";
-export interface StateActionRegisterBarcode {
+export interface StateActionAddInventoryProduct {  
     errors?: {
-        barcodes?: string[] | undefined;
+        amount?: string[] | undefined;
         product_id?: string[] | undefined;
     },
     message?: string;
     success?: boolean;
 }
-export async function actionRegisterBarcode(state: StateActionRegisterBarcode | null, formData: FormData) {
+export async function actionAddInventoryProduct(state: StateActionAddInventoryProduct | null, formData: FormData) {
     // 1. validate fields
-    const validationFormData = RegisterBarcodeSchema.safeParse({
-        barcodes: formData.get('barcodes'),
+    const validationFormData = AddInventoryProductSchema.safeParse({
+        amount: Number(formData.get('amount')),
         product_id: formData.get('product_id'),
     })
     if (!validationFormData.success) {
@@ -27,14 +27,14 @@ export async function actionRegisterBarcode(state: StateActionRegisterBarcode | 
 
     // 3. create barcode
     try {
-        const created = await registerBarcodes({
-            barcodes: JSON.parse(validationFormData.data.barcodes),
+        const created = await makeInput({
+            amount: validationFormData.data.amount,
             product_id: validationFormData.data.product_id
         })
         revalidatePath('/panel/product/' + validationFormData.data.product_id)
-        return { message: `Cadastrado ${created.count} criado com sucesso`, success: true };
+        return { message: `Entrada de ${validationFormData.data.amount} para o produto ${created[1].product_id}`, success: true };
     } catch (error) {
-        const message = (error as { message?: string })?.message ?? 'Erro ao criar a produto';
+        const message = (error as { message?: string })?.message ?? 'Erro ao fazer entrada';
         return { message: message, success: false };
     }
 }

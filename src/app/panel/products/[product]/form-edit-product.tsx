@@ -4,55 +4,12 @@ import SlackMessage from '@/components/interface/SlackMessage'
 import { Input } from '@/components/ui/input'
 import MoneyInput from '@/components/ui/inputMoney'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { GetaProductInterface } from '@/core/server/product/getaProduct'
 import React from 'react'
 import { useFormState } from 'react-dom'
 
 interface FormEditProductProps {
-  product: {
-    product: string;
-    id: string;
-    service: string;
-    type: string;
-    size: string;
-    unitary_value: number;
-    createdAt: Date;
-    updatedAt: Date;
-    Inventory: {
-      id: string;
-      product_id: string;
-      amount: number;
-      createdAt: Date;
-      updatedAt: Date;
-    }[];
-    Input: {
-      id: string;
-      product_id: string;
-      amount: number;
-      createdAt: Date;
-      updatedAt: Date;
-      user: string;
-    }[];
-    Output: {
-      id: string;
-      product_id: string;
-      amount: number;
-      createdAt: Date;
-      updatedAt: Date;
-      user_id: string;
-      collaborator_id: string;
-      forSector: boolean;
-      status: boolean;
-      obs: string;
-      expiration: boolean;
-      collaboratorId: string | null;
-    }[],
-    BarCodes: {
-      code: string;
-      product_id: string;
-      createdAt: Date;
-      updatedAt: Date;
-    }[]
-  },
+  product: GetaProductInterface['product'],
   services: {
     service: string;
     createdAt: Date;

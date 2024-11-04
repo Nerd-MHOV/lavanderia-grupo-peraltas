@@ -13,20 +13,24 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
   const [state, action] = useFormState(actionRegisterBarcode, {} as StateActionRegisterBarcode)
   const [barcodes, setBarcodes] = useState<string[]>([]);
   const ref = useRef<HTMLInputElement>(null);
+
+  const addToList = () => {
+    const barcode = ref?.current?.value
+    if (barcode) {
+      ref.current.value = '';
+
+      setBarcodes(prev => {
+        if (prev.includes(barcode)) return prev
+        return [...prev, barcode]
+      })
+    }
+  }
   // input with enter key
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
         event.preventDefault();
-        const barcode = ref?.current?.value
-        if (barcode) {
-          ref.current.value = '';
-
-          setBarcodes(prev => {
-            if (prev.includes(barcode)) return prev
-            return [...prev, barcode]
-          })
-        }
+        addToList()
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -53,7 +57,10 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
             Use o leitor de códigos para inserir um novo código de barras.
           </DialogDescription>
         </DialogHeader>
-        <form action={action}>
+        <form action={(e) => {
+          addToList()
+          action(e)
+        }}>
           {
             state.message && <SlackMessage message={state.message} type={state.success ? 'success' : 'error'} />
           }
@@ -63,7 +70,7 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
           </div>
           <ul className=' max-h-48 overflow-auto'>
             {barcodes.map(bc => (
-              <ol className='hover:bg-red-100 cursor-pointer p-1' onClick={() => {
+              <ol key={bc} className='hover:bg-red-100 cursor-pointer p-1' onClick={() => {
                 setBarcodes(prev => prev.filter(pv => pv !== bc))
               }}>{bc}</ol>
             ))}

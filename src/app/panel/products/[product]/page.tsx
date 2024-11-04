@@ -4,13 +4,13 @@ import getServices from '@/core/server/services/getServices';
 import getTypes from '@/core/server/type/getTypes';
 import React from 'react'
 import { format } from 'date-fns'
-import { Button } from '@/components/ui/button';
-import { Boxes, Delete, FileBox, PackageOpen, Plus } from 'lucide-react';
+import { Boxes, FileBox, PackageOpen } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { CardPanel } from '@/components/interface/CardPanel';
 import FormEditProduct from './form-edit-product';
 import DialogAddBarcode from './dialog-add-barcde';
 import ButtonDeleteBarcode from './button-delete-barcode';
+import DialogAddInventory from './dialog-add-inventory';
 
 const EditProductPage = async ({
   params
@@ -81,7 +81,7 @@ const EditProductPage = async ({
       <div className='bg-panelWhite p-7 rounded-xl shadow-sm my-5'>
         <div className='flex justify-between'>
           <h1 className='text-xl font-bold'>Estoque</h1>
-          <Button><Plus /> Adicionar </Button>
+          <DialogAddInventory product_id={product.id} />
         </div>
 
         <div className='flex gap-4 my-5'>
@@ -110,7 +110,7 @@ const EditProductPage = async ({
               <TableRow key={inp.id}>
                 <TableCell>{inp.amount}</TableCell>
                 <TableCell>{format(inp.createdAt, 'dd/MM/yyyy')}</TableCell>
-                <TableCell>{inp.user}</TableCell>
+                <TableCell>{inp.User.user}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -130,7 +130,7 @@ const EditProductPage = async ({
               <TableRow key={out.id}>
                 <TableCell>{out.amount}</TableCell>
                 <TableCell>{format(out.updatedAt, 'dd/MM/yyyy')}</TableCell>
-                <TableCell>{out.collaborator_id}</TableCell>
+                <TableCell>{out.Collaborator.name}</TableCell>
               </TableRow>
             ))}
           </TableBody>
