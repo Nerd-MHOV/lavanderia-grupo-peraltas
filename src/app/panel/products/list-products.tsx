@@ -18,12 +18,12 @@ const fuseOptions = {
     useExtendedSearch: true,
 }
 const ListProducts = ({ products }: {
-    products: GetProductsInterface['products']
+    products: GetProductsInterface['products'][]
 }) => {
 
 
     const [searchTerm, setSearchTerm] = useState('')
-    const [filteredProducts, setFilteredProducts] = useState<GetProductsInterface['products']>(products)
+    const [filteredProducts, setFilteredProducts] = useState<GetProductsInterface['products'][]>(products)
 
 
     // find products by search term
@@ -40,7 +40,7 @@ const ListProducts = ({ products }: {
         if (searchTerm) {
             const result = fuse.search(searchTerm).map(result => result.item);
 
-            setFilteredProducts( result.map((prod) => products.find(p => p.id === prod.id) as GetProductsInterface['products'][0] ));
+            setFilteredProducts( result.map((prod) => products.find(p => p.id === prod.id) as GetProductsInterface['products'] ));
         } else {
             setFilteredProducts(products);
         }

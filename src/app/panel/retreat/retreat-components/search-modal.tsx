@@ -4,9 +4,9 @@ import { DialogClose, DialogContent, DialogHeader } from '@/components/ui/dialog
 import { Input } from '@/components/ui/input'
 import { Search, Shirt } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { CardRetreatProducts } from './card-panel-retreat'
 import Fuse from 'fuse.js'
 import { DialogTitle } from '@radix-ui/react-dialog'
+import { GetProductsInterface } from '@/core/server/product/getProducts'
 
 const fuseOptions = {
     keys: ['complete'],
@@ -19,12 +19,12 @@ const fuseOptions = {
     useExtendedSearch: true,
 }
 interface SearchModalProps {
-    products: CardRetreatProducts[]
-    addProduct: (product: CardRetreatProducts) => void
+    products: GetProductsInterface['products'][]
+    addProduct: (product: GetProductsInterface['products']) => void
 }
 const SearchModal = ({ products, addProduct }: SearchModalProps) => {
     const [searchTerm, setSearchTerm] = useState('')
-    const [filteredProducts, setFilteredProducts] = useState<CardRetreatProducts[]>(products)
+    const [filteredProducts, setFilteredProducts] = useState<GetProductsInterface['products'][]>(products)
 
 
     // find products by search term
@@ -41,7 +41,7 @@ const SearchModal = ({ products, addProduct }: SearchModalProps) => {
         if (searchTerm) {
             const result = fuse.search(searchTerm).map(result => result.item);
 
-            setFilteredProducts(result.map((prod) => products.find(p => p.id === prod.id) as CardRetreatProducts));
+            setFilteredProducts(result.map((prod) => products.find(p => p.id === prod.id) as GetProductsInterface['products']));
         } else {
             setFilteredProducts(products);
         }
@@ -83,6 +83,7 @@ const SearchModal = ({ products, addProduct }: SearchModalProps) => {
                                 Icon={Shirt}
                                 title={product.product}
                                 describe={`${product.size} -- ${product.service} -- ${product.type}`}
+                                stock={product.Inventory[0]?.amount || 0}
                             />
                         </DialogClose>)
                     }

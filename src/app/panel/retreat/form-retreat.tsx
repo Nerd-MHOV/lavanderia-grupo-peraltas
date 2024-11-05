@@ -6,20 +6,21 @@ import React, { useEffect, useState } from 'react'
 import { useFormState } from 'react-dom';
 import CardPanelCollaborator, { CardPanelCollaborators } from './retreat-components/card-panel-collaborator';
 import CardPanelFinality from './retreat-components/card-panel-finality';
-import CardPanelRetreat, { CardRetreatProducts } from './retreat-components/card-panel-retreat';
+import CardPanelRetreat from './retreat-components/card-panel-retreat';
 import ConfirmModal from './retreat-components/confirm-modal';
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog';
 import useFaceReader from '@/hooks/useFaceReader';
+import { GetProductsInterface } from '@/core/server/product/getProducts';
 
 interface FormRetreatProps {
   collaborators: CardPanelCollaborators[]
-  products: CardRetreatProducts[]
+  products: GetProductsInterface['products'][]
 }
 
 export interface DataActionRetreatPage {
   collaborator: CardPanelCollaborators;
   finality: string;
-  products: CardRetreatProducts[];
+  products: GetProductsInterface['products'][];
 }
 
 const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {

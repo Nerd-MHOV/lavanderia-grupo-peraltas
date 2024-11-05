@@ -4,7 +4,8 @@ const dbProduct = (db: PrismaClient) => ({
     async get() {
         return db.product.findMany({
             include: {
-                BarCodes: true
+                BarCodes: true,
+                Inventory: true,
             }
         });
     },
@@ -24,6 +25,7 @@ const dbProduct = (db: PrismaClient) => ({
         unitary_value: number,
         service: string,
         type: string,
+        toSector: boolean,
     }) {
         const dbData = await db.product.create({ data })
         return { product: dbData }

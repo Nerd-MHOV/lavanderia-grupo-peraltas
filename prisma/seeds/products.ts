@@ -5,7 +5,8 @@ export const ProductsSeed = [
         service: 'Brotas Eco',
         size: 'P',
         unitary_value: 20.00,
-        barcode: '00000005'
+        barcode: '00000005',
+        toSector: true,
     },
     {
         product: 'Camiseta Amarela',
@@ -13,7 +14,8 @@ export const ProductsSeed = [
         service: 'Brotas Eco',
         size: 'M',
         unitary_value: 20.00,
-        barcode: '00000004'
+        barcode: '00000004',
+        toSector: true,
     },
     {
         product: 'Camiseta Amarela',
@@ -21,7 +23,8 @@ export const ProductsSeed = [
         service: 'Brotas Eco',
         size: 'G',
         unitary_value: 20.00,
-        barcode: '00000003'
+        barcode: '00000003',
+        toSector: true,
     },
     {
         product: 'Camiseta Amarela',
@@ -29,7 +32,8 @@ export const ProductsSeed = [
         service: 'Brotas Eco',
         size: 'GG',
         unitary_value: 20.00,
-        barcode: '00000002'
+        barcode: '00000002',
+        toSector: true,
     },
     {
         product: 'Bermuda Monitoria preta',
@@ -37,7 +41,8 @@ export const ProductsSeed = [
         service: 'Peraltas',
         size: 'P',
         unitary_value: 20.00,
-        barcode: '00000001'
+        barcode: '00000001',
+        toSector: true,
     },
     {
         product: 'Bermuda Monitoria preta',
@@ -45,6 +50,8 @@ export const ProductsSeed = [
         service: 'Peraltas',
         size: 'M',
         unitary_value: 20.00,
+        toSector: true,
+
     },
     {
         product: 'Bermuda Monitoria preta',
@@ -52,6 +59,7 @@ export const ProductsSeed = [
         service: 'Peraltas',
         size: 'G',
         unitary_value: 20.00,
+        toSector: true,
     },
     {
         product: 'Bermuda Monitoria Azul',
@@ -59,5 +67,6 @@ export const ProductsSeed = [
         service: 'Ceu',
         size: 'M',
         unitary_value: 20.00,
+        toSector: true,
     },
 ];

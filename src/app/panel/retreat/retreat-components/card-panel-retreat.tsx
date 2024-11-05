@@ -8,28 +8,11 @@ import React, { useEffect } from 'react'
 import SearchModal from './search-modal'
 import useScanDetection from 'use-scan-detection'
 import useSelectedProductsRetreat from './useSelectedProductsRetreat'
+import { GetProductsInterface } from '@/core/server/product/getProducts'
 
 
 interface CardPanelRetreatProps {
-  products: CardRetreatProducts[]
-}
-
-export interface CardRetreatProducts {
-  product: string;
-  id: string;
-  service: string;
-  type: string;
-  size: string;
-  unitary_value: number;
-  createdAt: Date;
-  updatedAt: Date;
-  BarCodes: {
-    code: string;
-    createdAt: Date;
-    updatedAt: Date;
-    product_id: string;
-  }[];
-  quantity?: number;
+  products: GetProductsInterface['products'][]
 }
 
 const CardPanelRetreat = ({ products }: CardPanelRetreatProps) => {

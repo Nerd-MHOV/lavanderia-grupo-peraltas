@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { UserSeed } from "./seeds/users";
 import { ProductsSeed } from "./seeds/products";
-
 const prismaClient = new PrismaClient();
 
 async function main() {
@@ -55,7 +54,8 @@ async function main() {
           type: data.type,
           service: data.service,
           size: data.size,
-          unitary_value: data.unitary_value
+          unitary_value: data.unitary_value,
+          toSector: data.toSector
         },
         update: {}
       })

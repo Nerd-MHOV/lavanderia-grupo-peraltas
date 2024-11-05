@@ -11,14 +11,15 @@ interface ItemListProps extends React.HTMLAttributes<HTMLDivElement> {
     }
     title?: string
     describe?: string
+    stock?: number
 }
-const ItemList = ({ Icon, buttons, title, describe, ...props }: ItemListProps) => {
+const ItemList = ({ Icon, buttons, title, describe, stock, ...props }: ItemListProps) => {
     return (
         <div tabIndex={-1} {...props}  className={cn('transition-all flex drop-shadow-md hover:drop-shadow-xl rounded-sm bg-white gap-5  p-3 ', props.className)} >
             <BallContent className='bg-primary hover:bg-primary cursor-default'>
                 <Icon className='text-white' width={30} height={30} />
             </BallContent>
-            <div className='flex justify-between w-full'>
+            <div className='flex justify-between w-full items-center'>
                 <div className="flex flex-col items-start">
                     <h1 className="font-semibold text-base">{title}</h1>
                     <p className="text-gray-600 text-sm">{describe}</p>
@@ -33,6 +34,10 @@ const ItemList = ({ Icon, buttons, title, describe, ...props }: ItemListProps) =
                         </BallContent>
                     </div>
                 }
+                {
+                    stock !== undefined && <p className="text-gray-800 text-xl mr-3">{stock}</p>
+                }
+
             </div>
         </div>
     )

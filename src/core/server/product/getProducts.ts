@@ -10,6 +10,13 @@ const getProducts = async () => {
 
 export interface GetProductsInterface {
     products: ({
+        Inventory: {
+            product_id: string;
+            amount: number;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+        }[];
         BarCodes: {
             product_id: string;
             createdAt: Date;
@@ -25,7 +32,7 @@ export interface GetProductsInterface {
         type: string;
         size: string;
         unitary_value: number;
-    })[]
+    })
 }
 
 export default getProducts;
