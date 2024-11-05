@@ -6,7 +6,7 @@ export const ProductsSeed = [
         size: 'P',
         unitary_value: 20.00,
         barcode: '00000005',
-        toSector: true,
+        finality: 'collaborator'
     },
     {
         product: 'Camiseta Amarela',
@@ -15,7 +15,7 @@ export const ProductsSeed = [
         size: 'M',
         unitary_value: 20.00,
         barcode: '00000004',
-        toSector: true,
+        finality: 'collaborator'
     },
     {
         product: 'Camiseta Amarela',
@@ -24,7 +24,7 @@ export const ProductsSeed = [
         size: 'G',
         unitary_value: 20.00,
         barcode: '00000003',
-        toSector: true,
+        finality: 'collaborator'
     },
     {
         product: 'Camiseta Amarela',
@@ -33,7 +33,7 @@ export const ProductsSeed = [
         size: 'GG',
         unitary_value: 20.00,
         barcode: '00000002',
-        toSector: true,
+        finality: 'collaborator'
     },
     {
         product: 'Bermuda Monitoria preta',
@@ -42,7 +42,7 @@ export const ProductsSeed = [
         size: 'P',
         unitary_value: 20.00,
         barcode: '00000001',
-        toSector: true,
+        finality: 'collaborator'
     },
     {
         product: 'Bermuda Monitoria preta',
@@ -50,7 +50,7 @@ export const ProductsSeed = [
         service: 'Peraltas',
         size: 'M',
         unitary_value: 20.00,
-        toSector: true,
+        finality: 'collaborator'
 
     },
     {
@@ -59,7 +59,7 @@ export const ProductsSeed = [
         service: 'Peraltas',
         size: 'G',
         unitary_value: 20.00,
-        toSector: true,
+        finality: 'collaborator'
     },
     {
         product: 'Bermuda Monitoria Azul',
@@ -67,6 +67,6 @@ export const ProductsSeed = [
         service: 'Ceu',
         size: 'M',
         unitary_value: 20.00,
-        toSector: true,
+        finality: 'collaborator'
     },
 ];

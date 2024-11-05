@@ -17,6 +17,7 @@ export const CreateServiceFormSchema = z.object({
 export const CreateProductFormSchema = z.object({
     service: z.string().min(2, { message: 'Informe a marca' }),
     tag: z.string().min(2, { message: 'Informe a tag' }),
+    finality: z.string().min(3, { message: 'Informe a finalidade' }),
     product: z.string().min(2, { message: 'Informe o produto' }),
     size: z.string().min(1, { message: 'Informe o tamanho' }),
     unitary_value: z.number().min(0.01, { message: 'Informe o valor unitário' }),
@@ -24,6 +25,7 @@ export const CreateProductFormSchema = z.object({
 
 export const UpdateProductFormSchema = z.object({
     id: z.string().min(1, { message: 'Informe o id' }),
+    finality: z.string().min(3, { message: 'Informe a finalidade' }),
     service: z.string().min(2, { message: 'Informe a marca' }),
     tag: z.string().min(2, { message: 'Informe a tag' }),
     product: z.string().min(2, { message: 'Informe o produto' }),

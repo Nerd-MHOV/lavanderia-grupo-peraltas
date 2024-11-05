@@ -76,6 +76,7 @@ export interface GetaProductInterface {
         type: string;
         size: string;
         unitary_value: number;
+        finality: string;
     }
 }
 export default getaProduct;

@@ -9,6 +9,7 @@ export interface StateEditProduct {
         product?: string[] | undefined;
         unitary_value?: string[] | undefined;
         size?: string[] | undefined;
+        finality?: string[] | undefined;
     },
     message?: string;
     success?: boolean;
@@ -22,6 +23,7 @@ export async function actionEditProduct(state: StateEditProduct | null, formData
         product: formData.get('product'),
         size: formData.get('size'),
         unitary_value: Number(formData.get('unitary_value')),
+        finality: formData.get('finality'),
     })
     if (!validationFormData.success) {
         console.error(validationFormData.error)
@@ -40,7 +42,8 @@ export async function actionEditProduct(state: StateEditProduct | null, formData
             service: validationFormData.data.service,
             type: validationFormData.data.tag,
             size: validationFormData.data.size.toUpperCase(),
-            unitary_value: validationFormData.data.unitary_value
+            unitary_value: validationFormData.data.unitary_value,
+            finality: validationFormData.data.finality
          });
 
         revalidatePath('/panel/products/'+validationFormData.data.id)

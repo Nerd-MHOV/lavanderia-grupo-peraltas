@@ -25,7 +25,7 @@ const dbProduct = (db: PrismaClient) => ({
         unitary_value: number,
         service: string,
         type: string,
-        toSector: boolean,
+        finality: string,
     }) {
         const dbData = await db.product.create({ data })
         return { product: dbData }
@@ -37,6 +37,7 @@ const dbProduct = (db: PrismaClient) => ({
         unitary_value: number,
         service: string,
         type: string,
+        finality: string,
     }) {
         const dbData = await db.product.update({
             where: { id: data.id },

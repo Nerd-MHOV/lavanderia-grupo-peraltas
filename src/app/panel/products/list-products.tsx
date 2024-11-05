@@ -17,6 +17,10 @@ const fuseOptions = {
     ignoreLocation: true,
     useExtendedSearch: true,
 }
+const finality: { [key: string]: string } = {
+    sector: 'Setor',
+    collaborator: 'Colaborador',
+}
 const ListProducts = ({ products }: {
     products: GetProductsInterface['products'][]
 }) => {
@@ -63,6 +67,7 @@ const ListProducts = ({ products }: {
                             <TableHead>Tamanho</TableHead>
                             <TableHead>Marca</TableHead>
                             <TableHead>Tag</TableHead>
+                            <TableHead>Finalidade</TableHead>
                             <TableHead>Editar</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -74,6 +79,7 @@ const ListProducts = ({ products }: {
                                     <TableCell>{prod.size}</TableCell>
                                     <TableCell>{prod.service}</TableCell>
                                     <TableCell>{prod.type}</TableCell>
+                                    <TableCell>{finality[prod.finality]}</TableCell>
                                     <TableCell>
                                         <Link href={`/panel/products/${prod.id}`}>
                                             <Button size='sm' variant='outline' className='bg-orange-200 text-orange-800'><Edit /> Editar</Button>

@@ -55,7 +55,7 @@ async function main() {
           service: data.service,
           size: data.size,
           unitary_value: data.unitary_value,
-          toSector: data.toSector
+          finality: data.finality,
         },
         update: {}
       })

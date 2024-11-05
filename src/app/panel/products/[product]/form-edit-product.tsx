@@ -80,6 +80,22 @@ const FormEditProduct = ({ product, services, types }: FormEditProductProps) => 
         </Select>
         {state?.errors && <p className="text-red-500">{state.errors.tag}</p>}
       </label>
+
+      <label>
+        <span>Finalidade:</span>
+        <Select name='finality' defaultValue={product.finality}>
+          <SelectTrigger>
+            <SelectValue placeholder='Selecione a finaliade' />
+          </SelectTrigger>
+          <SelectContent>
+          <SelectContent>
+                  <SelectItem value={'sector'} >para setor</SelectItem>
+                  <SelectItem value={'collaborator'} >para colaborador</SelectItem>
+              </SelectContent>
+          </SelectContent>
+        </Select>
+        {state?.errors && <p className="text-red-500">{state.errors.finality}</p>}
+      </label>
       <button type="submit" className="bg-primary text-white p-2 rounded-md">Salvar</button>
       <input type="hidden" name="id" defaultValue={product.id} />
     </form>

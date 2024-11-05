@@ -32,6 +32,7 @@ export interface GetProductsInterface {
         type: string;
         size: string;
         unitary_value: number;
+        finality: string;
     })
 }
 

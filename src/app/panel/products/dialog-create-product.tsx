@@ -68,6 +68,17 @@ const DialogCreateProduct = ({ types, services }: DialogCreateProductProps) => {
             </Select>
             {state?.errors && <p className="text-red-500">{state.errors.service}</p>}
 
+            <Select name='finality'>
+              <SelectTrigger>
+                <SelectValue placeholder='selecione a finalidade' />
+              </SelectTrigger>
+              <SelectContent>
+                  <SelectItem value={'sector'} >para setor</SelectItem>
+                  <SelectItem value={'collaborator'} >para colaborador</SelectItem>
+              </SelectContent>
+            </Select>
+            {state?.errors && <p className="text-red-500">{state.errors.finality}</p>}
+
             <Input type='text' placeholder='Nome do produto' name='product' autoComplete='off' />
             {state?.errors && <p className="text-red-500">{state.errors.product}</p>}
 
