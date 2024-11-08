@@ -18,7 +18,7 @@ const useFaceReader = (dependences: React.DependencyList = []) => {
     const [resultReader, setResultReader] = useState<FaceReader | null>(null);
     const onFind = (data: FaceReader) => {
         if (data.device_name === "Lavanderia - leitor de faces")
-            setResultReader(data)
+            setResultReader(data); console.log(data.name, 'LEITOR DE FACES')
     }
     const clear = () => { setResultReader(null) }
     useEffect(() => {

@@ -11,6 +11,7 @@ import FormEditProduct from './form-edit-product';
 import DialogAddBarcode from './dialog-add-barcde';
 import ButtonDeleteBarcode from './button-delete-barcode';
 import DialogAddInventory from './dialog-add-inventory';
+import { notFound } from 'next/navigation';
 
 const EditProductPage = async ({
   params
@@ -19,7 +20,7 @@ const EditProductPage = async ({
 }) => {
   const product = (await getaProduct((await params).product)).product;
   if (!product) {
-    return <div>Produto não encontrado</div>
+    return notFound();
   }
   const services = (await getServices()).services;
   const types = (await getTypes()).types;

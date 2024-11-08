@@ -1,38 +1,28 @@
 'use client'
 import { FaceReader } from '@/hooks/useFaceReader';
 import React, { useEffect } from 'react'
-import CPFOnlyNumber from '@/lib/cpf_only_number';
+import {CPFOnlyNumber} from '@/lib/cpf';
 import { CardPanel } from '@/components/interface/CardPanel';
 import { UserSearch } from 'lucide-react';
 import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select } from '@/components/ui/select';
+import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators';
 
 interface CardPanelCollaboratorProps {
-  onSelect?: (collaborator: CardPanelCollaborators) => void
+  onSelect?: (collaborator: GetCollaboratorsInterface['collaborators']) => void
   disabled?: boolean
-  collaborators: CardPanelCollaborators[]
+  collaborators: GetCollaboratorsInterface['collaborators'][]
 
   resultReader: FaceReader | null
   clear: () => void
-}
-
-export interface CardPanelCollaborators {
-  id: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  cpf: string;
-  isDiarist: boolean;
-  active: boolean;
-  department: string;
 }
 
 
 const CardPanelCollaborator = ({
   collaborators, disabled = false, onSelect = () => { }, resultReader, clear
 }: CardPanelCollaboratorProps) => {
-  const [value, setValue] = React.useState<CardPanelCollaborators | null>(collaborators[0]);
+  const [value, setValue] = React.useState<GetCollaboratorsInterface['collaborators'] | null>(null);
 
-  const handleSelect = React.useCallback((selected: CardPanelCollaborators) => {
+  const handleSelect = React.useCallback((selected: GetCollaboratorsInterface['collaborators']) => {
     setValue(selected);
     onSelect(selected);
   }, [onSelect]);

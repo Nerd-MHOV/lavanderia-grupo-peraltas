@@ -3,7 +3,7 @@ import { DialogHeader, DialogContent, DialogDescription, DialogTitle, DialogFoot
 import React, { useEffect } from 'react'
 import { DataActionRetreatPage } from '../form-retreat';
 import { FaceReader } from '@/hooks/useFaceReader';
-import CPFOnlyNumber from '@/lib/cpf_only_number';
+import {CPFOnlyNumber} from '@/lib/cpf';
 import Spin from '@/components/interface/Spin';
 
 const ConfirmModal = ({ dataAction, action, resultReader, clear }: {

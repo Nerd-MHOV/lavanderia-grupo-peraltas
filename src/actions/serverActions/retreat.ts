@@ -1,7 +1,7 @@
 'use server'
 
-import { CardPanelCollaborators } from "@/app/panel/retreat/retreat-components/card-panel-collaborator";
-import { CardRetreatProducts } from "@/app/panel/retreat/retreat-components/card-panel-retreat";
+import { ProductQuantity } from "@/app/panel/retreat/retreat-components/useSelectedProductsRetreat";
+import { GetCollaboratorsInterface } from "@/core/server/collaborator/getCollaborators";
 import makeRetreat from "@/core/server/outputs/makeRetreat";
 
 interface State {
@@ -10,19 +10,18 @@ interface State {
     errors?: unknown;
 }
 export async function actionRetreat(state: State, formData: {
-    collaborator: CardPanelCollaborators;
+    collaborator: GetCollaboratorsInterface['collaborators'];
     finality: string;
-    products: CardRetreatProducts[];
+    products: ProductQuantity[];
 }
 ) {
     console.log('chamou a retirada');
-    const forSector = formData.finality === 'sector';
     try {
         await makeRetreat(formData.products.map( prod => ({
             id: prod.id,
             quantity: prod.quantity || 0,
             name: `${prod.product} ${prod.service} ${prod.size}`
-        })), formData.collaborator.id, forSector )
+        })), formData.collaborator.id, formData.finality )
 
         return { message: 'Retirada realizada com sucesso', success: true }
     } catch (error) {

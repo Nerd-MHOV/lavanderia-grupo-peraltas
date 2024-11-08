@@ -12,16 +12,17 @@ import { GetProductsInterface } from '@/core/server/product/getProducts'
 
 
 interface CardPanelRetreatProps {
-  products: GetProductsInterface['products'][]
+  products: GetProductsInterface['products'][],
+  clear: VoidFunction;
 }
 
-const CardPanelRetreat = ({ products }: CardPanelRetreatProps) => {
+const CardPanelRetreat = ({ products, clear }: CardPanelRetreatProps) => {
   const {
     addProduct,
     removeProduct,
     itemFocused,
     selectedProduct
-  } = useSelectedProductsRetreat();
+  } = useSelectedProductsRetreat(clear);
 
 
   useScanDetection({
@@ -56,6 +57,8 @@ const CardPanelRetreat = ({ products }: CardPanelRetreatProps) => {
       }
     }, 300)
   }, [selectedProduct])
+
+
 
   return (
     <Dialog>

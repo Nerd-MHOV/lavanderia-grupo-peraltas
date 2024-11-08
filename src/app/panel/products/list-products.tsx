@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import finalityProductTypeMap from '@/core/server/product/finalityProductTypeMap'
 import { GetProductsInterface } from '@/core/server/product/getProducts'
 import Fuse from 'fuse.js'
 import { Edit, Search } from 'lucide-react'
@@ -16,11 +17,8 @@ const fuseOptions = {
     findAllMatches: true,
     ignoreLocation: true,
     useExtendedSearch: true,
-}
-const finality: { [key: string]: string } = {
-    sector: 'Setor',
-    collaborator: 'Colaborador',
-}
+} 
+
 const ListProducts = ({ products }: {
     products: GetProductsInterface['products'][]
 }) => {
@@ -79,7 +77,7 @@ const ListProducts = ({ products }: {
                                     <TableCell>{prod.size}</TableCell>
                                     <TableCell>{prod.service}</TableCell>
                                     <TableCell>{prod.type}</TableCell>
-                                    <TableCell>{finality[prod.finality]}</TableCell>
+                                    <TableCell>{finalityProductTypeMap[prod.finality]}</TableCell>
                                     <TableCell>
                                         <Link href={`/panel/products/${prod.id}`}>
                                             <Button size='sm' variant='outline' className='bg-orange-200 text-orange-800'><Edit /> Editar</Button>

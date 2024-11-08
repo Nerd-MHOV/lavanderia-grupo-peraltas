@@ -6,7 +6,7 @@ const makeRetreat = async (products: {
     id: string,
     quantity: number,
     name: string,
-}[], collaborator_id: string, forSector: boolean) => {
+}[], collaborator_id: string, finality: string) => {
     const isUser = (await verifySession()).userId
     if (!isUser) {
         throw new Error('Usuario não encontrado');
@@ -36,12 +36,13 @@ const makeRetreat = async (products: {
             product,
             user_id: isUser,
             collaborator_id,
-            forSector,
+            finality,
         })
     })
 
 
     //
+    revalidatePath('/panel/return')
     revalidatePath('/panel/retreat')
     revalidatePath('/panel/return')
     revalidatePath('/panel/products')

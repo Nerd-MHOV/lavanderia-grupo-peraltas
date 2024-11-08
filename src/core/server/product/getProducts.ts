@@ -36,4 +36,6 @@ export interface GetProductsInterface {
     })
 }
 
+
+
 export default getProducts;

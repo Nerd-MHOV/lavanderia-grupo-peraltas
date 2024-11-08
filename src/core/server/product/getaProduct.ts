@@ -50,7 +50,7 @@ export interface GetaProductInterface {
                 updatedAt: Date;
                 name: string;
                 cpf: string;
-                isDiarist: boolean;
+                type: string;
                 active: boolean;
                 department: string;
             };
@@ -62,7 +62,7 @@ export interface GetaProductInterface {
             updatedAt: Date;
             user_id: string;
             collaborator_id: string;
-            forSector: boolean;
+            finality: string;
             status: boolean;
             obs: string;
             expiration: boolean;

@@ -4,23 +4,25 @@ import { actionRetreat } from '@/actions/serverActions/retreat';
 import SlackMessage from '@/components/interface/SlackMessage';
 import React, { useEffect, useState } from 'react'
 import { useFormState } from 'react-dom';
-import CardPanelCollaborator, { CardPanelCollaborators } from './retreat-components/card-panel-collaborator';
+import CardPanelCollaborator from './retreat-components/card-panel-collaborator';
 import CardPanelFinality from './retreat-components/card-panel-finality';
 import CardPanelRetreat from './retreat-components/card-panel-retreat';
 import ConfirmModal from './retreat-components/confirm-modal';
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog';
 import useFaceReader from '@/hooks/useFaceReader';
 import { GetProductsInterface } from '@/core/server/product/getProducts';
+import { ProductQuantity } from './retreat-components/useSelectedProductsRetreat';
+import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators';
 
 interface FormRetreatProps {
-  collaborators: CardPanelCollaborators[]
+  collaborators: GetCollaboratorsInterface['collaborators'][]
   products: GetProductsInterface['products'][]
 }
 
 export interface DataActionRetreatPage {
-  collaborator: CardPanelCollaborators;
+  collaborator: GetCollaboratorsInterface['collaborators'];
   finality: string;
-  products: GetProductsInterface['products'][];
+  products: ProductQuantity[];
 }
 
 const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
@@ -37,6 +39,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
   const openModal = () => {
     (document.querySelector('.open-modal-confirmation') as HTMLElement)?.click()
   }
+
 
   const handleForm = (data: FormData) => {
     const dataObj = {
@@ -77,7 +80,9 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
       message: state.message,
       success: state.success
     })
+    if( state.success ) { clear() }
   }, [state])
+
   return (
     <Dialog>
       <ConfirmModal action={action} dataAction={dataAction} resultReader={resultReader} clear={clear} />
@@ -99,7 +104,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
             />
           </div>
         }
-        <CardPanelRetreat products={products} />
+        <CardPanelRetreat products={products} clear={clear} />
       </form>
     </Dialog>
   )

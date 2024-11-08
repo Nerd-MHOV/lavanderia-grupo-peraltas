@@ -9,18 +9,22 @@ interface RetreatODT {
     },
     user_id: string,
     collaborator_id: string,
-    forSector: boolean
+    finality: string
 }
 const dbOutput = (db: PrismaClient) => ({
     async get() {
         return db.output.findMany();
     },
 
+    async geta(id: string) {
+        return db.output.findFirst({ where: { id } });
+    },
+
     async create(data: {
         product_id: string,
         collaborator_id: string,
         user_id: string,
-        forSector: boolean,
+        finality: string,
         amount: number,
         status: boolean,
         obs: string,
@@ -36,7 +40,7 @@ const dbOutput = (db: PrismaClient) => ({
         product,
         user_id,
         collaborator_id,
-        forSector,
+        finality,
     }: RetreatODT) {
 
         const dataOutput = {
@@ -44,10 +48,17 @@ const dbOutput = (db: PrismaClient) => ({
             product_id: product.id,
             collaborator_id,
             user_id,
-            forSector,
+            finality,
             status: true,
             obs: 'retreat',
         }
+
+        const findOutput = await db.output.findFirst({ where: { product_id: product.id } });
+
+        const outputData = findOutput 
+            ? db.output.update({ where: { id: findOutput.id }, data: { amount: { increment: product.quantity } }})
+            : db.output.create({ data: dataOutput });
+
         return db.$transaction([
             db.inventory.update({
                 where: {product_id: product.id},
@@ -57,7 +68,7 @@ const dbOutput = (db: PrismaClient) => ({
                     }
                 }
             }),
-            db.output.create({ data: dataOutput }),
+            outputData,
             db.outputHistory.create({ data: dataOutput})
         ])
     }

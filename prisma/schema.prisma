@@ -32,9 +32,10 @@ model Collaborator {
   id                   String          @id @default(uuid())
   name                 String
   cpf                  String
-  isDiarist            Boolean
+  type                 String
   active               Boolean         @default(true)
   department           String
+  canRetreat           String          @default("['collaborator']")
   Department           Department      @relation(fields: [department], references: [department])
   Leader               Leader[]
   Outputs              Output[]        @relation("collaborator")
@@ -100,7 +101,7 @@ model Input {
   id         String   @id @default(uuid())
   product_id String
   amount     Int
-  user_id       String
+  user_id    String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -115,7 +116,7 @@ model Output {
   product_id      String
   collaborator_id String
   user_id         String
-  forSector       Boolean
+  finality        String
   amount          Int
   status          Boolean
   obs             String
@@ -136,7 +137,7 @@ model OutputHistory {
   product_id      String
   collaborator_id String
   user_id         String
-  forSector       Boolean
+  finality        String
   amount          Int
   status          Boolean
   obs             String
@@ -154,7 +155,7 @@ model OutputHistory {
 model Return {
   id                  String   @id @default(uuid())
   product_id          String
-  forSector           Boolean
+  finality            String
   user_id             String
   collaborator_id_in  String
   collaborator_id_out String
@@ -197,14 +198,14 @@ model Product {
   Return        Return[]
   BarCodes      BarCode[]
 
-  @@map("products")
   @@unique([product, service, type, size])
+  @@map("products")
 }
 
 model Service {
   service   String    @id
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt 
+  updatedAt DateTime  @updatedAt
   Product   Product[]
 
   @@map("services")
@@ -220,10 +221,10 @@ model Type {
 }
 
 model BarCode {
-  code  String   @id
+  code       String   @id
   product_id String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   Product Product @relation(fields: [product_id], references: [id])
 

@@ -1,10 +1,10 @@
 import { GetProductsInterface } from "@/core/server/product/getProducts";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 
 
 export type ProductQuantity = GetProductsInterface['products'] & {quantity?: number};
 
-const useSelectedProductsRetreat = () => {
+const useSelectedProductsRetreat = (clear: VoidFunction) => {
   const [selectedProduct, setSelectedProduct] = React.useState<ProductQuantity[]>([]);
   const [itemFocused, setItemFocused] = React.useState<string | null>(null)
   
@@ -39,6 +39,10 @@ const useSelectedProductsRetreat = () => {
       return prev
     })
   }, [])
+
+  useEffect(() => {
+    setSelectedProduct([])
+  }, [clear])
   return {
 
     addProduct,
