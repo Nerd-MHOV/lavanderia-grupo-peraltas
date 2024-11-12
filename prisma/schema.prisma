@@ -155,10 +155,10 @@ model OutputHistory {
 model Return {
   id                  String   @id @default(uuid())
   product_id          String
-  finality            String
   user_id             String
   collaborator_id_in  String
   collaborator_id_out String
+  finality            String
   amount_has          Int
   amount              Int
   amount_bad          Int

@@ -1,14 +1,25 @@
 import { Button } from '@/components/ui/button';
-import { DialogHeader, DialogContent, DialogDescription, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { DialogHeader, DialogContent, DialogDescription, DialogTitle, DialogFooter, DialogClose, Dialog, DialogTrigger } from '@/components/ui/dialog';
 import React, { useEffect } from 'react'
-import { DataActionRetreatPage } from '../form-retreat';
 import { FaceReader } from '@/hooks/useFaceReader';
-import {CPFOnlyNumber} from '@/lib/cpf';
+import { CPFOnlyNumber } from '@/lib/cpf';
 import Spin from '@/components/interface/Spin';
 
-const ConfirmModal = ({ dataAction, action, resultReader, clear }: {
-  dataAction: DataActionRetreatPage | null,
-  action: (data: DataActionRetreatPage) => void
+const ConfirmModal = <T,>({ dataAction, action, resultReader, products, collaborator, finality, clear }: {
+  products: {
+    id: string,
+    quantity: number,
+    product: string,
+    size: string,
+    service: string,
+  }[],
+  collaborator?: {
+    name: string,
+    cpf: string,
+  } | null;
+  finality: string;
+  dataAction: T | null,
+  action: (data: T) => void
   resultReader: FaceReader | null
   clear: () => void
 }) => {
@@ -25,52 +36,58 @@ const ConfirmModal = ({ dataAction, action, resultReader, clear }: {
 
 
   useEffect(() => {
-    if ( resultReader && waiting && dataAction?.collaborator ) {
-      if ( CPFOnlyNumber(resultReader.id) === CPFOnlyNumber(dataAction?.collaborator?.cpf) ) {
+    if (resultReader && waiting && collaborator) {
+      if (CPFOnlyNumber(resultReader.id) === CPFOnlyNumber(collaborator?.cpf)) {
         setWaiting(false);
         action(dataAction!);
         closeModal();
       }
       clear()
     }
-  }, [action, dataAction, resultReader, waiting, clear])
+  }, [action, dataAction, resultReader, waiting, clear, collaborator])
   return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>{
-          waiting
-            ? 'Confirme sua face!'
-            : 'Esta tudo correto ?'
-        }</DialogTitle>
-        <DialogDescription>
-          <h1 className='mt-2 mb-0 pl-4'>{dataAction?.collaborator?.name || ''}</h1>
-          <h3 className='pl-10 mb-4'> --- {dataAction?.finality}</h3>
-        </DialogDescription>
-      </DialogHeader>
+    <Dialog>
+      <DialogTrigger className='open-modal-confirmation' />
 
-      {
-        waiting 
-        ? 'Coloque a face no leitor....'
-        :  <ol className='my-5 divide-y '>
-        {dataAction?.products.map(prod => (
-          <li key={prod.id}> {prod.quantity}x {prod.product} {prod.size} {prod.service}</li>
-        ))}
-      </ol>
-      }
-
-      <DialogFooter>
-        <Button disabled={waiting} className='mr-3 bg-btnGreen hover:bg-btnGreenHover' onClick={handleConfirm}>
-          {
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{
             waiting
-              ? <Spin />
-              : 'Confirmar'
-          }
-        </Button>
-        <DialogClose>
-          <Button className='bg-btnRed hover:bg-btnRedHover close-modal-confirmation'>Cancelar</Button>
-        </DialogClose>
-      </DialogFooter>
-    </DialogContent>
+              ? 'Confirme sua face!'
+              : 'Esta tudo correto ?'
+          }</DialogTitle>
+          <DialogDescription>
+            <h1 className='mt-2 mb-0 pl-4'>{collaborator?.name || ''}</h1>
+            <h3 className='pl-10 mb-4'> --- {finality}</h3>
+          </DialogDescription>
+        </DialogHeader>
+
+        {
+          waiting
+            ? 'Coloque a face no leitor....'
+            : <ol className='my-5 divide-y '>
+              {products.map(prod => (
+                <li key={prod.id}> {prod.quantity}x {prod?.product} {prod.size} {prod.service}</li>
+              ))}
+            </ol>
+        }
+
+        <DialogFooter>
+          <Button disabled={waiting} className='mr-3 bg-btnGreen hover:bg-btnGreenHover' onClick={handleConfirm}>
+            {
+              waiting
+                ? <Spin />
+                : 'Confirmar'
+            }
+          </Button>
+          <DialogClose>
+            <Button className='bg-btnRed hover:bg-btnRedHover close-modal-confirmation'>Cancelar</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+
+    </Dialog>
+
   )
 }
 

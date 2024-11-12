@@ -8,7 +8,6 @@ import CardPanelCollaborator from './retreat-components/card-panel-collaborator'
 import CardPanelFinality from './retreat-components/card-panel-finality';
 import CardPanelRetreat from './retreat-components/card-panel-retreat';
 import ConfirmModal from './retreat-components/confirm-modal';
-import { Dialog, DialogTrigger } from '@radix-ui/react-dialog';
 import useFaceReader from '@/hooks/useFaceReader';
 import { GetProductsInterface } from '@/core/server/product/getProducts';
 import { ProductQuantity } from './retreat-components/useSelectedProductsRetreat';
@@ -81,12 +80,20 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
       success: state.success
     })
     if( state.success ) { clear() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
   return (
-    <Dialog>
-      <ConfirmModal action={action} dataAction={dataAction} resultReader={resultReader} clear={clear} />
-      <DialogTrigger className='open-modal-confirmation' />
+    <>
+      <ConfirmModal products={
+        dataAction?.products.map(prod => ({
+          id: prod.id,
+          quantity: prod.quantity ?? 0,
+          product: prod.product,
+          size: prod.size,
+          service: prod.service
+        })) || []
+      } action={action} finality={dataAction?.finality || ''} collaborator={dataAction?.collaborator}  dataAction={dataAction} resultReader={resultReader} clear={clear} />
       <form action={(data) => {
         handleForm(data)
       }} className='p-5'>
@@ -106,7 +113,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
         }
         <CardPanelRetreat products={products} clear={clear} />
       </form>
-    </Dialog>
+    </>
   )
 }
 

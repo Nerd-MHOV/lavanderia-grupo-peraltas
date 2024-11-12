@@ -1,8 +1,7 @@
 'use server'
-import db from "@/core/db/db";
+import { OutputsQuantity } from "@/app/panel/return/return-product";
 import returnProducts from "@/core/server/return/returnProducts";
 import { ReturnProductsSchema } from "@/lib/definitions";
-import { revalidatePath } from "next/cache";
 export interface StateActionReturnProducts {
     errors?: {
         products?: string[] | undefined;
@@ -11,11 +10,14 @@ export interface StateActionReturnProducts {
     message?: string;
     success?: boolean;
 }
-export async function actionReturnProducts(state: StateActionReturnProducts | null, formData: FormData) {
+export async function actionReturnProducts(state: StateActionReturnProducts | null, formData: {
+    collaborator_id: string,
+    products: OutputsQuantity[];
+}) {
     // 1. validate fields
     const validationFormData = ReturnProductsSchema.safeParse({
-        products: formData.get('products'),
-        collaborator_id: formData.get('collaborator_id'),
+        products: JSON.stringify(formData.products),
+        collaborator_id: formData.collaborator_id,
     })
     if (!validationFormData.success) {
         console.error(validationFormData.error)
