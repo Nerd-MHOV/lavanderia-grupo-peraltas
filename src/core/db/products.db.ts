@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
+
+type product_finality = 'collaborator' | 'department';
+
 const dbProduct = (db: PrismaClient) => ({
     async get() {
         return db.product.findMany({
@@ -10,13 +13,19 @@ const dbProduct = (db: PrismaClient) => ({
         });
     },
     async getById(id: string) {
-        return db.product.findUnique({ 
+        return db.product.findUnique({
             where: { id },
-            include: { BarCodes: true, Input: {
-                include: { User: true }
-            }, Output: {
-                include: { Collaborator: true }
-            }, Inventory: true } 
+            include: {
+                BarCodes: true, 
+                Inventory: true,
+                Input: {
+                    include: { User: true }
+                }, Output: {
+                    include: { Collaborator: true }
+                }, 
+                Departments: true
+
+            }
         });
     },
     async create(data: {
@@ -25,27 +34,51 @@ const dbProduct = (db: PrismaClient) => ({
         unitary_value: number,
         service: string,
         type: string,
-        finality: string,
+        finality: product_finality,
+        departments: string[],
     }) {
-        const dbData = await db.product.create({ data })
+        const { departments, ...dataInfo } = data;
+
+        const dbData = await db.product.create({
+            data: {
+                ...dataInfo,
+                Departments: {
+                    create: departments.map(department => ({ department }))
+                }
+            }
+        })
+
         return { product: dbData }
     },
-    async update(data:{
+    async update(data: {
         id: string,
         product: string,
         size: string,
         unitary_value: number,
         service: string,
         type: string,
-        finality: string,
+        finality: product_finality,
+        departments: string[],
     }) {
-        const dbData = await db.product.update({
-            where: { id: data.id },
-            data: data
-        })
-        return { product: dbData }
+        const { departments, ...dataInfo } = data;
+
+        const dbData = await db.$transaction([
+            db.productsOnDepartments.deleteMany({
+                where: { product_id: data.id }
+            }),
+            db.product.update({
+                where: { id: data.id },
+                data: {
+                    ...dataInfo,
+                    Departments: {
+                        create: departments.map(department => ({ department }))
+                    }
+                }
+            })
+        ])
+        return { product: dbData[1] }
     }
-    
+
 })
 
 export default dbProduct;

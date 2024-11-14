@@ -10,6 +10,7 @@ export interface StateEditProduct {
         unitary_value?: string[] | undefined;
         size?: string[] | undefined;
         finality?: string[] | undefined;
+        departments?: string[] | undefined;
     },
     message?: string;
     success?: boolean;
@@ -24,6 +25,7 @@ export async function actionEditProduct(state: StateEditProduct | null, formData
         size: formData.get('size'),
         unitary_value: Number(formData.get('unitary_value')),
         finality: formData.get('finality'),
+        departments: JSON.parse(formData.get('departments') as string)
     })
     if (!validationFormData.success) {
         console.error(validationFormData.error)
@@ -43,13 +45,15 @@ export async function actionEditProduct(state: StateEditProduct | null, formData
             type: validationFormData.data.tag,
             size: validationFormData.data.size.toUpperCase(),
             unitary_value: validationFormData.data.unitary_value,
-            finality: validationFormData.data.finality
+            finality: validationFormData.data.finality,
+            departments: validationFormData.data.departments
          });
 
         revalidatePath('/panel/products/'+validationFormData.data.id)
         return { message: `Produto ${product.product.product} editado com sucesso` , success: true};
     } catch (error) {
-        const message = (error as { message?: string })?.message?.includes('Unique constraint failed on the fields: (`product`)') ? 'Produto já existe' : 'Erro ao criar a produto';
+        console.log(error)
+        const message = (error as { message?: string })?.message?.includes('Unique constraint failed on the fields: (`product`)') ? 'Produto já existe' : 'Erro ao editar o  produto';
         return { message: message, success: false };
     }
 }

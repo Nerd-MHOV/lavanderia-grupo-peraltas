@@ -1,4 +1,14 @@
-export const ProductsSeed = [
+import { Product } from "@prisma/client";
+
+export const ProductsSeed: {
+    product: string,
+    type: string,
+    service: string,
+    size: string,
+    unitary_value: number,
+    barcode?: string,
+    finality: Product['finality']
+}[] = [
     {
         product: 'Camiseta Amarela',
         type: 'Camiseta',

@@ -1,82 +1,27 @@
 'use server'
 import db from "@/core/db/db";
 import { verifySession } from "@/lib/session";
+import { BarCode, Collaborator, Department, Input, Inventory, Output, Product, User } from "@prisma/client";
 
-const getaProduct = async (id: string) => {
+const getaProduct = async (id: string): Promise<GetaProductInterface | null> => {
     await verifySession();
     const product = await db.product.getById(id);
+    if (!product) return null;
     return { product };
 }
 
 export interface GetaProductInterface {
-    product: {
-        BarCodes: {
-            product_id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            code: string;
-        }[];
-        Inventory: {
-            product_id: string;
-            amount: number;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-        }[];
+    product: ({
+        BarCodes: BarCode[];
+        Inventory: Inventory[];
         Input: ({
-            User: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                email: string;
-                user: string;
-                first_name: string;
-                last_name: string;
-                passwd: string;
-                level: number;
-            };
-        } & {
-            product_id: string;
-            amount: number;
-            id: string;
-            createdAt: Date;
-            updatedAt: Date;
-            user_id: string;
-        })[];
+            User: User;
+        } & Input)[];
         Output: ({
-            Collaborator: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                name: string;
-                cpf: string;
-                type: string;
-                active: boolean;
-                department: string;
-            };
-        } & {
-            id: string;
-            product_id: string;
-            amount: number;
-            createdAt: Date;
-            updatedAt: Date;
-            user_id: string;
-            collaborator_id: string;
-            finality: string;
-            status: boolean;
-            obs: string;
-            expiration: boolean;
-            collaboratorId: string | null;
-        })[],
-        product: string;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        service: string;
-        type: string;
-        size: string;
-        unitary_value: number;
-        finality: string;
-    }
+            Collaborator: Collaborator;
+        } & Output)[];
+        Departments: Department[];
+        
+    } & Product);
 }
 export default getaProduct;

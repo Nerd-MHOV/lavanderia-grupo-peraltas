@@ -34,7 +34,7 @@ export async function actionRegisterBarcode(state: StateActionRegisterBarcode | 
         revalidatePath('/panel/product/' + validationFormData.data.product_id)
         return { message: `Cadastrado ${created.count} criado com sucesso`, success: true };
     } catch (error) {
-        const message = (error as { message?: string })?.message ?? 'Erro ao criar a produto';
+        const message = (error as { message?: string })?.message ?? 'Erro ao registrar código no produto';
         return { message: message, success: false };
     }
 }

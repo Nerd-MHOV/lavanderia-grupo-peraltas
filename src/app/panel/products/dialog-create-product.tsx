@@ -6,6 +6,7 @@ import ButtonSpin from '@/components/ui/buttonSpin'
 import { Dialog, DialogHeader, DialogTrigger, DialogContent, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import InputMoney from '@/components/ui/inputMoney'
+import MultiSelect from '@/components/ui/multiSelect'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Plus } from 'lucide-react'
 import React, { useRef } from 'react'
@@ -18,14 +19,19 @@ interface DialogCreateProductProps {
   }[];
   services: {
     service: string;
-  }[]
+  }[],
+  departments: {
+    department: string;
+  }[],
 }
-const DialogCreateProduct = ({ types, services }: DialogCreateProductProps) => {
+const DialogCreateProduct = ({ types, services, departments }: DialogCreateProductProps) => {
   const [state, action] = useFormState(actionCreateProduct, {} as StateActionCreateProduct)
   const ref = useRef<HTMLFormElement>(null)
   if (ref.current && state.success) {
     ref.current.reset()
   }
+
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -49,7 +55,7 @@ const DialogCreateProduct = ({ types, services }: DialogCreateProductProps) => {
                 <SelectValue placeholder='Selecione a Tag' />
               </SelectTrigger>
               <SelectContent>
-                {types.map( type => (
+                {types.map(type => (
                   <SelectItem key={type.type} value={type.type}>{type.type}</SelectItem>
                 ))}
               </SelectContent>
@@ -61,7 +67,7 @@ const DialogCreateProduct = ({ types, services }: DialogCreateProductProps) => {
                 <SelectValue placeholder='Selecione a Marca' />
               </SelectTrigger>
               <SelectContent>
-              {services.map( service => (
+                {services.map(service => (
                   <SelectItem key={service.service} value={service.service}>{service.service}</SelectItem>
                 ))}
               </SelectContent>
@@ -73,11 +79,18 @@ const DialogCreateProduct = ({ types, services }: DialogCreateProductProps) => {
                 <SelectValue placeholder='selecione a finalidade' />
               </SelectTrigger>
               <SelectContent>
-                  <SelectItem value={'sector'} >para setor</SelectItem>
-                  <SelectItem value={'collaborator'} >para colaborador</SelectItem>
+                <SelectItem value={'department'} >para departamento</SelectItem>
+                <SelectItem value={'collaborator'} >para colaborador</SelectItem>
               </SelectContent>
             </Select>
             {state?.errors && <p className="text-red-500">{state.errors.finality}</p>}
+
+            <MultiSelect
+              placeholder="Selecione os departamentos"
+              options={departments.map(dep => ({ label: dep.department, value: dep.department }))}
+              name='departments'
+            />
+            {state?.errors && <p className="text-red-500">{state.errors.departments}</p>}
 
             <Input type='text' placeholder='Nome do produto' name='product' autoComplete='off' />
             {state?.errors && <p className="text-red-500">{state.errors.product}</p>}

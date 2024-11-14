@@ -2,42 +2,44 @@
 
 import { Button } from "@/components/ui/button";
 import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 
 type Option = { label: string; value: string };
 
 interface ISelectProps {
   placeholder: string;
   options: Option[];
-  selectedOptions: string[];
-  setSelectedOptions: Dispatch<SetStateAction<string[]>>;
+  name: string
+  defaultValue?: Option[];
 }
 const MultiSelect = ({
   placeholder,
+  name,
   options: values,
-  selectedOptions: selectedItems,
-  setSelectedOptions: setSelectedItems,
+  defaultValue,
 }: ISelectProps) => {
+  const [selectedItems, setSelectedItems] = useState<Option[]>(defaultValue || []);
 
   const handleSelectChange = (value: string) => {
-    if (!selectedItems.includes(value)) {
-      setSelectedItems((prev) => [...prev, value]);
-    } else {
-      const referencedArray = [...selectedItems];
-      const indexOfItemToBeRemoved = referencedArray.indexOf(value);
-      referencedArray.splice(indexOfItemToBeRemoved, 1);
-      setSelectedItems(referencedArray);
+    console.log(value);
+    const el = values.find(opt => opt.value === value)
+    if (el) {
+      if (!selectedItems.find(sli => sli.value === value)) {
+        setSelectedItems((prev) => [...prev, el]);
+      } else {
+        setSelectedItems(selectedItems.filter((sci) => sci.value !== value));
+      }
     }
   };
 
   const isOptionSelected = (value: string): boolean => {
-    return selectedItems.includes(value) ? true : false;
+    return selectedItems.find( sci => sci.value === value) ? true : false;
   };
 
   return (
@@ -48,7 +50,11 @@ const MultiSelect = ({
             variant="outline"
             className="w-full flex items-center justify-between"
           >
-            <div>{placeholder}</div>
+            <div>{
+              selectedItems.length
+                ? selectedItems.map(sci => sci.label).join(', ')
+                : placeholder
+            }</div>
             <ChevronDown className="h-4 w-4 opacity-50" />
           </Button>
         </DropdownMenuTrigger>
@@ -70,6 +76,8 @@ const MultiSelect = ({
           })}
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <input type="hidden" name={name} value={JSON.stringify(selectedItems.map(select => select.value ))} />
     </>
   );
 };

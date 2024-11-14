@@ -16,7 +16,7 @@ async function main() {
         email: data.email,
         user: data.user,
         passwd: data.passwd,
-        level: data.level
+        level: data.level || 'user',
       },
       update: {},
     }).then(data => {

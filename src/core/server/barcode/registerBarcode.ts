@@ -1,5 +1,4 @@
 import db from '@/core/db/db'
-import React from 'react'
 
 const registerBarcodes = async ({ product_id, barcodes }: { product_id: string, barcodes: string[] }) => {
     // 1. verify product id

@@ -12,18 +12,20 @@ import DialogAddBarcode from './dialog-add-barcde';
 import ButtonDeleteBarcode from './button-delete-barcode';
 import DialogAddInventory from './dialog-add-inventory';
 import { notFound } from 'next/navigation';
+import getDepartments from '@/core/server/department/getDepartments';
 
 const EditProductPage = async ({
   params
 }: {
   params: Promise<{ product: string }>
 }) => {
-  const product = (await getaProduct((await params).product)).product;
+  const product = (await getaProduct((await params).product))?.product;
   if (!product) {
     return notFound();
   }
   const services = (await getServices()).services;
   const types = (await getTypes()).types;
+  const departments = (await getDepartments()).departments;
   
 
   const allInputs = product.Input.reduce((acc, cur) => acc + cur.amount, 0);
@@ -45,6 +47,7 @@ const EditProductPage = async ({
         <FormEditProduct 
           product={product}
           services={services}
+          departments={departments}
           types={types}
         />
       </div>
@@ -85,7 +88,7 @@ const EditProductPage = async ({
           <DialogAddInventory product_id={product.id} />
         </div>
 
-        <div className='flex gap-4 my-5'>
+        <div className='flex gap-4 my-5 md:flex-nowrap flex-wrap'>
           <CardPanel Icon={FileBox} title='Total'>
             <p className='text-center mt-2 text-3xl font-bold '>{allInputs}</p>
           </CardPanel>

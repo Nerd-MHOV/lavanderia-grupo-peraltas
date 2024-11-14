@@ -11,19 +11,18 @@ import MultiSelect from '@/components/ui/multiSelect';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getDepartments } from '@/core/server/department/getDepartments';
 import { Plus } from 'lucide-react';
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { useFormState } from 'react-dom';
 
 const permissions = [
     { label: "items de colaborador", value: "collaborator" },
-    { label: "items de setor", value: "sector" },
+    { label: "items de departamento", value: "department" },
 ];
 
 const DialogCreateCollaborator = ({ departments }: {
     departments: getDepartments['departments']
 }) => {
     const [state, action] = useFormState(actionCreateCollaborator, {} as StateActionCreateCollaborator)
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
     const ref = useRef<HTMLFormElement>(null)
     if (ref.current && state.success) {
         ref.current.reset()
@@ -72,16 +71,10 @@ const DialogCreateCollaborator = ({ departments }: {
                         {state?.errors && <p className="text-red-500">{state.errors.type}</p>}
 
                         <MultiSelect
-                            placeholder={
-                                selectedItems.length
-                                    ? permissions.filter(item => selectedItems.includes(item.value)).map(item => item.label).join(', ')
-                                    : "Selecione as permissões"
-                            }
+                            placeholder="Selecione as permissões"
                             options={permissions}
-                            selectedOptions={selectedItems}
-                            setSelectedOptions={setSelectedItems}
+                            name='canRetreat'
                         />
-                        <input type='hidden' name='canRetreat' value={selectedItems.join(',')} />
                         {state?.errors && <p className="text-red-500">{state.errors.canRetreat}</p>}
 
 

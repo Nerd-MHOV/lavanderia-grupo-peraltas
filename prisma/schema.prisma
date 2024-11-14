@@ -6,8 +6,25 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum CollaboratorType {
+  registrado
+  pj
+  diarista
+}
+
+enum RetreatTypes {
+  collaborator
+  department
+}
+
+enum Level {
+  dev
+  admin
+  user
 }
 
 model User {
@@ -17,7 +34,7 @@ model User {
   email         String
   user          String          @unique
   passwd        String
-  level         Int
+  level         Level           @default(user)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   Output        Output[]
@@ -29,33 +46,35 @@ model User {
 }
 
 model Collaborator {
-  id                   String          @id @default(uuid())
+  id                   String           @id @default(uuid())
   name                 String
   cpf                  String
-  type                 String
-  active               Boolean         @default(true)
+  type                 CollaboratorType
+  active               Boolean          @default(true)
   department           String
-  canRetreat           String          @default("['collaborator']")
-  Department           Department      @relation(fields: [department], references: [department])
+  canRetreat           RetreatTypes[]   @default([])
+  Department           Department       @relation(fields: [department], references: [department])
   Leader               Leader[]
-  Outputs              Output[]        @relation("collaborator")
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
-  OutputHistory        OutputHistory[] @relation("collaborator")
-  ResponsibleReturnIn  Return[]        @relation("responsible_in")
-  ResponsibleReturnOut Return[]        @relation("responsible_out")
+  Outputs              Output[]         @relation("collaborator")
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  OutputHistory        OutputHistory[]  @relation("collaborator")
+  ResponsibleReturnIn  Return[]         @relation("responsible_in")
+  ResponsibleReturnOut Return[]         @relation("responsible_out")
 
   @@map("collaborators")
 }
 
 model Department {
-  department        String              @id
-  Collaborator      Collaborator[]
-  Department_Leader Department_Leader[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
+  department        String                  @id
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
 
-  @@map("deparmtents")
+  Department_Leader Department_Leader[]
+  Collaborator      Collaborator[]
+  Products          ProductsOnDepartments[]
+
+  @@map("departments")
 }
 
 model Leader {
@@ -178,25 +197,39 @@ model Return {
   @@map("returns")
 }
 
+model ProductsOnDepartments {
+  product_id String
+  department String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  Product    Product    @relation(fields: [product_id], references: [id])
+  Department Department @relation(fields: [department], references: [department])
+
+  @@id([product_id, department])
+  @@map("products_departments")
+}
+
 model Product {
-  id            String   @id @default(uuid())
+  id            String       @id @default(uuid())
   product       String
   service       String
   type          String
   size          String
   unitary_value Float
-  finality      String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  finality      RetreatTypes
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   Inventory     Inventory[]
   Input         Input[]
   Output        Output[]
-  Service       Service         @relation(fields: [service], references: [service])
-  Type          Type            @relation(fields: [type], references: [type])
+  Service       Service                 @relation(fields: [service], references: [service])
+  Type          Type                    @relation(fields: [type], references: [type])
   OutputHistory OutputHistory[]
   Return        Return[]
   BarCodes      BarCode[]
+  Departments   ProductsOnDepartments[]
 
   @@unique([product, service, type, size])
   @@map("products")

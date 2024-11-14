@@ -20,9 +20,9 @@ const dbCollaborator = (db: PrismaClient) => ({
     async create( data: {
         name: string;
         cpf: string;
-        type: string;
+        type: Collaborator_Type,
         department: string;
-        canRetreat: string;
+        canRetreat: Collaborator_CanRetreat[];
     } ) {
         return db.collaborator.create({ data });
     },
@@ -30,13 +30,16 @@ const dbCollaborator = (db: PrismaClient) => ({
     async update( id: string, data: {
         name: string;
         cpf: string;
-        type: string;
+        type: Collaborator_Type;
         active: boolean;
         department: string;
-        canRetreat: string;
+        canRetreat: Collaborator_CanRetreat[];
     }) {
         return db.collaborator.update({ where: { id }, data });
     }
 })
+
+type Collaborator_Type = 'diarista' | 'pj' | 'registrado';
+type Collaborator_CanRetreat = 'collaborator' | 'department';
 
 export default dbCollaborator;

@@ -1,6 +1,10 @@
 import z from 'zod';
 import { isValidCPF } from './cpf';
 
+const collaborator_type = z.union([z.literal('pj'), z.literal('diarista'), z.literal('registrado')], { message: 'Informe o tipo' })
+const collaborator_canRetreat = z.union([z.literal('collaborator'), z.literal('department')], { message: 'Informe a permissão' })
+const product_finality = z.union([z.literal('collaborator'), z.literal('department')], { message: 'Informe a finalidade' })
+
 export const LoginFormSchema = z.object({
     user: z.string().min(3, { message: 'Informe o usuário' }),
     passwd: z.string().min(3, { message: 'Informe a senha' }),
@@ -18,15 +22,17 @@ export const CreateServiceFormSchema = z.object({
 export const CreateProductFormSchema = z.object({
     service: z.string().min(2, { message: 'Informe a marca' }),
     tag: z.string().min(2, { message: 'Informe a tag' }),
-    finality: z.string().min(3, { message: 'Informe a finalidade' }),
+    finality: product_finality,
     product: z.string().min(2, { message: 'Informe o produto' }),
     size: z.string().min(1, { message: 'Informe o tamanho' }),
     unitary_value: z.number().min(0.01, { message: 'Informe o valor unitário' }),
+    departments: z.array(z.string(), { message: 'Informe os departamentos relacionados' })
 })
 
 export const UpdateProductFormSchema = z.object({
     id: z.string().min(1, { message: 'Informe o id' }),
-    finality: z.string().min(3, { message: 'Informe a finalidade' }),
+    departments: z.array(z.string(), { message: 'Informe os departamentos relacionados' }),
+    finality: product_finality,
     service: z.string().min(2, { message: 'Informe a marca' }),
     tag: z.string().min(2, { message: 'Informe a tag' }),
     product: z.string().min(2, { message: 'Informe o produto' }),
@@ -47,9 +53,9 @@ export const AddInventoryProductSchema = z.object({
 export const CreateCollaboratorSchema = z.object({
     name: z.string().min(3, { message: 'Informe o nome' }),
     cpf: z.string().min(11, { message: 'Informe o CPF' }).refine(isValidCPF, { message: ' CPF inválido' }),
-    type: z.string().min(3, { message: 'Informe o tipo' }),
+    type: collaborator_type,
     department: z.string().min(3, { message: 'Informe o departamento' }),
-    canRetreat: z.string().min(3, { message: 'Informe as permissões' }),
+    canRetreat: z.array(collaborator_canRetreat),
 })
 
 export const CreateDepartmentSchema = z.object({

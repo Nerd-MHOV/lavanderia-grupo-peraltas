@@ -20,7 +20,7 @@ export async function actionCreateCollaborator(state: StateActionCreateCollabora
         cpf: formData.get('cpf'),
         type: formData.get('type'),
         department: formData.get('department'),
-        canRetreat: formData.get('canRetreat'),
+        canRetreat: JSON.parse(formData.get('canRetreat') as string)
     })
     if (!validationFormData.success) {
         console.error(validationFormData.error)

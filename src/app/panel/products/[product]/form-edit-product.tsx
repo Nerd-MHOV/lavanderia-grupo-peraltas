@@ -3,6 +3,7 @@ import { actionEditProduct, StateEditProduct } from '@/actions/serverActions/edi
 import SlackMessage from '@/components/interface/SlackMessage'
 import { Input } from '@/components/ui/input'
 import MoneyInput from '@/components/ui/inputMoney'
+import MultiSelect from '@/components/ui/multiSelect'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { GetaProductInterface } from '@/core/server/product/getaProduct'
 import React from 'react'
@@ -20,8 +21,11 @@ interface FormEditProductProps {
     createdAt: Date;
     updatedAt: Date;
   }[],
+  departments: {
+    department: string;
+  }[],
 }
-const FormEditProduct = ({ product, services, types }: FormEditProductProps) => {
+const FormEditProduct = ({ product, services, types, departments }: FormEditProductProps) => {
   const [state, action] = useFormState(actionEditProduct, {} as StateEditProduct)
 
   return (
@@ -88,13 +92,24 @@ const FormEditProduct = ({ product, services, types }: FormEditProductProps) => 
             <SelectValue placeholder='Selecione a finaliade' />
           </SelectTrigger>
           <SelectContent>
-          <SelectContent>
-                  <SelectItem value={'sector'} >para setor</SelectItem>
-                  <SelectItem value={'collaborator'} >para colaborador</SelectItem>
-              </SelectContent>
+            <SelectContent>
+              <SelectItem value={'department'} >para departamento</SelectItem>
+              <SelectItem value={'collaborator'} >para colaborador</SelectItem>
+            </SelectContent>
           </SelectContent>
         </Select>
         {state?.errors && <p className="text-red-500">{state.errors.finality}</p>}
+      </label>
+
+      <label>
+        <span>Departamentos:</span>
+        <MultiSelect
+          placeholder="Selecione os departamentos"
+          options={departments.map(dep => ({ label: dep.department, value: dep.department }))}
+          name='departments'
+          defaultValue={product.Departments.map( dep => ({ label: dep.department, value: dep.department }) )}
+        />
+        {state?.errors && <p className="text-red-500">{state.errors.departments}</p>}
       </label>
       <button type="submit" className="bg-primary text-white p-2 rounded-md">Salvar</button>
       <input type="hidden" name="id" defaultValue={product.id} />
