@@ -2,7 +2,7 @@ import React from 'react'
 
 const Panel = () => {
   return (
-    <div>Panel</div>
+    <div className='flex w-full text-center justify-center pt-20'>Pagina em construção</div>
   )
 }
 

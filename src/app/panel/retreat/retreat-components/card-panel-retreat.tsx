@@ -10,20 +10,23 @@ import useScanDetection from 'use-scan-detection'
 import useSelectedProductsRetreat from './useSelectedProductsRetreat'
 import { GetProductsInterface } from '@/core/server/product/getProducts'
 import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators'
+import finalityProductTypeMap from '@/core/server/product/finalityProductTypeMap'
 
 
 interface CardPanelRetreatProps {
   products: GetProductsInterface['products'][],
   clear: VoidFunction;
   collaborator: GetCollaboratorsInterface['collaborators'] | null;
+  success: boolean;
 }
 
-const CardPanelRetreat = ({ products, clear, collaborator }: CardPanelRetreatProps) => {
+const CardPanelRetreat = ({ products, clear, collaborator, success }: CardPanelRetreatProps) => {
   const {
     addProduct,
     removeProduct,
     itemFocused,
-    selectedProduct
+    selectedProduct,
+    clearList
   } = useSelectedProductsRetreat(clear, collaborator);
 
 
@@ -60,6 +63,11 @@ const CardPanelRetreat = ({ products, clear, collaborator }: CardPanelRetreatPro
     }, 300)
   }, [selectedProduct])
 
+  useEffect(() => {
+    if(success) {
+      clearList()
+    }
+  }, [success])
 
 
   return (
@@ -71,7 +79,7 @@ const CardPanelRetreat = ({ products, clear, collaborator }: CardPanelRetreatPro
             id={itemFocused === product.id ? 'newItemRef' : undefined}
             key={product.id}
             title={product.product}
-            describe={`${product.size} -- ${product.service} -- ${product.type}`}
+            describe={`${product.size} -- ${product.service} -- ${product.type} -- (${finalityProductTypeMap[product.finality]})`}
             buttons={{
               delete: () => { removeProduct(product) },
               add: () => { addProduct(product) },

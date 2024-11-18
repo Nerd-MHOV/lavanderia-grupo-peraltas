@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import Fuse from 'fuse.js'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { GetProductsInterface } from '@/core/server/product/getProducts'
+import finalityProductTypeMap from '@/core/server/product/finalityProductTypeMap'
 
 const fuseOptions = {
     keys: ['complete'],
@@ -35,6 +36,7 @@ const SearchModal = ({ products, addProduct }: SearchModalProps) => {
             size: prod.size,
             service: prod.service,
             type: prod.type,
+            finality: prod.finality,
             complete: `${prod.product} ${prod.size} ${prod.service} ${prod.type}`
         })), fuseOptions)
 
@@ -82,7 +84,7 @@ const SearchModal = ({ products, addProduct }: SearchModalProps) => {
                                 onClick={() => { addProduct(product) }}
                                 Icon={Shirt}
                                 title={product.product}
-                                describe={`${product.size} -- ${product.service} -- ${product.type}`}
+                                describe={`${product.size} -- ${product.service} -- ${product.type} -- (${finalityProductTypeMap[product.finality]})`}
                                 stock={product.Inventory[0]?.amount || 0}
                             />
                         </DialogClose>)

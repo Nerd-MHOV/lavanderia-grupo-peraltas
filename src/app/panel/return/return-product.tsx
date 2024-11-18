@@ -93,7 +93,8 @@ const RetrunProduct = ({ collaborators }: {
             quantity: prod.quantity ?? 0,
             product: prod.Product.product,
             size: prod.Product.size,
-            service: prod.Product.service
+            service: prod.Product.service,
+            finality: prod.Product.finality,
           }))
         }
         finality='Devolução'

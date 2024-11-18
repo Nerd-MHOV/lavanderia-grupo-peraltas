@@ -38,8 +38,8 @@ const EditProductPage = async ({
           <h2 className='text-md font-semibold text-slate-500'>{`${product?.size} -- ${product?.service} -- ${product?.type}`}</h2>
         </div>
         <div className='text-slate-400 flex flex-col items-end text-sm p-0 m-0'>
-          <p>criado em: {format(product?.createdAt, 'dd/MM/yyyy')}</p>
-          <p>ultima atualização: {format(product.updatedAt, 'dd/MM/yyyy')}</p>
+          <p>criado em: {format(product?.createdAt, 'dd/MM/yyyy HH:mm')}</p>
+          <p>ultima atualização: {format(product.updatedAt, 'dd/MM/yyyy HH:mm')}</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ const EditProductPage = async ({
                 {product.BarCodes.map(barcode => (
                   <TableRow key={barcode.code}>
                     <TableCell>{barcode.code}</TableCell>
-                    <TableCell>{format(barcode.createdAt, 'dd/MM/yyyy')}</TableCell>
+                    <TableCell>{format(barcode.createdAt, 'dd/MM/yyyy HH:mm')}</TableCell>
                     <TableCell><ButtonDeleteBarcode product_id={product.id} code={barcode.code} /></TableCell>
                   </TableRow>
                 ))}
@@ -113,7 +113,7 @@ const EditProductPage = async ({
             {product.Input.map(inp => (
               <TableRow key={inp.id}>
                 <TableCell>{inp.amount}</TableCell>
-                <TableCell>{format(inp.createdAt, 'dd/MM/yyyy')}</TableCell>
+                <TableCell>{format(inp.createdAt, 'dd/MM/yyyy HH:mm')}</TableCell>
                 <TableCell>{inp.User.user}</TableCell>
               </TableRow>
             ))}
@@ -133,7 +133,7 @@ const EditProductPage = async ({
             {product.Output.map(out => (
               <TableRow key={out.id}>
                 <TableCell>{out.amount}</TableCell>
-                <TableCell>{format(out.updatedAt, 'dd/MM/yyyy')}</TableCell>
+                <TableCell>{format(out.updatedAt, 'dd/MM/yyyy HH:mm')}</TableCell>
                 <TableCell>{out.Collaborator.name}</TableCell>
               </TableRow>
             ))}

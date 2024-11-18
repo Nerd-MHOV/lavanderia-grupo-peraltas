@@ -44,7 +44,6 @@ const makeRetreat = async (products: {
     //
     revalidatePath('/panel/return')
     revalidatePath('/panel/retreat')
-    revalidatePath('/panel/return')
     revalidatePath('/panel/products')
     return retreat;
 }

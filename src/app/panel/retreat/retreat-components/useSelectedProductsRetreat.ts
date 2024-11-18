@@ -66,16 +66,18 @@ const useSelectedProductsRetreat = (clear: VoidFunction, collaborator: GetCollab
     })
   }, [])
 
-  useEffect(() => {
+  const clearList = () => {
     setSelectedProduct([])
-  }, [clear])
+  }
+
   return {
 
     addProduct,
     removeProduct,
 
     selectedProduct,
-    itemFocused
+    itemFocused,
+    clearList
   }
 }
 

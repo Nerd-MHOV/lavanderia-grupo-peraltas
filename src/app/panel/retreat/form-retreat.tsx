@@ -83,12 +83,13 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
           quantity: prod.quantity ?? 0,
           product: prod.product,
           size: prod.size,
-          service: prod.service
+          service: prod.service,
+          finality: prod.finality
         })) || []
       } action={action} finality={dataAction?.finality || ''} collaborator={dataAction?.collaborator}  dataAction={dataAction} resultReader={resultReader} clear={clear} />
       <form action={(data) => {
         handleForm(data)
-      }} className='p-5'>
+      }} className='py-5 px-10'>
 
         <div className='flex gap-5 mb-5'>
           <CardPanelCollaborator collaborators={collaborators} onSelect={setCollaborator} disabled clear={clear} resultReader={resultReader} />
@@ -103,7 +104,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
             />
           </div>
         }
-        <CardPanelRetreat collaborator={collaborator} products={products} clear={clear} />
+        <CardPanelRetreat collaborator={collaborator} products={products} clear={clear} success={message?.success || false} />
       </form>
     </>
   )

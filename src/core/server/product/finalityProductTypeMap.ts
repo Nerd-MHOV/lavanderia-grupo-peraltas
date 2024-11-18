@@ -1,5 +1,5 @@
 const finalityProductTypeMap: { [key: string]: string } = {
-    sector: 'Setor',
+    department: 'Departamento',
     collaborator: 'Colaborador',
 }
 

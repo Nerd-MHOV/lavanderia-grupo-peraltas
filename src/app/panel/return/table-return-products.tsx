@@ -29,7 +29,6 @@ const TableReturnProducts = ({
                     <TableHead>Tamanho</TableHead>
                     <TableHead>Marca</TableHead>
                     <TableHead>Tag</TableHead>
-                    <TableHead>Finalidade</TableHead>
                     <TableHead>Quantidade</TableHead>
                     <TableHead className='text-end'>Devolver</TableHead>
                 </TableRow>
@@ -44,7 +43,6 @@ const TableReturnProducts = ({
                                 <TableCell>{output.Product.size}</TableCell>
                                 <TableCell>{output.Product.service}</TableCell>
                                 <TableCell>{output.Product.type}</TableCell>
-                                <TableCell>{finalityProductTypeMap[output.finality]}</TableCell>
                                 <TableCell className='font-bold'>{output.amount} unidades</TableCell>
                                 <TableCell className='flex justify-end'>{
                                     !prodFind ? (
