@@ -7,7 +7,7 @@ import ListCollaborators from './list-collaborators';
 
 const Collaborators = async () => {
   const departments = ( await getDepartments() ).departments;
-  const collaborators = ( await getCollaborators() ).collaborators;
+  const collaborators = ( await getCollaborators(false) ).collaborators;
   return (
     <div className='px-10 py-3 relative'>
       <div className='bg-panelWhite p-7 rounded-xl shadow-2xl items-center w-full flex justify-between' >

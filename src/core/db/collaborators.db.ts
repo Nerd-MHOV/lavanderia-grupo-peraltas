@@ -5,7 +5,7 @@ const dbCollaborator = (db: PrismaClient) => ({
         return db.collaborator.findMany({
             include: {
                 Outputs: {
-                    include:{
+                    include: {
                         Product: true,
                     }
                 },
@@ -13,21 +13,21 @@ const dbCollaborator = (db: PrismaClient) => ({
         });
     },
 
-    async geta( id: string ) {
+    async geta(id: string) {
         return db.collaborator.findFirst({ where: { id } });
     },
 
-    async create( data: {
+    async create(data: {
         name: string;
         cpf: string;
         type: Collaborator_Type,
         department: string;
         canRetreat: Collaborator_CanRetreat[];
-    } ) {
+    }) {
         return db.collaborator.create({ data });
     },
 
-    async update( id: string, data: {
+    async update(id: string, data: {
         name: string;
         cpf: string;
         type: Collaborator_Type;
@@ -35,11 +35,20 @@ const dbCollaborator = (db: PrismaClient) => ({
         department: string;
         canRetreat: Collaborator_CanRetreat[];
     }) {
-        return db.collaborator.update({ where: { id }, data });
+        return db.collaborator.update({
+            where: { id }, data: {
+                name: data.name,
+                cpf: data.cpf,
+                type: data.type,
+                active: data.active,
+                department: data.department,
+                canRetreat: data.canRetreat,
+            }
+        });
     }
-})
+});
 
-type Collaborator_Type = 'diarista' | 'pj' | 'registrado';
-type Collaborator_CanRetreat = 'collaborator' | 'department';
+export type Collaborator_Type = 'diarista' | 'pj' | 'registrado';
+export type Collaborator_CanRetreat = 'collaborator' | 'department';
 
 export default dbCollaborator;

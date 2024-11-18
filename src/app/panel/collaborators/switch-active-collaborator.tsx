@@ -12,7 +12,7 @@ const SwitchActiveCollaborator = ({ collaborator }: {
             onCheckedChange={(checked) => {
                 updateCollaborator({
                     ...collaborator,
-                    active: checked
+                    active: checked,
                 })
 
             }}
