@@ -9,6 +9,7 @@ const dbProduct = (db: PrismaClient) => ({
             include: {
                 BarCodes: true,
                 Inventory: true,
+                Departments: true,
             }
         });
     },

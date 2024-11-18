@@ -22,9 +22,9 @@ const CardPanelCollaborator = ({
 }: CardPanelCollaboratorProps) => {
   const [value, setValue] = React.useState<GetCollaboratorsInterface['collaborators'] | null>(null);
 
-  const handleSelect = React.useCallback((selected: GetCollaboratorsInterface['collaborators']) => {
+  const handleSelect = React.useCallback((selected: GetCollaboratorsInterface['collaborators'] | null) => {
     setValue(selected);
-    onSelect(selected);
+    if (selected) onSelect(selected);
   }, [onSelect]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const CardPanelCollaborator = ({
 
   return (
     <CardPanel title='Colaborador' Icon={UserSearch}>
-      <Select disabled={disabled} value={value?.id} onValueChange={(e) => setValue(
+      <Select disabled={disabled} value={value?.id} onValueChange={(e) => handleSelect(
         collaborators.find( (col) => col.id === e ) || null
       )}>
         <SelectTrigger className='w-full focus-visible:ring-0 bg-transparent'>

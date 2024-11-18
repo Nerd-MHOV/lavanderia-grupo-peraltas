@@ -9,20 +9,22 @@ import SearchModal from './search-modal'
 import useScanDetection from 'use-scan-detection'
 import useSelectedProductsRetreat from './useSelectedProductsRetreat'
 import { GetProductsInterface } from '@/core/server/product/getProducts'
+import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators'
 
 
 interface CardPanelRetreatProps {
   products: GetProductsInterface['products'][],
   clear: VoidFunction;
+  collaborator: GetCollaboratorsInterface['collaborators'] | null;
 }
 
-const CardPanelRetreat = ({ products, clear }: CardPanelRetreatProps) => {
+const CardPanelRetreat = ({ products, clear, collaborator }: CardPanelRetreatProps) => {
   const {
     addProduct,
     removeProduct,
     itemFocused,
     selectedProduct
-  } = useSelectedProductsRetreat(clear);
+  } = useSelectedProductsRetreat(clear, collaborator);
 
 
   useScanDetection({

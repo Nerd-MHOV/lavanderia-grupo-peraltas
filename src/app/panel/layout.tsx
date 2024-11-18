@@ -3,6 +3,7 @@ import "../globals.css";
 import Sidebar from "@/components/interface/Sidebar";
 import { SidebarContextProvider } from "@/context/sidebar.context";
 import Navbar from "@/components/interface/Navbar";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Lavanderia",
@@ -24,7 +25,9 @@ export default function RootLayout({
 
               {children}
           </div>
+          <Toaster />
         </SidebarContextProvider>
+        
       </body>
     </html>
   );

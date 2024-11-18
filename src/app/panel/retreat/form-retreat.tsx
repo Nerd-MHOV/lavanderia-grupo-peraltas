@@ -34,7 +34,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
     success: boolean;
   } | null>(null)
   const [dataAction, setDataAction] = useState< DataActionRetreatPage | null>(null);
-
+  const [ collaborator, setCollaborator ] = useState<GetCollaboratorsInterface['collaborators'] | null>(null);
   const openModal = () => {
     (document.querySelector('.open-modal-confirmation') as HTMLElement)?.click()
   }
@@ -99,8 +99,8 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
       }} className='p-5'>
 
         <div className='flex gap-5 mb-5'>
-          <CardPanelCollaborator collaborators={collaborators} disabled clear={clear} resultReader={resultReader} />
-          <CardPanelFinality disabled />
+          <CardPanelCollaborator collaborators={collaborators} onSelect={setCollaborator}  clear={clear} resultReader={resultReader} />
+          {/* <CardPanelFinality disabled /> */}
         </div>
         {
           message?.message &&
@@ -111,7 +111,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
             />
           </div>
         }
-        <CardPanelRetreat products={products} clear={clear} />
+        <CardPanelRetreat collaborator={collaborator} products={products} clear={clear} />
       </form>
     </>
   )
