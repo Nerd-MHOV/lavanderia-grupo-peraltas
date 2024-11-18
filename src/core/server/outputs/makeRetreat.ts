@@ -5,8 +5,9 @@ import { revalidatePath } from "next/cache";
 const makeRetreat = async (products: {
     id: string,
     quantity: number,
+    finality: string,
     name: string,
-}[], collaborator_id: string, finality: string) => {
+}[], collaborator_id: string) => {
     const isUser = (await verifySession()).userId
     if (!isUser) {
         throw new Error('Usuario não encontrado');
@@ -36,7 +37,6 @@ const makeRetreat = async (products: {
             product,
             user_id: isUser,
             collaborator_id,
-            finality,
         })
     })
 

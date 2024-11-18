@@ -6,10 +6,10 @@ interface RetreatODT {
     product: {
         id: string,
         quantity: number
+        finality: string
     },
     user_id: string,
     collaborator_id: string,
-    finality: string
 }
 const dbOutput = (db: PrismaClient) => ({
     async get() {
@@ -40,7 +40,6 @@ const dbOutput = (db: PrismaClient) => ({
         product,
         user_id,
         collaborator_id,
-        finality,
     }: RetreatODT) {
 
         const dataOutput = {
@@ -48,7 +47,7 @@ const dbOutput = (db: PrismaClient) => ({
             product_id: product.id,
             collaborator_id,
             user_id,
-            finality,
+            finality: product.finality,
             status: true,
             obs: 'retreat',
         }

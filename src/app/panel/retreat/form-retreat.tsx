@@ -55,14 +55,6 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
       return
     }
 
-    if (!dataObj.finality) {
-      setMessage({
-        message: 'Informe a FINALIDADE para continuar',
-        success: false
-      })
-      return
-    }
-
     if (!dataObj.products.length) {
       setMessage({
         message: 'Adicione ao menos um PRODUTO para continuar',
@@ -99,7 +91,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
       }} className='p-5'>
 
         <div className='flex gap-5 mb-5'>
-          <CardPanelCollaborator collaborators={collaborators} onSelect={setCollaborator}  clear={clear} resultReader={resultReader} />
+          <CardPanelCollaborator collaborators={collaborators} onSelect={setCollaborator} disabled clear={clear} resultReader={resultReader} />
           {/* <CardPanelFinality disabled /> */}
         </div>
         {

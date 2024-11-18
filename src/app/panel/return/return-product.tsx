@@ -11,6 +11,7 @@ import { useFormState } from 'react-dom'
 import { actionReturnProducts, StateActionReturnProducts } from '@/actions/serverActions/return-products'
 import SlackMessage from '@/components/interface/SlackMessage'
 import ConfirmModal from '../retreat/retreat-components/confirm-modal'
+import TableReturnProducts from './table-return-products'
 
 
 export type OutputsQuantity = (
@@ -117,59 +118,29 @@ const RetrunProduct = ({ collaborators }: {
           <div className='bg-panelWhite shadow-2xl p-7 mt-10 rounded-xl'>
 
             <div className='lg:max-h-[calc(100vh-300px)] max-h-screen overflow-auto'>
-              <Table>
-                <TableCaption>Lista de pendências</TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Produto</TableHead>
-                    <TableHead>Tamanho</TableHead>
-                    <TableHead>Marca</TableHead>
-                    <TableHead>Tag</TableHead>
-                    <TableHead>Finalidade</TableHead>
-                    <TableHead>Quantidade</TableHead>
-                    <TableHead className='text-end'>Devolver</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {
-                    selectedCollaborator?.Outputs.map(output => {
-                      const prodFind = outputToReturn.find((p) => p.id === output.id)
-                      return (
-                        <TableRow key={output.id}>
-                          <TableCell>{output.Product.product}</TableCell>
-                          <TableCell>{output.Product.size}</TableCell>
-                          <TableCell>{output.Product.service}</TableCell>
-                          <TableCell>{output.Product.type}</TableCell>
-                          <TableCell>{finalityProductTypeMap[output.finality]}</TableCell>
-                          <TableCell className='font-bold'>{output.amount} unidades</TableCell>
-                          <TableCell className='flex justify-end'>{
-                            !prodFind ? (
-                              <Button
-                                className='bg-slate-200 hover:bg-slate-300 text-slate-500 font-bold py-2 px-4 rounded'
-                                size='sm'
-                                onClick={() => addOutputReturn(output)}
-                              >Devolver</Button>
-                            ) : (
-                              <div className='flex gap-2 justify-between'>
-                                <Button
-                                  className='bg-red-200 hover:bg-red-300 text-red-500 font-bold py-2 px-4 rounded'
-                                  size='sm'
-                                  onClick={() => removeOutputReturn(output)}
-                                ><CircleMinus /></Button>
-                                <Button
-                                  className='bg-green-200 hover:bg-green-300 text-green-800 font-bold py-2 px-4 rounded'
-                                  size='sm'
-                                  onClick={() => addOutputReturn(output)}
-                                >Devolver: {prodFind?.quantity}</Button>
-                              </div>
-                            )
-                          }</TableCell>
-                        </TableRow>
-                      )
-                    })
-                  }
-                </TableBody>
-              </Table>
+              {!!selectedCollaborator.Outputs.find(out => out.finality === 'collaborator') &&
+                <><p className='text-slate-700'>Pendências do colaborador:</p>
+                  <TableReturnProducts
+                    title='Lista de pendências do colaborador'
+                    outputs={selectedCollaborator.Outputs.filter(out => out.finality === 'collaborator')}
+                    addOutputReturn={addOutputReturn}
+                    removeOutputReturn={removeOutputReturn}
+                    outputToReturn={outputToReturn}
+                  />
+                </>
+              }
+              {
+                !!selectedCollaborator.Outputs.find(out => out.finality === 'department') &&
+                <><p className='text-slate-700'>Pendências do departamento:</p>
+                  <TableReturnProducts
+                    title='Lista de pendências do departamento'
+                    outputs={selectedCollaborator.Outputs.filter(out => out.finality === 'department')}
+                    addOutputReturn={addOutputReturn}
+                    removeOutputReturn={removeOutputReturn}
+                    outputToReturn={outputToReturn}
+                  />
+                </>
+              }
               <form action={handleForm} className='w-full flex justify-end pr-5'>
                 <input type="hidden" name="collaborator_id" value={selectedCollaborator?.id} />
                 <input type="hidden" name="products" value={JSON.stringify(outputToReturn)} />

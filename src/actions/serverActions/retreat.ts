@@ -11,7 +11,6 @@ interface State {
 }
 export async function actionRetreat(state: State, formData: {
     collaborator: GetCollaboratorsInterface['collaborators'];
-    finality: string;
     products: ProductQuantity[];
 }
 ) {
@@ -20,8 +19,9 @@ export async function actionRetreat(state: State, formData: {
         await makeRetreat(formData.products.map( prod => ({
             id: prod.id,
             quantity: prod.quantity || 0,
+            finality: prod.finality,
             name: `${prod.product} ${prod.service} ${prod.size}`
-        })), formData.collaborator.id, formData.finality )
+        })), formData.collaborator.id )
 
         return { message: 'Retirada realizada com sucesso', success: true }
     } catch (error) {
