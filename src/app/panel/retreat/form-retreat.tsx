@@ -5,7 +5,6 @@ import SlackMessage from '@/components/interface/SlackMessage';
 import React, { useEffect, useState } from 'react'
 import { useFormState } from 'react-dom';
 import CardPanelCollaborator from './retreat-components/card-panel-collaborator';
-import CardPanelFinality from './retreat-components/card-panel-finality';
 import CardPanelRetreat from './retreat-components/card-panel-retreat';
 import ConfirmModal from './retreat-components/confirm-modal';
 import useFaceReader from '@/hooks/useFaceReader';
@@ -104,7 +103,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
             />
           </div>
         }
-        <CardPanelRetreat collaborator={collaborator} products={products} clear={clear} success={message?.success || false} />
+        <CardPanelRetreat collaborator={collaborator} products={products} success={message?.success || false} />
       </form>
     </>
   )

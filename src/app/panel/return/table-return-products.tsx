@@ -1,6 +1,5 @@
 import React from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import finalityProductTypeMap from '@/core/server/product/finalityProductTypeMap'
 import { CircleMinus } from 'lucide-react'
 import { OutputsQuantity } from './return-product'
 import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators'
@@ -22,7 +21,7 @@ const TableReturnProducts = ({
 }) => {
     return (
         <Table>
-            <TableCaption></TableCaption>
+            <TableCaption>{title}</TableCaption>
             <TableHeader>
                 <TableRow>
                     <TableHead>Produto</TableHead>

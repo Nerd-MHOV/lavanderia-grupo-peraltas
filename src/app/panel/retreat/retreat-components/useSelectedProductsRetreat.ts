@@ -1,12 +1,12 @@
 import { GetCollaboratorsInterface } from "@/core/server/collaborator/getCollaborators";
 import { GetProductsInterface } from "@/core/server/product/getProducts";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { toast } from "sonner";
 
 
 export type ProductQuantity = GetProductsInterface['products'] & { quantity?: number };
 
-const useSelectedProductsRetreat = (clear: VoidFunction, collaborator: GetCollaboratorsInterface['collaborators'] | null) => {
+const useSelectedProductsRetreat = (collaborator: GetCollaboratorsInterface['collaborators'] | null) => {
   const [selectedProduct, setSelectedProduct] = React.useState<ProductQuantity[]>([]);
   const [itemFocused, setItemFocused] = React.useState<string | null>(null)
 

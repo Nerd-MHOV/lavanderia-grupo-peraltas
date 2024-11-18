@@ -19,7 +19,6 @@ const createUser = async (data: CreateUserData) => {
         email: data.email,
         user: data.user,
         passwd: hashPasswd,
-        level: data.level || 1,
     })
 
     return {

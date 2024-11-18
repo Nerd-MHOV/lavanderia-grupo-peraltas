@@ -8,7 +8,6 @@ const dbUser = (db: PrismaClient) => ({
         email: string,
         user: string
         passwd: string,
-        level: number
     }) {
         const dbData = await db.user.create({ data })
 

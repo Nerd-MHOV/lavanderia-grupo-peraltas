@@ -15,19 +15,18 @@ import finalityProductTypeMap from '@/core/server/product/finalityProductTypeMap
 
 interface CardPanelRetreatProps {
   products: GetProductsInterface['products'][],
-  clear: VoidFunction;
   collaborator: GetCollaboratorsInterface['collaborators'] | null;
   success: boolean;
 }
 
-const CardPanelRetreat = ({ products, clear, collaborator, success }: CardPanelRetreatProps) => {
+const CardPanelRetreat = ({ products, collaborator, success }: CardPanelRetreatProps) => {
   const {
     addProduct,
     removeProduct,
     itemFocused,
     selectedProduct,
     clearList
-  } = useSelectedProductsRetreat(clear, collaborator);
+  } = useSelectedProductsRetreat(collaborator);
 
 
   useScanDetection({
