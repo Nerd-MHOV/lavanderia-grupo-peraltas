@@ -58,6 +58,16 @@ export const CreateCollaboratorSchema = z.object({
     canRetreat: z.array(collaborator_canRetreat),
 })
 
+export const UpdateCollaboratorSchema = z.object({
+    id: z.string().min(1, { message: 'Informe o id' }),
+    active: z.boolean(),
+    name: z.string().min(3, { message: 'Informe o nome' }),
+    cpf: z.string().min(11, { message: 'Informe o CPF' }).refine(isValidCPF, { message: ' CPF inválido' }),
+    type: collaborator_type,
+    department: z.string().min(3, { message: 'Informe o departamento' }),
+    canRetreat: z.array(collaborator_canRetreat),
+})
+
 export const CreateDepartmentSchema = z.object({
     department: z.string().min(3, { message: 'Informe o departamento' }),
 })
