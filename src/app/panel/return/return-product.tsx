@@ -9,6 +9,7 @@ import { actionReturnProducts, StateActionReturnProducts } from '@/actions/serve
 import SlackMessage from '@/components/interface/SlackMessage'
 import ConfirmModal from '../retreat/retreat-components/confirm-modal'
 import TableReturnProducts from './table-return-products'
+import { GetOutputsInterface } from '@/core/server/outputs/getOutputs'
 
 
 export type OutputsQuantity = (
@@ -21,8 +22,9 @@ export interface DataActionReturnPage {
 }
 
 
-const RetrunProduct = ({ collaborators }: {
+const RetrunProduct = ({ collaborators, outputs }: {
   collaborators: GetCollaboratorsInterface['collaborators'][]
+  outputs: GetOutputsInterface['outputs'][]
 }) => {
   const [state, action] = useFormState(actionReturnProducts, {} as StateActionReturnProducts)
   const { resultReader, clear } = useFaceReader([collaborators]);
@@ -75,6 +77,14 @@ const RetrunProduct = ({ collaborators }: {
   }
 
 
+  const outputsCollaborator = useCallback((collaborator: GetCollaboratorsInterface['collaborators']) => {
+    return collaborator.Outputs.filter(out => out.finality === 'collaborator')
+  }, [])
+
+  const outputsDepartment = useCallback((collaborator: GetCollaboratorsInterface['collaborators']) => {
+    return outputs.filter(out => out.Collaborator.department === collaborator.department && out.finality === 'department')
+  }, [outputs])
+
   useEffect(() => {
     if (state.success) {
       window.location.reload();
@@ -116,11 +126,11 @@ const RetrunProduct = ({ collaborators }: {
           <div className='bg-panelWhite shadow-2xl p-7 mt-10 rounded-xl'>
 
             <div className='lg:max-h-[calc(100vh-300px)] max-h-screen overflow-auto'>
-              {!!selectedCollaborator.Outputs.find(out => out.finality === 'collaborator') &&
+              {outputsCollaborator(selectedCollaborator).length > 0 &&
                 <><p className='text-slate-700'>Pendências do colaborador:</p>
                   <TableReturnProducts
                     title='Lista de pendências do colaborador'
-                    outputs={selectedCollaborator.Outputs.filter(out => out.finality === 'collaborator')}
+                    outputs={outputsCollaborator(selectedCollaborator)}
                     addOutputReturn={addOutputReturn}
                     removeOutputReturn={removeOutputReturn}
                     outputToReturn={outputToReturn}
@@ -128,11 +138,11 @@ const RetrunProduct = ({ collaborators }: {
                 </>
               }
               {
-                !!selectedCollaborator.Outputs.find(out => out.finality === 'department') &&
+                outputsDepartment(selectedCollaborator).length > 0 &&
                 <><p className='text-slate-700'>Pendências do departamento:</p>
                   <TableReturnProducts
                     title='Lista de pendências do departamento'
-                    outputs={selectedCollaborator.Outputs.filter(out => out.finality === 'department')}
+                    outputs={outputsDepartment(selectedCollaborator)}
                     addOutputReturn={addOutputReturn}
                     removeOutputReturn={removeOutputReturn}
                     outputToReturn={outputToReturn}

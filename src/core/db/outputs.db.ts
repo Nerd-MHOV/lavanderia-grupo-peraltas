@@ -13,7 +13,12 @@ interface RetreatODT {
 }
 const dbOutput = (db: PrismaClient) => ({
     async get() {
-        return db.output.findMany();
+        return db.output.findMany({
+            include: {
+                Collaborator: true,
+                Product: true,
+            }
+        });
     },
 
     async geta(id: string) {

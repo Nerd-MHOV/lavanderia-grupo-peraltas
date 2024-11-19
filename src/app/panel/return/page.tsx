@@ -2,13 +2,14 @@
 import React from 'react'
 import ReturnProduct from './return-product'
 import getCollaborators from '@/core/server/collaborator/getCollaborators'
+import getOutputs from '@/core/server/outputs/getOutputs'
 
 const ReturnPage = async () => {
-  const collaborators = await (await getCollaborators()).collaborators
-  
+  const collaborators =  (await getCollaborators()).collaborators
+  const outputs =  ( await getOutputs() ).outputs  
   return (
     <div className='px-10 py-5'>
-      <ReturnProduct collaborators={collaborators} />
+      <ReturnProduct collaborators={collaborators} outputs={outputs} />
     </div>
   )
 }
