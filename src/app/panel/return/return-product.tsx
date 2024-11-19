@@ -125,7 +125,7 @@ const RetrunProduct = ({ collaborators, outputs }: {
           }
           <div className='bg-panelWhite shadow-2xl p-7 mt-10 rounded-xl'>
 
-            <div className='lg:max-h-[calc(100vh-300px)] max-h-screen overflow-auto'>
+            <div className='lg:max-h-[calc(100vh-335px)] max-h-screen overflow-auto'>
               {outputsCollaborator(selectedCollaborator).length > 0 &&
                 <><p className='text-slate-700'>Pendências do colaborador:</p>
                   <TableReturnProducts
@@ -149,12 +149,12 @@ const RetrunProduct = ({ collaborators, outputs }: {
                   />
                 </>
               }
+            </div>
               <form action={handleForm} className='w-full flex justify-end pr-5'>
                 <input type="hidden" name="collaborator_id" value={selectedCollaborator?.id} />
                 <input type="hidden" name="products" value={JSON.stringify(outputToReturn)} />
                 <Button disabled={!outputToReturn.length}>Confirmar</Button>
               </form>
-            </div>
           </div>
 
         </>

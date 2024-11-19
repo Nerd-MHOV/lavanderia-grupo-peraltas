@@ -5,5 +5,3 @@ npm-debug.log
 README.md
 .next
 .git
-prisma/seeds
-prisma/seed.ts

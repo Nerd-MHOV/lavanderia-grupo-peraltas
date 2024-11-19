@@ -10,6 +10,9 @@ const dbProduct = (db: PrismaClient) => ({
                 BarCodes: true,
                 Inventory: true,
                 Departments: true,
+            },
+            orderBy: {
+                product: 'asc'
             }
         });
     },
