@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "noImplicitAny": false, //remove- this line used to docker compile error
     "plugins": [
       {
         "name": "next"
