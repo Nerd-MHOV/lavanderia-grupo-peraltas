@@ -66,6 +66,7 @@ const CardPanelRetreat = ({ products, collaborator, success }: CardPanelRetreatP
     if(success) {
       clearList()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success])
 
 
