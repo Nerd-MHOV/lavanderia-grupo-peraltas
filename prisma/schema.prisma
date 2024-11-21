@@ -48,7 +48,7 @@ model User {
 model Collaborator {
   id                   String           @id @default(uuid())
   name                 String
-  cpf                  String
+  cpf                  String           @unique
   type                 CollaboratorType
   active               Boolean          @default(true)
   department           String
