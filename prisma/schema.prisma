@@ -66,9 +66,9 @@ model Collaborator {
 }
 
 model Department {
-  department        String                  @id
-  createdAt         DateTime                @default(now())
-  updatedAt         DateTime                @updatedAt
+  department String   @id
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   Department_Leader Department_Leader[]
   Collaborator      Collaborator[]
@@ -111,7 +111,7 @@ model Inventory {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  Product Product @relation(fields: [product_id], references: [id])
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@map("inventory")
 }
@@ -124,7 +124,7 @@ model Input {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  Product Product @relation(fields: [product_id], references: [id])
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
   User    User    @relation(fields: [user_id], references: [id])
 
   @@map("inputs")
@@ -153,8 +153,8 @@ model Output {
 
 model OutputHistory {
   id              String   @id @default(uuid())
-  product_id      String
-  collaborator_id String
+  product_id      String?
+  collaborator_id String?
   user_id         String
   finality        String
   amount          Int
@@ -163,9 +163,9 @@ model OutputHistory {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  Product        Product      @relation(fields: [product_id], references: [id])
-  Collaborator   Collaborator @relation(fields: [collaborator_id], references: [id], name: "collaborator")
-  User           User         @relation(fields: [user_id], references: [id])
+  Product        Product?      @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  Collaborator   Collaborator? @relation(fields: [collaborator_id], references: [id], name: "collaborator", onDelete: SetNull)
+  User           User          @relation(fields: [user_id], references: [id])
   collaboratorId String?
 
   @@map("outputs_history")
@@ -175,8 +175,8 @@ model Return {
   id                  String   @id @default(uuid())
   product_id          String
   user_id             String
-  collaborator_id_in  String
-  collaborator_id_out String
+  collaborator_id_in  String?
+  collaborator_id_out String?
   finality            String
   amount_has          Int
   amount              Int
@@ -189,10 +189,10 @@ model Return {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  Product         Product      @relation(fields: [product_id], references: [id])
-  CollaboratorIn  Collaborator @relation(fields: [collaborator_id_in], references: [id], name: "responsible_in")
-  CollaboratorOut Collaborator @relation(fields: [collaborator_id_out], references: [id], name: "responsible_out")
-  User            User         @relation(fields: [user_id], references: [id])
+  Product         Product       @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  CollaboratorIn  Collaborator? @relation(fields: [collaborator_id_in], references: [id], name: "responsible_in", onDelete: SetNull)
+  CollaboratorOut Collaborator? @relation(fields: [collaborator_id_out], references: [id], name: "responsible_out", onDelete: SetNull)
+  User            User          @relation(fields: [user_id], references: [id])
 
   @@map("returns")
 }
@@ -203,7 +203,7 @@ model ProductsOnDepartments {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  Product    Product    @relation(fields: [product_id], references: [id])
+  Product    Product    @relation(fields: [product_id], references: [id], onDelete: Cascade)
   Department Department @relation(fields: [department], references: [department])
 
   @@id([product_id, department])
@@ -259,7 +259,7 @@ model BarCode {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  Product Product @relation(fields: [product_id], references: [id])
+  Product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@map("barcodes")
 }

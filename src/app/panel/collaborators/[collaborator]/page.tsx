@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import getaCollaborator from '@/core/server/collaborator/getaCollaborator';
 import getDepartments from '@/core/server/department/getDepartments';
 import FormEditCollaborator from './form-edit-collaborator';
+import DialogDeleteCollaborator from './dialog-delete-collaborator';
 
 const EditCollaboratorPage = async ({
   params
@@ -33,6 +34,10 @@ const EditCollaboratorPage = async ({
 
       <div className="bg-panelWhite p-7 rounded-xl shadow-2xl my-5">
         <FormEditCollaborator collaborator={collaborator} departments={departments} />
+      </div>
+
+      <div className='flex w-full items-end justify-end mt-20 mb-5 pr-5'>
+          <DialogDeleteCollaborator collaborator_name={collaborator.name} collaborator_id={collaborator.id} />
       </div>
 
     </div>

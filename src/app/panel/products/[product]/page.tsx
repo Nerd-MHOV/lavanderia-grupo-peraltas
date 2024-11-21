@@ -13,6 +13,7 @@ import ButtonDeleteBarcode from './button-delete-barcode';
 import DialogAddInventory from './dialog-add-inventory';
 import { notFound } from 'next/navigation';
 import getDepartments from '@/core/server/department/getDepartments';
+import DialogDeleteProduct from './dialog-delete-product';
 
 const EditProductPage = async ({
   params
@@ -26,7 +27,7 @@ const EditProductPage = async ({
   const services = (await getServices()).services;
   const types = (await getTypes()).types;
   const departments = (await getDepartments()).departments;
-  
+
 
   const allInputs = product.Input.reduce((acc, cur) => acc + cur.amount, 0);
   const allOutputs = product.Output.reduce((acc, cur) => acc + cur.amount, 0);
@@ -44,7 +45,7 @@ const EditProductPage = async ({
       </div>
 
       <div className="bg-panelWhite p-7 rounded-xl shadow-2xl my-5">
-        <FormEditProduct 
+        <FormEditProduct
           product={product}
           services={services}
           departments={departments}
@@ -140,6 +141,10 @@ const EditProductPage = async ({
           </TableBody>
         </Table>
 
+      </div>
+
+      <div className='flex w-full items-end justify-end mt-20 mb-5 pr-5'>
+          <DialogDeleteProduct product_name={`${product.product} ${product.size} -- ${product.service} ${product.type}`} product_id={(await params).product} />
       </div>
     </div>
   )

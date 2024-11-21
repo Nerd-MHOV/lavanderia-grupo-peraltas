@@ -45,6 +45,10 @@ const dbCollaborator = (db: PrismaClient) => ({
                 canRetreat: data.canRetreat,
             }
         });
+    },
+
+    async delete(id: string) {
+        return db.collaborator.delete({ where: { id } });
     }
 });
 

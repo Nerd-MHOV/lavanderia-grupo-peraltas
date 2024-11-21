@@ -67,6 +67,7 @@ const ListProducts = ({ products }: {
                             <TableHead>Tag</TableHead>
                             <TableHead>Finalidade</TableHead>
                             <TableHead>Editar</TableHead>
+                            {/* <TableHead>Excluir</TableHead> */}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -83,6 +84,9 @@ const ListProducts = ({ products }: {
                                             <Button size='sm' variant='outline' className='bg-orange-200 text-orange-800'><Edit /> Editar</Button>
                                         </Link>
                                     </TableCell>
+                                    {/* <TableCell>
+                                        <Button size='sm' variant='outline' className='bg-red-200 text-red-800'><Trash2 /></Button>
+                                    </TableCell> */}
                                 </TableRow>
                             ))
                         }

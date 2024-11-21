@@ -27,12 +27,12 @@ export async function actionAddInventoryProduct(state: StateActionAddInventoryPr
 
     // 3. create barcode
     try {
-        const created = await makeInput({
+        await makeInput({
             amount: validationFormData.data.amount,
             product_id: validationFormData.data.product_id
         })
         revalidatePath('/panel/product/' + validationFormData.data.product_id)
-        return { message: `Entrada de ${validationFormData.data.amount} para o produto ${created[1].product_id}`, success: true };
+        return { message: `Entrada de ${validationFormData.data.amount} para o produto`, success: true };
     } catch (error) {
         const message = (error as { message?: string })?.message ?? 'Erro ao fazer entrada';
         return { message: message, success: false };

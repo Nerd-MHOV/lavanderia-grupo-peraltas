@@ -81,6 +81,12 @@ const dbProduct = (db: PrismaClient) => ({
             })
         ])
         return { product: dbData[1] }
+    },
+
+    async delete(id: string) {
+        return db.product.delete({
+            where: { id }
+        })
     }
 
 })
