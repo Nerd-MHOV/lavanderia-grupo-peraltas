@@ -11,9 +11,10 @@ const dbProduct = (db: PrismaClient) => ({
                 Inventory: true,
                 Departments: true,
             },
-            orderBy: {
-                product: 'asc'
-            }
+            orderBy: [
+                {product: 'asc'},
+                {size: 'desc'},
+            ]
         });
     },
     async getById(id: string) {

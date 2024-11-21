@@ -48,7 +48,7 @@ export async function actionCreateProduct(state: StateActionCreateProduct | null
          });
 
          revalidatePath('/panel/products')
-        return { message: `Produto ${product.product.product} criado com sucesso` , success: true};
+        return { message: `Produto ${product.product.product} -- ${product.product.size} criado com sucesso` , success: true};
     } catch (error) {
         console.log(error);
         const message = (error as { message?: string })?.message?.includes('Unique constraint failed on the fields: (`product`)') ? 'Produto já existe' : 'Erro ao criar o produto';
