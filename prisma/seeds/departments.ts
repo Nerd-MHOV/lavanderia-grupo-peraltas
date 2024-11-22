@@ -9,7 +9,7 @@ export const DepartmentSeed = [
 "cozinha e cantina",
 "jardim",
 "lavanderia",
-"govarnança",
+"governança",
 "manutenção",
 "costura",
 "piscina",

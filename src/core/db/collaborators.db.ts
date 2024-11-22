@@ -9,7 +9,11 @@ const dbCollaborator = (db: PrismaClient) => ({
                         Product: true,
                     }
                 },
-            }
+            },
+            orderBy: [
+                { name: 'asc' },
+                { department: 'asc' }
+            ]
         });
     },
 
