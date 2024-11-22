@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogHeader, DialogTrigger, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator';
-import { Edit, Settings2 } from 'lucide-react';
+import { Settings2 } from 'lucide-react';
 import DialogDeleteDepartment from './dialog-delete-department';
 
 const DialogListDepartment = ({ departments }: {
@@ -28,10 +28,10 @@ const DialogListDepartment = ({ departments }: {
                 <ol>
                     {departments.map(({ department }, index) => <li key={index}>
 
-                        <div className='flex justify-between w-full mt-2'>
+                        <div className='flex justify-between w-full mt-2 px-4'>
                             <p>{department}</p>
                             <div className='flex gap-2'>
-                                <Button size='sm' variant='link'><Edit /></Button>
+                                {/* <Button size='sm' variant='link'><Edit /></Button> */}
                                 <DialogDeleteDepartment department={department} />
                             </div>
                         </div>

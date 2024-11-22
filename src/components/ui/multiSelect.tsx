@@ -59,7 +59,7 @@ const MultiSelect = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-96"
+          className="w-96 max-h-64 overflow-y-auto"
           onCloseAutoFocus={(e) => e.preventDefault()}
         >
           {values.map((value: ISelectProps["options"][0], index: number) => {
