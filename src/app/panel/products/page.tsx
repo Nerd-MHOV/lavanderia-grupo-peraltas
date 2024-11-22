@@ -1,6 +1,6 @@
 import getProducts from '@/core/server/product/getProducts'
 import React from 'react'
-import DialogCreateTagProduct from './dialog-create-tag-product'
+import DialogCreateTypeProduct from './dialog-create-type-product'
 import DialogCreateServiceProduct from './dialog-create-service-product'
 import DialogCreateProduct from './dialog-create-product'
 import getServices from '@/core/server/services/getServices'
@@ -21,7 +21,7 @@ const Products = async () => {
 
         <div className='flex gap-2'>
           <DialogCreateDepartment departments={departments} />
-          <DialogCreateTagProduct />
+          <DialogCreateTypeProduct types={types} />
           <DialogCreateServiceProduct />
           <DialogCreateProduct types={types} services={services} departments={departments} />
         </div>

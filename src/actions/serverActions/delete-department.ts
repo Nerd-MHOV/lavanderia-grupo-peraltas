@@ -11,7 +11,7 @@ export async function actionDeleteDepartment(department: string) {
         ? 'Departamento não pode ser deletado! pois está associado a um ou mais colaboradores.'
         : (error as { message?: string })?.message?.includes('products_departments_department_fkey (index)')
         ? 'Departamento não pode ser deletado! pois está associado a um ou mais produtos.'
-        :(error as { message?: string })?.message || 'Erro ao deletar produto';
+        :(error as { message?: string })?.message || 'Erro ao deletar departamento';
         return { message: message, success: false };
     }
 

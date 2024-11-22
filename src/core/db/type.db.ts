@@ -11,7 +11,11 @@ const dbType = (db: PrismaClient) => ({
     async get() {
         const dbData = await db.type.findMany()
         return { type: dbData }
-    } 
+    },
+    async delete(type: string) {
+        const dbData = await db.type.delete({ where: { type } })
+        return { type: dbData }
+    }
 })
 
 export default dbType;

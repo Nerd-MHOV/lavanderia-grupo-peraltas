@@ -8,8 +8,13 @@ import { Input } from '@/components/ui/input'
 import { Plus } from 'lucide-react'
 import React, { useRef } from 'react'
 import { useFormState } from 'react-dom'
+import DialogListTypesProducts from './dialog-list-types-products'
 
-const DialogCreateTagProduct = () => {
+const DialogCreateTypeProduct = ({ types }: {
+  types: {
+    type: string
+  }[]
+}) => {
   const [state, action] = useFormState(actionCreateTag, {} as StateActionCreateTag)
   const ref = useRef<HTMLFormElement>(null)
   if ( ref.current && state.success ) {
@@ -28,6 +33,10 @@ const DialogCreateTagProduct = () => {
           <DialogDescription>
             as tags, são usadas para identificar o tipo de peça que esta sendo tratada, ex: camisa, calça, etc.
           </DialogDescription>
+          <div className='absolute top-1 right-3'>
+                    <DialogListTypesProducts types={types} />
+
+                    </div>
         </DialogHeader>
         <form ref={ref} action={action}>
           {
@@ -46,4 +55,4 @@ const DialogCreateTagProduct = () => {
   )
 }
 
-export default DialogCreateTagProduct
+export default DialogCreateTypeProduct
