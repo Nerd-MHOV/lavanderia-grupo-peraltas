@@ -9,7 +9,9 @@ const dbType = (db: PrismaClient) => ({
         return { type: dbData }
     },
     async get() {
-        const dbData = await db.type.findMany()
+        const dbData = await db.type.findMany({
+            orderBy: { type: 'asc' }
+        })
         return { type: dbData }
     },
     async delete(type: string) {

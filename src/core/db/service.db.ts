@@ -9,7 +9,9 @@ const dbService = (db: PrismaClient) => ({
         return { service: dbData }
     },
     async get() {
-        const dbData = await db.service.findMany()
+        const dbData = await db.service.findMany({
+            orderBy: { service: 'asc' }
+        })
         return { service: dbData }
     },
     async delete(service: string) {
