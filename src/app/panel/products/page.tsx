@@ -20,7 +20,7 @@ const Products = async () => {
         <h1 className='text-xl font-bold'>Produtos</h1>
 
         <div className='flex gap-2'>
-          <DialogCreateDepartment />
+          <DialogCreateDepartment departments={departments} />
           <DialogCreateTagProduct />
           <DialogCreateServiceProduct />
           <DialogCreateProduct types={types} services={services} departments={departments} />

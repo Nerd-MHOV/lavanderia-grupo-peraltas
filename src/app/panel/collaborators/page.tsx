@@ -14,7 +14,7 @@ const Collaborators = async () => {
         <h1 className='text-xl font-bold'>Colaboradores</h1>
 
         <div className='flex gap-2'>
-          <DialogCreateDepartment />
+          <DialogCreateDepartment departments={departments} />
           <DialogCreateCollaborator departments={departments} />
         </div>
       </div>

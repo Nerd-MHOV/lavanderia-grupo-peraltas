@@ -9,8 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Plus } from 'lucide-react';
 import React, { useRef } from 'react'
 import { useFormState } from 'react-dom';
+import DialogListDepartment from './dialog-list-departments';
 
-const DialogCreateDepartment = () => {
+const DialogCreateDepartment = ({ departments }: {
+    departments: {
+        department: string
+    }[]
+}) => {
     const [state, action] = useFormState(actionCreateDepartment, {} as StateActionCreateDepartment)
     const ref = useRef<HTMLFormElement>(null)
     if (ref.current && state.success) {
@@ -29,6 +34,10 @@ const DialogCreateDepartment = () => {
                     <DialogDescription>
                         Crie um novo departamento, para cadastrar seus colaboradores.
                     </DialogDescription>
+                    <div className='absolute top-1 right-3'>
+                    <DialogListDepartment departments={departments} />
+
+                    </div>
                 </DialogHeader>
                 <form ref={ref} action={action}>
                     {

@@ -13,6 +13,10 @@ const dbDepartment = (db: PrismaClient) => ({
         department: string;
     } ) {
         return db.department.create({ data });
+    },
+
+    async delete( department: string ) {
+        return db.department.delete({ where: { department } });
     }
 })
 
