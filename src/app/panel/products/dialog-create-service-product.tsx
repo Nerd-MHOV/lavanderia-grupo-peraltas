@@ -8,11 +8,16 @@ import { Input } from '@/components/ui/input'
 import { Plus } from 'lucide-react'
 import React, { useRef } from 'react'
 import { useFormState } from 'react-dom'
+import DialogListServicesProducts from './dialog-list-services-products'
 
-const DialogCreateServiceProduct = () => {
+const DialogCreateServiceProduct = ({ services }: {
+  services: {
+    service: string
+  }[]
+}) => {
   const [state, action] = useFormState(actionCreateService, {} as StateActionCreateService)
   const ref = useRef<HTMLFormElement>(null)
-  if ( ref.current && state.success ) {
+  if (ref.current && state.success) {
     ref.current.reset()
   }
   return (
@@ -28,6 +33,11 @@ const DialogCreateServiceProduct = () => {
           <DialogDescription>
             Usamos as `marcas` para identificar a empresa que esta sendo tratada, ex: Brotas Eco, CEU, Peraltas, etc.
           </DialogDescription>
+
+          <div className='absolute top-1 right-3'>
+            <DialogListServicesProducts services={services} />
+
+          </div>
         </DialogHeader>
         <form ref={ref} action={action}>
           {
@@ -35,10 +45,10 @@ const DialogCreateServiceProduct = () => {
           }
           <div className='my-4'>
             <Input type='text' placeholder='Nome da marca' name='service' autoComplete='off' />
-                {state?.errors && <p className="text-red-500">{state.errors.service}</p>}
+            {state?.errors && <p className="text-red-500">{state.errors.service}</p>}
           </div>
           <DialogFooter>
-              <ButtonSpin text='Criar Marca' />
+            <ButtonSpin text='Criar Marca' />
           </DialogFooter>
         </form>
       </DialogContent>

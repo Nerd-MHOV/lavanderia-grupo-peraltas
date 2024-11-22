@@ -15,5 +15,5 @@ export async function actionDeleteTypeProduct(type: string) {
 
     revalidatePath('/panel/products')
     revalidatePath('/panel/collaborators')
-    redirect('/panel/collaborators')
+    redirect('/panel/products')
 }

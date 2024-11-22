@@ -22,7 +22,7 @@ const Products = async () => {
         <div className='flex gap-2'>
           <DialogCreateDepartment departments={departments} />
           <DialogCreateTypeProduct types={types} />
-          <DialogCreateServiceProduct />
+          <DialogCreateServiceProduct services={services}/>
           <DialogCreateProduct types={types} services={services} departments={departments} />
         </div>
       </div>

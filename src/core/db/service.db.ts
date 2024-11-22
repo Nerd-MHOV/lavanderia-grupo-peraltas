@@ -11,7 +11,11 @@ const dbService = (db: PrismaClient) => ({
     async get() {
         const dbData = await db.service.findMany()
         return { service: dbData }
-    } 
+    },
+    async delete(service: string) {
+        const dbData = await db.service.delete({ where: { service } })
+        return { service: dbData }
+    }
 })
 
 export default dbService;
