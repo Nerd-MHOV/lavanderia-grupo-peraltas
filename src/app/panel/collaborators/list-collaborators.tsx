@@ -13,7 +13,7 @@ import { formatCPF } from '@/lib/cpf'
 
 const fuseOptions = {
     keys: ['complete'],
-    isCaseSensitive: true,
+    // isCaseSensitive: true,
     threshold: 0.4,
     includeMatches: true,
     includeScore: true,
