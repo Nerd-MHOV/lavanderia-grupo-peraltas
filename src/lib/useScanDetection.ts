@@ -53,7 +53,7 @@ const useScanDetection = ({
     ignoreIfFocusOn,
     stopPropagation = false,
     preventDefault = false,
-    container = document
+    container = document ? document :  undefined
 }: config) => {
 
     const buffer: buffer = useRef([])
@@ -125,9 +125,9 @@ const useScanDetection = ({
     }, [])
 
     useEffect(() => {
-        container.addEventListener("keydown", (onKeyDown) as EventListener)
+        container?.addEventListener("keydown", (onKeyDown) as EventListener)
         return () => {
-            container.removeEventListener("keydown", (onKeyDown) as EventListener)
+            container?.removeEventListener("keydown", (onKeyDown) as EventListener)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onKeyDown])

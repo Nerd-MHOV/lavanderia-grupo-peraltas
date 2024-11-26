@@ -11,6 +11,7 @@ import useFaceReader from '@/hooks/useFaceReader';
 import { GetProductsInterface } from '@/core/server/product/getProducts';
 import { ProductQuantity } from './retreat-components/useSelectedProductsRetreat';
 import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators';
+import { actionRetreatOrder } from '@/actions/serverActions/retreat-order';
 
 interface FormRetreatProps {
   collaborators: GetCollaboratorsInterface['collaborators'][]
@@ -27,7 +28,8 @@ export interface DataActionRetreatPage {
 const FormRetreat = ({ collaborators, products, onlyCanRetreat = false }: FormRetreatProps) => {
   const { resultReader, clear } = useFaceReader([collaborators]);
   const initialState = { message: '', errors: {}, success: false }
-  const [state, action] = useFormState(actionRetreat, initialState);
+  const actionToUse = onlyCanRetreat ? actionRetreatOrder : actionRetreat
+  const [state, action] = useFormState(actionToUse, initialState);
   const [message, setMessage] = useState<{
     message: string;
     errors?: undefined;

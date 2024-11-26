@@ -23,6 +23,7 @@ const dbProduct = (db: PrismaClient) => ({
             include: {
                 BarCodes: true, 
                 Inventory: true,
+                OutputOrder: true,
                 Input: {
                     include: { User: true }
                 }, Output: {

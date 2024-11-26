@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 
 
-interface RetreatODT {
+export interface RetreatODT {
     product: {
         id: string,
         quantity: number
@@ -57,7 +57,9 @@ const dbOutput = (db: PrismaClient) => ({
             obs: 'retreat',
         }
 
-        const findOutput = await db.output.findFirst({ where: { product_id: product.id } });
+        const findOutput = product.finality === 'collaborator'
+            ? await db.output.findFirst({ where: { product_id: product.id, collaborator_id } })
+            : await db.output.findFirst({ where: { product_id: product.id } });
 
         const outputData = findOutput 
             ? db.output.update({ where: { id: findOutput.id }, data: { amount: { increment: product.quantity } }})

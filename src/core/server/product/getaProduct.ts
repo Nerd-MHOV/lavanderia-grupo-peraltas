@@ -1,7 +1,7 @@
 'use server'
 import db from "@/core/db/db";
 import { verifySession } from "@/lib/session";
-import { BarCode, Collaborator, Department, Input, Inventory, Output, Product, User } from "@prisma/client";
+import { BarCode, Collaborator, Department, Input, Inventory, Output, OutputOrder, Product, User } from "@prisma/client";
 
 const getaProduct = async (id: string): Promise<GetaProductInterface | null> => {
     await verifySession();
@@ -14,6 +14,7 @@ export interface GetaProductInterface {
     product: ({
         BarCodes: BarCode[];
         Inventory: Inventory[];
+        OutputOrder: OutputOrder[];
         Input: ({
             User: User;
         } & Input)[];

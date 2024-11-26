@@ -4,6 +4,7 @@ import dbCollaborator from './collaborators.db';
 import dbProduct from './products.db';
 import dbBarcodes from './barcodes.db';
 import dbOutput from './outputs.db';
+import dbOutputOrder from './output-orders.db';
 import dbInventory from './inventory.db';
 import dbService from './service.db';
 import dbType from './type.db';
@@ -22,6 +23,7 @@ const db = ({
     inventory: dbInventory(prismaClient),
     input: dbInput(prismaClient),
     output: dbOutput(prismaClient),
+    outputOrder: dbOutputOrder(prismaClient),
     return: dbReturn(prismaClient),
     service: dbService(prismaClient),
     type: dbType(prismaClient),

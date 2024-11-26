@@ -4,7 +4,7 @@ import getServices from '@/core/server/services/getServices';
 import getTypes from '@/core/server/type/getTypes';
 import React from 'react'
 import { format } from 'date-fns'
-import { Boxes, FileBox, PackageOpen } from 'lucide-react';
+import { Boxes, FileBox, SquareDashedMousePointer, SquareMousePointer } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { CardPanel } from '@/components/interface/CardPanel';
 import FormEditProduct from './form-edit-product';
@@ -31,6 +31,7 @@ const EditProductPage = async ({
 
   const allInputs = product.Input.reduce((acc, cur) => acc + cur.amount, 0);
   const allOutputs = product.Output.reduce((acc, cur) => acc + cur.amount, 0);
+  const allOrders = product.OutputOrder.reduce((acc, cur) => acc + cur.amount, 0);
   return (
     <div className="px-10 py-3 relative">
       <div className="bg-panelWhite p-7 rounded-xl shadow-2xl items-center w-full flex justify-between ">
@@ -89,14 +90,17 @@ const EditProductPage = async ({
           <DialogAddInventory product_id={product.id} />
         </div>
 
-        <div className='flex gap-4 my-5 md:flex-nowrap flex-wrap'>
+        <div className='flex gap-4 my-5 lg:flex-nowrap flex-wrap'>
           <CardPanel Icon={FileBox} title='Total'>
             <p className='text-center mt-2 text-3xl font-bold '>{allInputs}</p>
           </CardPanel>
           <CardPanel Icon={Boxes} title='Estoque'>
             <p className='text-center mt-2 text-3xl font-bold '>{product.Inventory[0]?.amount || 0}</p>
           </CardPanel>
-          <CardPanel Icon={PackageOpen} title='Retirados'>
+          <CardPanel Icon={SquareDashedMousePointer} title='Reservados'>
+            <p className='text-center mt-2 text-3xl font-bold '>{allOrders || 0}</p>
+          </CardPanel>
+          <CardPanel Icon={SquareMousePointer} title='Retirados'>
             <p className='text-center mt-2 text-3xl font-bold '>{allOutputs || 0}</p>
           </CardPanel>
         </div>
