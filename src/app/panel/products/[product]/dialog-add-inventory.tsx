@@ -25,7 +25,7 @@ const DialogAddInventory = ({ product_id }: { product_id: string }) => {
             Coloque a quantidade de itens entrando para o estoque.
           </DialogDescription>
         </DialogHeader>
-        <form method='post' action={action}>
+        <form  action={action}>
           {
             state.message && <SlackMessage message={state.message} type={state.success ? 'success' : 'error'} />
           }

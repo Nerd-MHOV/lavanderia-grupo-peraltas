@@ -9,7 +9,7 @@ const FormLogin = () => {
     const initialState = { message: '', errors: {} }
     const [state, action,] = useFormState(actionLogin, initialState);
     return (
-        <form method='post' action={action} className="w-96 flex-col flex justify-center h-full items-center">
+        <form  action={action} className="w-96 flex-col flex justify-center h-full items-center">
             {
                 state.message &&
                 <SlackMessage

@@ -39,7 +39,7 @@ const DialogCreateServiceProduct = ({ services }: {
 
           </div>
         </DialogHeader>
-        <form method="post" ref={ref} action={action}>
+        <form  ref={ref} action={action}>
           {
             state.message && <SlackMessage message={state.message} type={state.success ? 'success' : 'error'} />
           }

@@ -58,7 +58,7 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
           </DialogDescription>
         </DialogHeader>
         <form 
-        method='post'
+        
         action={(e) => {
           addToList()
           action(e)
