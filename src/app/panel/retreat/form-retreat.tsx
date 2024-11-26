@@ -15,6 +15,7 @@ import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollabo
 interface FormRetreatProps {
   collaborators: GetCollaboratorsInterface['collaborators'][]
   products: GetProductsInterface['products'][]
+  onlyCanRetreat?: boolean
 }
 
 export interface DataActionRetreatPage {
@@ -23,7 +24,7 @@ export interface DataActionRetreatPage {
   products: ProductQuantity[];
 }
 
-const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
+const FormRetreat = ({ collaborators, products, onlyCanRetreat = false }: FormRetreatProps) => {
   const { resultReader, clear } = useFaceReader([collaborators]);
   const initialState = { message: '', errors: {}, success: false }
   const [state, action] = useFormState(actionRetreat, initialState);
@@ -32,8 +33,8 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
     errors?: undefined;
     success: boolean;
   } | null>(null)
-  const [dataAction, setDataAction] = useState< DataActionRetreatPage | null>(null);
-  const [ collaborator, setCollaborator ] = useState<GetCollaboratorsInterface['collaborators'] | null>(null);
+  const [dataAction, setDataAction] = useState<DataActionRetreatPage | null>(null);
+  const [collaborator, setCollaborator] = useState<GetCollaboratorsInterface['collaborators'] | null>(null);
   const openModal = () => {
     (document.querySelector('.open-modal-confirmation') as HTMLElement)?.click()
   }
@@ -70,28 +71,41 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
       message: state.message,
       success: state.success
     })
-    if( state.success ) { clear() }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (state.success) { clear() }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
   return (
     <>
-      <ConfirmModal products={
-        dataAction?.products.map(prod => ({
-          id: prod.id,
-          quantity: prod.quantity ?? 0,
-          product: prod.product,
-          size: prod.size,
-          service: prod.service,
-          finality: prod.finality
-        })) || []
-      } action={action} finality={dataAction?.finality || ''} collaborator={dataAction?.collaborator}  dataAction={dataAction} resultReader={resultReader} clear={clear} />
+      <ConfirmModal
+        products={
+          dataAction?.products.map(prod => ({
+            id: prod.id,
+            quantity: prod.quantity ?? 0,
+            product: prod.product,
+            size: prod.size,
+            service: prod.service,
+            finality: prod.finality
+          })) || []
+        }
+        finality={dataAction?.finality || ''}
+        collaborator={dataAction?.collaborator}
+        resultReader={resultReader}
+        clear={clear}
+        dataAction={dataAction}
+        action={action}
+      />
       <form action={(data) => {
         handleForm(data)
       }} className='py-5 px-10'>
 
         <div className='flex gap-5 mb-5'>
-          <CardPanelCollaborator collaborators={collaborators} onSelect={setCollaborator} disabled clear={clear} resultReader={resultReader} />
+          <CardPanelCollaborator
+            collaborators={collaborators}
+            onSelect={setCollaborator}
+            clear={clear}
+            resultReader={resultReader}
+          />
           {/* <CardPanelFinality disabled /> */}
         </div>
         {
@@ -103,7 +117,12 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
             />
           </div>
         }
-        <CardPanelRetreat collaborator={collaborator} products={products} success={message?.success || false} />
+        <CardPanelRetreat
+          collaborator={collaborator}
+          products={products}
+          onlyCanRetreat={onlyCanRetreat}
+          success={message?.success || false}
+        />
       </form>
     </>
   )

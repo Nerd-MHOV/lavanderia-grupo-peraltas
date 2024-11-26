@@ -1,10 +1,9 @@
 'use server'
 import db from "@/core/db/db";
-import { verifySession } from "@/lib/session";
 import { BarCode, Department, Inventory, Product } from "@prisma/client";
 
 const getProducts = async () => {
-    await verifySession();
+    // await verifySession();
     const products = await db.product.get();
     return { products };
 }

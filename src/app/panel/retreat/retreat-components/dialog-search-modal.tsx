@@ -1,6 +1,6 @@
 "use client"
 import ItemList from '@/components/interface/card-item-list/ItemLIst'
-import { DialogClose, DialogContent, DialogHeader } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Search, Shirt } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -8,6 +8,7 @@ import Fuse from 'fuse.js'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { GetProductsInterface } from '@/core/server/product/getProducts'
 import finalityProductTypeMap from '@/core/server/product/finalityProductTypeMap'
+import { Button } from '@/components/ui/button'
 
 const fuseOptions = {
     keys: ['complete'],
@@ -19,11 +20,12 @@ const fuseOptions = {
     ignoreLocation: true,
     useExtendedSearch: true,
 }
-interface SearchModalProps {
+interface DialogSearchModalProps {
     products: GetProductsInterface['products'][]
     addProduct: (product: GetProductsInterface['products']) => void
+    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
-const SearchModal = ({ products, addProduct }: SearchModalProps) => {
+const DialogSearchModal = ({ products, addProduct, onClick }: DialogSearchModalProps) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredProducts, setFilteredProducts] = useState<GetProductsInterface['products'][]>(products)
 
@@ -64,7 +66,10 @@ const SearchModal = ({ products, addProduct }: SearchModalProps) => {
     }, [filteredProducts]);
 
     return (
-        <>
+        <Dialog>
+            <DialogTrigger asChild onClick={onClick}  >
+                <Button type='button' className='open-modal font-bold drop-shadow-md text-md bg-btnOrange hover:bg-btnOrangeHover'>Buscar</Button>
+            </DialogTrigger>
             <DialogContent className='bg-transparent border-none'>
                 <DialogTitle />
                 <div className='px-6'>
@@ -91,8 +96,8 @@ const SearchModal = ({ products, addProduct }: SearchModalProps) => {
                     }
                 </div>
             </DialogContent>
-        </>
+        </Dialog>
     )
 }
 
-export default SearchModal
+export default DialogSearchModal

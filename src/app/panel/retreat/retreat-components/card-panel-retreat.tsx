@@ -2,24 +2,25 @@
 import ItemList from '@/components/interface/card-item-list/ItemLIst'
 import { CardPanel } from '@/components/interface/CardPanel'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { ScrollText, Shirt } from 'lucide-react'
 import React, { useEffect } from 'react'
-import SearchModal from './search-modal'
+import DialogSearchModal from './dialog-search-modal'
 import useScanDetection from '@/lib/useScanDetection'
 import useSelectedProductsRetreat from './useSelectedProductsRetreat'
 import { GetProductsInterface } from '@/core/server/product/getProducts'
 import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators'
 import finalityProductTypeMap from '@/core/server/product/finalityProductTypeMap'
+import { toast } from 'sonner'
 
 
 interface CardPanelRetreatProps {
   products: GetProductsInterface['products'][],
   collaborator: GetCollaboratorsInterface['collaborators'] | null;
   success: boolean;
+  onlyCanRetreat?: boolean;
 }
 
-const CardPanelRetreat = ({ products, collaborator, success }: CardPanelRetreatProps) => {
+const CardPanelRetreat = ({ products, collaborator, success, onlyCanRetreat = false }: CardPanelRetreatProps) => {
   const {
     addProduct,
     removeProduct,
@@ -27,15 +28,13 @@ const CardPanelRetreat = ({ products, collaborator, success }: CardPanelRetreatP
     selectedProduct,
     clearList
   } = useSelectedProductsRetreat(collaborator);
-
-
-  useScanDetection({
-    onComplete: (barcode) => {
-      const find = products.find(prod => prod.BarCodes.some(bc => bc.code === barcode))
-      if (find) addProduct(find)
-    },
-    minLength: 7
-  })
+    useScanDetection({
+      onComplete: (barcode) => {
+        const find = products.find(prod => prod.BarCodes.some(bc => bc.code === barcode))
+        if (find) addProduct(find)
+      },
+      minLength: 7
+    })
 
   useEffect(() => {
     const handleKeyOpen = (event: KeyboardEvent) => {
@@ -63,16 +62,15 @@ const CardPanelRetreat = ({ products, collaborator, success }: CardPanelRetreatP
   }, [selectedProduct])
 
   useEffect(() => {
-    if(success) {
+    if (success) {
       clearList()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success])
 
 
   return (
-    <Dialog>
-      <SearchModal products={products} addProduct={addProduct} />
+    <>
       <CardPanel title='Retiradas' Icon={ScrollText}>
         <div className='flex flex-col gap-2 my-4 '>
           {selectedProduct.map((product) => <ItemList
@@ -91,15 +89,28 @@ const CardPanelRetreat = ({ products, collaborator, success }: CardPanelRetreatP
         <div className='flex w-full justify-end mt-4 gap-2'>
           {
             selectedProduct.length > 0 &&
-            <Button type='submit' className='font-bold text-md drop-shadow-md ' >Retirar</Button>
+            <Button type='submit' className='font-bold text-md drop-shadow-md ' >
+             Retirar
+            </Button>
           }
-          <DialogTrigger asChild>
-            <Button type='button' className='open-modal font-bold drop-shadow-md text-md bg-btnOrange hover:bg-btnOrangeHover'>Buscar</Button>
-          </DialogTrigger>
+          <DialogSearchModal
+            products={
+              onlyCanRetreat ?
+                (collaborator ? products.filter(prod => prod.Departments.some(department => department.department === collaborator.department)) : [])
+                : products
+            }
+            addProduct={addProduct}
+            onClick={(e) => {
+              if (!collaborator) {
+                toast.error('Identifique o colaborador primeiro')
+                e.preventDefault()
+              }
+            }}
+          />
         </div>
       </CardPanel>
       < input type='hidden' value={JSON.stringify(selectedProduct)} name='products' />
-    </Dialog>
+    </>
   )
 }
 
