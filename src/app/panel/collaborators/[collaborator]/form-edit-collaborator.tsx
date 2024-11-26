@@ -22,7 +22,7 @@ const FormEditCollaborator = ({ collaborator, departments }: FormEditCollaborato
   const [state, action] = useFormState(actionEditCollaborator, {} as StateEditCollaborator)
 
   return (
-    <form action={action} className="flex flex-col gap-5">
+    <form method='post' action={action} className="flex flex-col gap-5">
       {
         state?.message &&
         <div className='my-5'>

@@ -57,7 +57,9 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
             Use o leitor de códigos para inserir um novo código de barras.
           </DialogDescription>
         </DialogHeader>
-        <form action={(e) => {
+        <form 
+        method='post'
+        action={(e) => {
           addToList()
           action(e)
         }}>

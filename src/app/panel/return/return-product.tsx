@@ -150,7 +150,7 @@ const RetrunProduct = ({ collaborators, outputs }: {
                 </>
               }
             </div>
-              <form action={handleForm} className='w-full flex justify-end pr-5'>
+              <form method='post' action={handleForm} className='w-full flex justify-end pr-5'>
                 <input type="hidden" name="collaborator_id" value={selectedCollaborator?.id} />
                 <input type="hidden" name="products" value={JSON.stringify(outputToReturn)} />
                 <Button disabled={!outputToReturn.length}>Confirmar</Button>

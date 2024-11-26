@@ -86,7 +86,7 @@ const FormRetreat = ({ collaborators, products }: FormRetreatProps) => {
           finality: prod.finality
         })) || []
       } action={action} finality={dataAction?.finality || ''} collaborator={dataAction?.collaborator}  dataAction={dataAction} resultReader={resultReader} clear={clear} />
-      <form action={(data) => {
+      <form method='post' action={(data) => {
         handleForm(data)
       }} className='py-5 px-10'>
 

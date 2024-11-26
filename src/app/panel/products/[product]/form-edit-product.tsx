@@ -29,7 +29,7 @@ const FormEditProduct = ({ product, services, types, departments }: FormEditProd
   const [state, action] = useFormState(actionEditProduct, {} as StateEditProduct)
 
   return (
-    <form action={action} className="flex flex-col gap-5">
+    <form method='post' action={action} className="flex flex-col gap-5">
       {
         state?.message &&
         <div className='my-5'>
