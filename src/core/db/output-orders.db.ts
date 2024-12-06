@@ -3,6 +3,25 @@ import dbOutput, { RetreatODT } from "./outputs.db"
 
 type OutputOrderODT = Omit<RetreatODT, 'user_id'>;
 const dbOutputOrder = (db: PrismaClient) => ({
+    async get() {
+        return db.outputOrder.findMany({
+            include: {
+                Product: true,
+                Collaborator: true,
+            }
+        });
+    },
+    async getGroupUser() {
+        return db.collaborator.findMany({
+            where: { OutputOrder: { some: {
+                amount: { gt: 0 }
+            } } },
+            include: { 
+                OutputOrder: { include: { Product: true } }
+             }
+        })
+
+    },
     async doOrder({
         product,
         collaborator_id,

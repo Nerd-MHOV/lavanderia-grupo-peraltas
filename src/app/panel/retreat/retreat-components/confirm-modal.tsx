@@ -71,19 +71,19 @@ const ConfirmModal = <T,>({ dataAction, action, resultReader, products, collabor
               {
                 products.some(p => p.finality === 'collaborator') &&
                 <ol className='my-5 divide-y '>
-                {products.filter(p => p.finality === 'collaborator').map(prod => (
-                  <li key={prod.id}> {prod.quantity}x {prod?.product} {prod.size} {prod.service}</li>
-                ))}
-              </ol>
+                  {products.filter(p => p.finality === 'collaborator').map(prod => (
+                    <li key={prod.id}> {prod.quantity}x {prod?.product} {prod.size} {prod.service}</li>
+                  ))}
+                </ol>
               }
 
-{
+              {
                 products.some(p => p.finality === 'department') &&
                 <ol className='my-5 divide-y '>
-                {products.filter(p => p.finality === 'department').map(prod => (
-                  <li key={prod.id}> {prod.quantity}x {prod?.product} {prod.size} {prod.service}</li>
-                ))}
-              </ol>
+                  {products.filter(p => p.finality === 'department').map(prod => (
+                    <li key={prod.id}> {prod.quantity}x {prod?.product} {prod.size} {prod.service}</li>
+                  ))}
+                </ol>
               }
 
 

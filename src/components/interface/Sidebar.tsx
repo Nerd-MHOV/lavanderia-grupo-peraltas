@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
-import { BookUser, LayoutDashboard, LogOut, Menu, PackageSearch, ScanBarcode, Undo2 } from 'lucide-react';
+import { BookUser, ClockArrowUp, LayoutDashboard, LogOut, Menu, PackageSearch, ScanBarcode, Undo2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {actionLogout} from '@/actions/serverActions/logout'
 
@@ -23,7 +23,13 @@ const links = [
         link: '/panel/return',
         icon: Undo2,
         title: 'Devolver',
-    }, {
+    },
+    {
+        link: '/panel/retreat-orders',
+        icon: ClockArrowUp,
+        title: 'Pedidos',
+    }, 
+    {
         link: '/panel/products',
         icon: PackageSearch,
         title: 'Produtos',
@@ -37,6 +43,7 @@ const links = [
 const Sidebar = () => {
     const { activeSidebar, dispatch } = useSidebar();
     const pathname = usePathname();
+    console.log(pathname)
     return (
         <div className={cn('h-screen transition-all duration-500 bg-primary absolute md:static sm:static overflow-x-hidden',
             activeSidebar ? 'min-w-full md:min-w-80 sm:min-w-80 relative'
@@ -56,7 +63,7 @@ const Sidebar = () => {
 
                     {links.map((link, index) => (
                         <li key={index} className={cn('list-none rounded-l-full w-full text-panelWhite relative ' ,
-                            (pathname.includes(link.link) && link.link !== '/panel') || (pathname === link.link) ? `bg-panelWhite text-panelBlue 
+                            (pathname === link.link) ? `bg-panelWhite text-panelBlue 
                                 before:content-[" "] before:absolute before:right-0 
                                 before:w-12 before:h-12 before:rounded-full before:pointer-events-none
                                 before:top-[-48px] before:shadow-[35px_35px_0_10px_white]

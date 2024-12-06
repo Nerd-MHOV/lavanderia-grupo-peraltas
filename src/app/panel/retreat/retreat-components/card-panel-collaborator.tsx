@@ -37,7 +37,7 @@ const CardPanelCollaborator = ({
   }, [clear, collaborators, handleSelect, resultReader])
 
   return (
-    <CardPanel title='Colaborador' Icon={UserSearch}>
+    <CardPanel noHover title='Colaborador' Icon={UserSearch}>
       <Select disabled={disabled} value={value?.id} onValueChange={(e) => handleSelect(
         collaborators.find( (col) => col.id === e ) || null
       )}>

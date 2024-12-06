@@ -11,7 +11,7 @@ const Retreat = async () => {
       <FormRetreat 
         collaborators={collaborators}
         products={products}
-        onlyCanRetreat
+        // onlyCanRetreat
       />
     </div>
   )

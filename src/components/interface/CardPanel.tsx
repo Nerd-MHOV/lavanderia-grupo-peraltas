@@ -9,10 +9,10 @@ interface CardPanelProps {
 }
 
 export const CardPanel = ({
-    title, Icon, children, className
+    title, Icon, children, className, noHover
 }: CardPanelProps) => {
     return (
-        <div className={cn(`transition-all relative bg-panelWhite p-7 rounded-xl shadow-xl w-full flex flex-col justify-between hover:bg-gray-100/50`, className)}>
+        <div className={cn(`transition-all relative bg-panelWhite p-7 rounded-xl shadow-xl w-full flex flex-col justify-between bg-white`, noHover ? '' : 'hover:bg-gray-100/50', className)}>
             <h2 className="font-bold text-3xl text-panelBlue">{title}</h2>
             <div>
                 {children}

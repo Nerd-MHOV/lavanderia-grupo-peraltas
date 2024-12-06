@@ -71,7 +71,7 @@ const CardPanelRetreat = ({ products, collaborator, success, onlyCanRetreat = fa
 
   return (
     <>
-      <CardPanel title='Retiradas' Icon={ScrollText}>
+      <CardPanel noHover title='Retiradas' Icon={ScrollText}>
         <div className='flex flex-col gap-2 my-4 '>
           {selectedProduct.map((product) => <ItemList
             id={itemFocused === product.id ? 'newItemRef' : undefined}
@@ -93,6 +93,7 @@ const CardPanelRetreat = ({ products, collaborator, success, onlyCanRetreat = fa
              Retirar
             </Button>
           }
+          
           <DialogSearchModal
             products={
               onlyCanRetreat ?

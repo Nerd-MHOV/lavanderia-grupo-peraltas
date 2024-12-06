@@ -123,7 +123,7 @@ const RetrunProduct = ({ collaborators, outputs }: {
               />
             </div>
           }
-          <div className='bg-panelWhite shadow-2xl p-7 mt-10 rounded-xl'>
+          <div className='bg-panelWhite shadow-2xl p-7 mt-10 rounded-xl bg-white'>
 
             <div className='lg:max-h-[calc(100vh-335px)] max-h-screen overflow-auto'>
               {outputsCollaborator(selectedCollaborator).length > 0 &&

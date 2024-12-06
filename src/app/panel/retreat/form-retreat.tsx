@@ -76,7 +76,6 @@ const FormRetreat = ({ collaborators, products, onlyCanRetreat = false }: FormRe
     if (state.success) { clear() }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
-
   return (
     <>
       <ConfirmModal
@@ -119,6 +118,7 @@ const FormRetreat = ({ collaborators, products, onlyCanRetreat = false }: FormRe
             />
           </div>
         }
+        
         <CardPanelRetreat
           collaborator={collaborator}
           products={products}
