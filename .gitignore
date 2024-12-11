@@ -8,7 +8,7 @@
 
 # testing
 /coverage
-
+/.vscode/
 # next.js
 /.next/
 /out/
@@ -35,4 +35,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-data
+/.data/
+docker-before

@@ -8,7 +8,7 @@ const getOutputOrdersGroupUser = async (): Promise<{
   return { outputOrdersGroupUser }
 }
 
-interface GetOutputOrdersGroupUserInterface {
+export interface GetOutputOrdersGroupUserInterface {
     outputOrdersGroupUser: {
         OutputOrder: ({
             Product: Product;
