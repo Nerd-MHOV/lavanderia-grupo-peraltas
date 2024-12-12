@@ -22,9 +22,8 @@ const OutputOrderDescribe = ({
 
 
     useEffect(() => {
-        if(state.success) clear()
-        else {
-            if(state.message !== "NEXT_REDIRECT") {
+        if ( state.message && !state.success ) {
+            if (state.message !== "NEXT_REDIRECT") {
                 toast.error(state.message)
             }
             close();
@@ -33,7 +32,7 @@ const OutputOrderDescribe = ({
     }, [state])
     return (
         <div>
-            <ConfirmModal 
+            <ConfirmModal
                 products={selected.OutputOrder.map(
                     o => ({
                         id: o.Product.id,
