@@ -22,6 +22,11 @@ const dbOutputOrder = (db: PrismaClient) => ({
         })
 
     },
+    async getById(id: string) {
+        return db.outputOrder.findFirst({
+            where: { id },
+        })
+    },
     async doOrder({
         product,
         collaborator_id,

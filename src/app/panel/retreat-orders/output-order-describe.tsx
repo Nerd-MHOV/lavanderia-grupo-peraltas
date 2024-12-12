@@ -1,7 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { GetOutputOrdersGroupUserInterface } from '@/core/server/output-orders/getOutputOrdersGroupUsers'
+import {
+    GetOutputOrdersGroupUserInterface
+} from '@/core/server/output-orders/getOutputOrdersGroupUsers'
 import { ArrowLeft, User } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
+import ButtonsOrderDescribe from './button-order-describe'
+import ConfirmModal from '../retreat/retreat-components/confirm-modal'
+import useFaceReader from '@/hooks/useFaceReader'
+import { useFormState } from 'react-dom'
+import { actionConfirmOutpuOrder } from '@/actions/serverActions/confirm-output-order'
+import { toast } from 'sonner'
 
 const OutputOrderDescribe = ({
     close,
@@ -10,10 +17,45 @@ const OutputOrderDescribe = ({
     close: VoidFunction,
     selected: GetOutputOrdersGroupUserInterface['outputOrdersGroupUser']
 }) => {
+    const { resultReader, clear } = useFaceReader();
+    const [state, action] = useFormState(actionConfirmOutpuOrder, { message: '', success: false });
+
+
+    useEffect(() => {
+        if(state.success) clear()
+        else {
+            if(state.message !== "NEXT_REDIRECT") {
+                toast.error(state.message)
+            }
+            close();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state])
     return (
         <div>
+            <ConfirmModal 
+                products={selected.OutputOrder.map(
+                    o => ({
+                        id: o.Product.id,
+                        quantity: o.amount,
+                        product: o.Product.product,
+                        size: o.Product.size,
+                        service: o.Product.service,
+                        finality: o.Product.finality
+                    })
+                )}
+                finality=''
+                collaborator={selected}
+                resultReader={resultReader}
+                clear={clear}
+                dataAction={{
+                    orders: selected.OutputOrder.map(o => o.id)
+                }}
+                action={action}
+            />
             <div
-                className='shadow-lg p-3 rounded-md ease-linear transition-all duration-300'
+                className='shadow-lg p-3 rounded-md ease-linear 
+                transition-all duration-300'
             >
                 <div className='block sm:hidden'>
                     <ArrowLeft
@@ -33,21 +75,22 @@ const OutputOrderDescribe = ({
                         <div className='p-4 text-lg mb-8 mt-4'>
                             {
                                 selected.OutputOrder
-                                    .some(o => o.Product.finality === 'collaborator') &&
-                                <ListProductsOrderDescribe 
+                                    .some(o => o.Product.finality === 'collaborator')
+                                &&
+                                <ListProductsOrderDescribe
                                     title='Items de Colaborador:'
                                     list={selected.OutputOrder
-                                            .filter(o => o.Product.finality === 'collaborator')}
+                                        .filter(o => o.Product.finality === 'collaborator')}
                                 />
                             }
 
                             {
                                 selected.OutputOrder
                                     .some(o => o.Product.finality === 'department') &&
-                                <ListProductsOrderDescribe 
+                                <ListProductsOrderDescribe
                                     title='Items de Departamento:'
                                     list={selected.OutputOrder
-                                            .filter(o => o.Product.finality === 'department')}
+                                        .filter(o => o.Product.finality === 'department')}
                                 />
                             }
                         </div>
@@ -59,15 +102,6 @@ const OutputOrderDescribe = ({
     )
 }
 
-
-
-const ButtonsOrderDescribe = () => (
-    <div className='flex justify-between px-8 '>
-        <Button className='bg-btnRed hover:bg-btnRedHover font-bold '> Remover</Button>
-        <Button className='bg-btnGreen hover:bg-btnGreenHover font-bold '>Entregar</Button>
-    </div>
-)
-
 const UserOrderDescriber = (props: { name: string, department: string }) => (
     <div className='flex gap-10 p-5 justify-center items-center'>
         <User className='bg-slate-100 shadow-sm rounded-full text-slate-600' width={70} height={50} />
@@ -78,15 +112,17 @@ const UserOrderDescriber = (props: { name: string, department: string }) => (
     </div>
 )
 
-const ListProductsOrderDescribe = (props: { title: string, list: {
-    id: string,
-    amount: number,
-    Product: {
-        product: string,
-        size: string,
-        service: string
-    }
-}[]}) => (
+const ListProductsOrderDescribe = (props: {
+    title: string, list: {
+        id: string,
+        amount: number,
+        Product: {
+            product: string,
+            size: string,
+            service: string
+        }
+    }[]
+}) => (
     <>
         <label htmlFor="" className='tracking-widest underline underline-offset-4'>
             {props.title}

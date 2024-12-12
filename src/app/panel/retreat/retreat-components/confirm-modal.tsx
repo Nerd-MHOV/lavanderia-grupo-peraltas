@@ -92,16 +92,18 @@ const ConfirmModal = <T,>({ dataAction, action, resultReader, products, collabor
         }
 
         <DialogFooter>
-          <Button disabled={waiting} className='mr-3 bg-btnGreen hover:bg-btnGreenHover' onClick={handleConfirm}>
-            {
-              waiting
-                ? <Spin />
-                : 'Confirmar'
-            }
-          </Button>
-          <DialogClose>
-            <Button className='bg-btnRed hover:bg-btnRedHover close-modal-confirmation'>Cancelar</Button>
-          </DialogClose>
+          <div className='flex gap-2 justify-end'>
+            <Button disabled={waiting} className='mr-3 bg-btnGreen hover:bg-btnGreenHover' onClick={handleConfirm}>
+              {
+                waiting
+                  ? <Spin />
+                  : 'Confirmar'
+              }
+            </Button>
+            <DialogClose>
+              <Button className='bg-btnRed hover:bg-btnRedHover close-modal-confirmation'>Cancelar</Button>
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
 
