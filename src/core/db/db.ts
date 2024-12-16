@@ -11,6 +11,7 @@ import dbType from './type.db';
 import dbInput from './inputs.db';
 import dbDepartment from './department.db';
 import dbReturn from './return.db';
+import dbReturnOrder from './return-orders.db';
 
 const prismaClientSingleton = () => {
   return new PrismaClient()
@@ -34,6 +35,7 @@ const db = ({
     output: dbOutput(prisma),
     outputOrder: dbOutputOrder(prisma),
     return: dbReturn(prisma),
+    returnOrder: dbReturnOrder(prisma),
     service: dbService(prisma),
     type: dbType(prisma),
     $transaction: prisma.$transaction,

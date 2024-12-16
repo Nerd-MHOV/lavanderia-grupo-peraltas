@@ -22,7 +22,7 @@ const dbOutput = (db: PrismaClient) => ({
     },
 
     async geta(id: string) {
-        return db.output.findFirst({ where: { id } });
+        return db.output.findFirst({ where: { id }, include: {ReturnOrder: true} });
     },
 
     async create(data: {

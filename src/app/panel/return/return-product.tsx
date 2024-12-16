@@ -3,13 +3,15 @@ import React, { useCallback, useEffect } from 'react'
 import CardPanelCollaborator from '../retreat/retreat-components/card-panel-collaborator'
 import useFaceReader from '@/hooks/useFaceReader'
 import { GetCollaboratorsInterface } from '@/core/server/collaborator/getCollaborators'
-import { Button } from '@/components/ui/button'
 import { useFormState } from 'react-dom'
 import { actionReturnProducts, StateActionReturnProducts } from '@/actions/serverActions/return-products'
 import SlackMessage from '@/components/interface/SlackMessage'
 import ConfirmModal from '../retreat/retreat-components/confirm-modal'
 import TableReturnProducts from './table-return-products'
 import { GetOutputsInterface } from '@/core/server/outputs/getOutputs'
+import useOutputToReturn from './useOutputToReturn'
+import FormReturn from './form-return'
+import { actionReturnOrderProducts } from '@/actions/serverActions/return-order-products'
 
 
 export type OutputsQuantity = (
@@ -22,61 +24,24 @@ export interface DataActionReturnPage {
 }
 
 
-const RetrunProduct = ({ collaborators, outputs }: {
+const RetrunProduct = ({ collaborators, outputs, self = false }: {
   collaborators: GetCollaboratorsInterface['collaborators'][]
   outputs: GetOutputsInterface['outputs'][]
+  self?: boolean
 }) => {
-  const [state, action] = useFormState(actionReturnProducts, {} as StateActionReturnProducts)
+
+
+  const actionData = self ? actionReturnOrderProducts : actionReturnProducts
+
+  const [state, action] = useFormState(actionData, {} as StateActionReturnProducts)
   const { resultReader, clear } = useFaceReader([collaborators]);
+  const { outputToReturn, addOutputReturn, removeOutputReturn } = useOutputToReturn()
+
   const [selectedCollaborator, setSelectedCollaborator] = React.useState<GetCollaboratorsInterface['collaborators'] | null>(null);
-  const [outputToReturn, setOutputToReturn] = React.useState<OutputsQuantity[] | []>([]);
   const [dataAction, setDataAction] = React.useState<DataActionReturnPage | null>(null);
-  const addOutputReturn = useCallback((output: OutputsQuantity) => {
-    setOutputToReturn((prev) => {
-      const out = prev.find((o) => o.id === output.id)
-      if (out) {
-        const quantity = out.quantity || 0
-        out.quantity = out.amount >= quantity + 1 ? quantity + 1 : quantity
-        return prev.map((p) => p.id === output.id ? out : p)
-      }
-      if (!output.amount) return prev
-      return [...prev, {
-        ...output,
-        quantity: 1
-      }]
-    })
-
-  }, [])
-
-  const removeOutputReturn = useCallback((output: OutputsQuantity) => {
-    setOutputToReturn((prev) => {
-      const out = prev.find((p) => p.id === output.id)
-      if (out) {
-        out.quantity = out.quantity ? out.quantity - 1 : 0
-        if (out.quantity === 0) return prev.filter((p) => p.id !== output.id)
-        return prev.map((p) => p.id === output.id ? out : p)
-      }
-      return prev
-    })
-  }, [])
-
-  const handleForm = (data: FormData) => {
-    const dataObj = {
-      collaborator_id: data.get('collaborator_id') as string,
-      products: JSON.parse(data.get('products') as string)
-    }
-
-    console.log('DATA OBJ', dataObj)
-    setDataAction(dataObj)
-
-    openModal()
-  }
-
-  const openModal = () => {
-    (document.querySelector('.open-modal-confirmation') as HTMLElement)?.click()
-  }
 
 
+  // filters
   const outputsCollaborator = useCallback((collaborator: GetCollaboratorsInterface['collaborators']) => {
     return collaborator.Outputs.filter(out => out.finality === 'collaborator')
   }, [])
@@ -85,11 +50,15 @@ const RetrunProduct = ({ collaborators, outputs }: {
     return outputs.filter(out => out.Collaborator.department === collaborator.department && out.finality === 'department')
   }, [outputs])
 
+
+  // reload page if success
   useEffect(() => {
     if (state.success) {
       window.location.reload();
     }
   }, [state.success])
+
+
   return (
     <>
       <ConfirmModal
@@ -110,7 +79,7 @@ const RetrunProduct = ({ collaborators, outputs }: {
         resultReader={resultReader}
         clear={clear}
       />
-      <CardPanelCollaborator collaborators={collaborators} onSelect={setSelectedCollaborator} disabled clear={clear} resultReader={resultReader} />
+      <CardPanelCollaborator collaborators={collaborators} onSelect={setSelectedCollaborator} clear={clear} resultReader={resultReader} />
 
       {
         selectedCollaborator && <>
@@ -150,11 +119,11 @@ const RetrunProduct = ({ collaborators, outputs }: {
                 </>
               }
             </div>
-              <form  action={handleForm} className='w-full flex justify-end pr-5'>
-                <input type="hidden" name="collaborator_id" value={selectedCollaborator?.id} />
-                <input type="hidden" name="products" value={JSON.stringify(outputToReturn)} />
-                <Button disabled={!outputToReturn.length}>Confirmar</Button>
-              </form>
+            <FormReturn
+              onForm={(data) => setDataAction(data)}
+              collaborator_id={selectedCollaborator.id}
+              outputToReturn={outputToReturn}
+            />
           </div>
 
         </>
@@ -162,5 +131,7 @@ const RetrunProduct = ({ collaborators, outputs }: {
     </>
   )
 }
+
+
 
 export default RetrunProduct

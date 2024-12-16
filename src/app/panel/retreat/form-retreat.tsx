@@ -16,7 +16,7 @@ import { actionRetreatOrder } from '@/actions/serverActions/retreat-order';
 interface FormRetreatProps {
   collaborators: GetCollaboratorsInterface['collaborators'][]
   products: GetProductsInterface['products'][]
-  onlyCanRetreat?: boolean
+  self?: boolean
 }
 
 export interface DataActionRetreatPage {
@@ -25,10 +25,10 @@ export interface DataActionRetreatPage {
   products: ProductQuantity[];
 }
 
-const FormRetreat = ({ collaborators, products, onlyCanRetreat = false }: FormRetreatProps) => {
+const FormRetreat = ({ collaborators, products, self = false }: FormRetreatProps) => {
   const { resultReader, clear } = useFaceReader([collaborators]);
   const initialState = { message: '', errors: {}, success: false }
-  const actionToUse = onlyCanRetreat ? actionRetreatOrder : actionRetreat
+  const actionToUse = self ? actionRetreatOrder : actionRetreat
   const [state, action] = useFormState(actionToUse, initialState);
   const [message, setMessage] = useState<{
     message: string;
@@ -106,6 +106,7 @@ const FormRetreat = ({ collaborators, products, onlyCanRetreat = false }: FormRe
             onSelect={setCollaborator}
             clear={clear}
             resultReader={resultReader}
+            disabled
           />
           {/* <CardPanelFinality disabled /> */}
         </div>
@@ -122,7 +123,7 @@ const FormRetreat = ({ collaborators, products, onlyCanRetreat = false }: FormRe
         <CardPanelRetreat
           collaborator={collaborator}
           products={products}
-          onlyCanRetreat={onlyCanRetreat}
+          onlyCanRetreat={self}
           success={message?.success || false}
         />
       </form>

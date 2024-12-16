@@ -22,7 +22,13 @@ const dbReturn = (db: PrismaClient) => ({
         return await db.return.create({ data });
     },
 
-    async returnProduct(output: Output, quantity: number, product_id: string, collaborator_id: string, user_id: string) {
+    async returnProduct(
+        output: Output,
+        quantity: number,
+        product_id: string, 
+        collaborator_id: string, 
+        user_id: string
+    ) {
 
         const data = {
             product_id,

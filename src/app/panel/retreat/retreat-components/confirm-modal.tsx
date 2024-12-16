@@ -31,6 +31,10 @@ const ConfirmModal = <T,>({ dataAction, action, resultReader, products, collabor
     setWaiting(true);
   }
 
+  const handleCancel = () => {
+    setWaiting(false);
+  }
+
   const closeModal = () => {
     (document.querySelector('.close-modal-confirmation') as HTMLElement)?.click()
   }
@@ -101,7 +105,7 @@ const ConfirmModal = <T,>({ dataAction, action, resultReader, products, collabor
               }
             </Button>
             <DialogClose>
-              <Button className='bg-btnRed hover:bg-btnRedHover close-modal-confirmation'>Cancelar</Button>
+              <Button className='bg-btnRed hover:bg-btnRedHover close-modal-confirmation' onClick={handleCancel}>Cancelar</Button>
             </DialogClose>
           </div>
         </DialogFooter>
