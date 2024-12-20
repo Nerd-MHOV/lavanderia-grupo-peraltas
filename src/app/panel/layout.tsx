@@ -7,7 +7,8 @@ import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Lavanderia",
-  description: "App para controle interno de items de lavanderia - GRUPO PERALTAS",
+  description:
+    "App para controle interno de items de lavanderia - GRUPO PERALTAS",
 };
 
 export default function RootLayout({
@@ -20,14 +21,12 @@ export default function RootLayout({
       <body className="flex">
         <SidebarContextProvider>
           <Sidebar />
-          <div className="w-full max-h-screen overflow-auto">
+          <div className="w-full max-h-screen overflow-auto transition-all duration-300">
             <Navbar />
-
-              {children}
+            {children}
           </div>
           <Toaster richColors />
         </SidebarContextProvider>
-        
       </body>
     </html>
   );
