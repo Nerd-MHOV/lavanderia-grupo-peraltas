@@ -17,6 +17,7 @@ const dbOutput = (db: PrismaClient) => ({
             include: {
                 Collaborator: true,
                 Product: true,
+                ReturnOrder: true,
             }
         });
     },

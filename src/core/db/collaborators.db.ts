@@ -7,8 +7,10 @@ const dbCollaborator = (db: PrismaClient) => ({
                 Outputs: {
                     include: {
                         Product: true,
+                        ReturnOrder: true
                     }
                 },
+
             },
             orderBy: [
                 { name: 'asc' },
