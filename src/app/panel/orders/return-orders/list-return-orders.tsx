@@ -1,26 +1,27 @@
 "use client";
-import { GetOutputOrdersGroupUserInterface } from "@/core/server/output-orders/getOutputOrdersGroupUsers";
 import React, { useEffect, useState } from "react";
 import ListOrders from "../list-orders";
 import OrderDescribe from "../output-order-describe";
 import { useFormState } from "react-dom";
-import { actionConfirmOutpuOrder } from "@/actions/serverActions/confirm-output-order";
 import { toast } from "sonner";
-interface ListRetreatOrdersProps {
-  outputOrders: GetOutputOrdersGroupUserInterface["outputOrdersGroupUser"][];
+import { GetReturnOrdersGroupUserInterface } from "@/core/server/return-orders/getReturnOrdersGroupUsers";
+import { actionConfirmReturnOrder } from "@/actions/serverActions/confirm-return-order";
+interface ListReturnOrdersProps {
+  returnOrders: GetReturnOrdersGroupUserInterface["returnOrdersGroupUser"][];
 }
 
-const ListRetreatOrders = ({ outputOrders }: ListRetreatOrdersProps) => {
+const ListReturnOrders = ({ returnOrders }: ListReturnOrdersProps) => {
   const [selected, setSelected] = useState<
-    ListRetreatOrdersProps["outputOrders"][0] | null
+    ListReturnOrdersProps["returnOrders"][0] | null
   >(null);
 
   const handleClick = (id: string) => {
-    const find = outputOrders.find((output) => output.id === id);
-    setSelected(find || null);
+    const order = returnOrders.find((order) => order.id === id);
+    setSelected(order || null);
   };
 
-  const [state, action] = useFormState(actionConfirmOutpuOrder, {
+  //
+  const [state, action] = useFormState(actionConfirmReturnOrder, {
     message: "",
     success: false,
   });
@@ -40,21 +41,21 @@ const ListRetreatOrders = ({ outputOrders }: ListRetreatOrdersProps) => {
       <ListOrders
         handleClick={handleClick}
         selected={selected}
-        orders={outputOrders}
+        orders={returnOrders}
       />
       {selected !== null && (
         <OrderDescribe
           close={() => setSelected(null)}
           selected={{
             ...selected,
-            orders: selected.OutputOrder,
+            orders: selected.ResponsibleReturnOrderOut,
           }}
           action={action}
-          buttonText="Entregar"
+          buttonText="Confirmar Devolução"
         />
       )}
     </>
   );
 };
 
-export default ListRetreatOrders;
+export default ListReturnOrders;

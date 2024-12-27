@@ -1,39 +1,42 @@
-import { GetOutputOrdersGroupUserInterface } from "@/core/server/output-orders/getOutputOrdersGroupUsers";
 import { ArrowLeft, User } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 import ButtonsOrderDescribe from "./button-order-describe";
-import ConfirmModal from "../../retreat/retreat-components/confirm-modal";
+import ConfirmModal from "../retreat/retreat-components/confirm-modal";
 import useFaceReader from "@/hooks/useFaceReader";
-import { useFormState } from "react-dom";
-import { actionConfirmOutpuOrder } from "@/actions/serverActions/confirm-output-order";
-import { toast } from "sonner";
 
-const OutputOrderDescribe = ({
+const OrderDescribe = ({
   close,
   selected,
+  action,
+  buttonText,
 }: {
   close: VoidFunction;
-  selected: GetOutputOrdersGroupUserInterface["outputOrdersGroupUser"];
+  selected: {
+    id: string;
+    name: string;
+    cpf: string;
+    department: string;
+    orders: {
+      id: string;
+      amount: number;
+      Product: {
+        id: string;
+        product: string;
+        size: string;
+        service: string;
+        finality: string;
+      };
+    }[];
+  };
+  action: (payload: { orders: string[] }) => void;
+  buttonText: string;
 }) => {
   const { resultReader, clear } = useFaceReader();
-  const [state, action] = useFormState(actionConfirmOutpuOrder, {
-    message: "",
-    success: false,
-  });
 
-  useEffect(() => {
-    if (state.message && !state.success) {
-      if (state.message !== "NEXT_REDIRECT") {
-        toast.error(state.message);
-      }
-      close();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
   return (
     <div>
       <ConfirmModal
-        products={selected.OutputOrder.map((o) => ({
+        products={selected.orders.map((o) => ({
           id: o.Product.id,
           quantity: o.amount,
           product: o.Product.product,
@@ -46,7 +49,7 @@ const OutputOrderDescribe = ({
         resultReader={resultReader}
         clear={clear}
         dataAction={{
-          orders: selected.OutputOrder.map((o) => o.id),
+          orders: selected.orders.map((o) => o.id),
         }}
         action={action}
       />
@@ -69,29 +72,29 @@ const OutputOrderDescribe = ({
               department={selected.department}
             />
             <div className="p-4 text-lg mb-8 mt-4">
-              {selected.OutputOrder.some(
+              {selected.orders.some(
                 (o) => o.Product.finality === "collaborator"
               ) && (
                 <ListProductsOrderDescribe
                   title="Items de Colaborador:"
-                  list={selected.OutputOrder.filter(
+                  list={selected.orders.filter(
                     (o) => o.Product.finality === "collaborator"
                   )}
                 />
               )}
 
-              {selected.OutputOrder.some(
+              {selected.orders.some(
                 (o) => o.Product.finality === "department"
               ) && (
                 <ListProductsOrderDescribe
                   title="Items de Departamento:"
-                  list={selected.OutputOrder.filter(
+                  list={selected.orders.filter(
                     (o) => o.Product.finality === "department"
                   )}
                 />
               )}
             </div>
-            <ButtonsOrderDescribe />
+            <ButtonsOrderDescribe buttonText={buttonText} />
           </div>
         </div>
       </div>
@@ -142,4 +145,4 @@ const ListProductsOrderDescribe = (props: {
   </>
 );
 
-export default OutputOrderDescribe;
+export default OrderDescribe;
