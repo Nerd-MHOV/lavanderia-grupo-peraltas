@@ -107,120 +107,118 @@ const EditProductPage = async ({
         )}
       </div>
 
-      <div className="bg-panelWhite p-7 rounded-xl shadow-sm my-5">
+      <div className="bg-panelWhite p-7 rounded-xl shadow-2xl my-5">
         <div className="flex justify-between">
           <h1 className="text-xl font-bold">Estoque</h1>
           <DialogAddInventory product_id={product.id} />
         </div>
 
         <div className="flex gap-4 my-5 lg:flex-nowrap flex-wrap">
-          <CardPanel Icon={FileBox} title="Total">
+          <CardPanel className="shadow-md" Icon={FileBox} title="Total">
             <p className="text-center mt-2 text-3xl font-bold ">{allInputs}</p>
           </CardPanel>
-          <CardPanel Icon={Boxes} title="Estoque">
+          <CardPanel className="shadow-md" Icon={Boxes} title="Estoque">
             <p className="text-center mt-2 text-3xl font-bold ">
               {product.Inventory[0]?.amount || 0}
             </p>
           </CardPanel>
-          <CardPanel Icon={SquareDashedMousePointer} title="Reservados">
+          <CardPanel
+            className="shadow-md"
+            Icon={SquareDashedMousePointer}
+            title="Reservados"
+          >
             <p className="text-center mt-2 text-3xl font-bold ">
               {allOrders || 0}
             </p>
           </CardPanel>
-          <CardPanel Icon={SquareMousePointer} title="Retirados">
+          <CardPanel
+            className="shadow-md"
+            Icon={SquareMousePointer}
+            title="Retirados"
+          >
             <p className="text-center mt-2 text-3xl font-bold ">
               {allOutputs || 0}
             </p>
           </CardPanel>
         </div>
 
-        <h2 className="mt-5 text-rose-950">Entradas:</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Quantidade</TableHead>
-              <TableHead>Data</TableHead>
-              <TableHead>Responsável</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {product.Input.map((inp) => (
-              <TableRow key={inp.id}>
-                <TableCell>{inp.amount}</TableCell>
-                <TableCell>
-                  {format(inp.createdAt, "dd/MM/yyyy HH:mm")}
-                </TableCell>
-                <TableCell>{inp.User.user}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        {product.Inventory.length > 0 && (
+          <>
+            <h2 className="mt-5 text-rose-950">Entradas:</h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Quantidade</TableHead>
+                  <TableHead>Data</TableHead>
+                  <TableHead>Responsável</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {product.Input.map((inp) => (
+                  <TableRow key={inp.id}>
+                    <TableCell>{inp.amount}</TableCell>
+                    <TableCell>
+                      {format(inp.createdAt, "dd/MM/yyyy HH:mm")}
+                    </TableCell>
+                    <TableCell>{inp.User.user}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        )}
 
-        <h2 className="mt-5 text-rose-950">Saidas:</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Quantidade</TableHead>
-              <TableHead>Data</TableHead>
-              <TableHead>Responsável</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {product.Output.map((out) => (
-              <TableRow key={out.id}>
-                <TableCell>{out.amount}</TableCell>
-                <TableCell>
-                  {format(out.updatedAt, "dd/MM/yyyy HH:mm")}
-                </TableCell>
-                <TableCell>{out.Collaborator.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        {product.Output.length > 0 && (
+          <>
+            <h2 className="mt-5 text-rose-950">Saidas:</h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Quantidade</TableHead>
+                  <TableHead>Data</TableHead>
+                  <TableHead>Responsável</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {product.Output.map((out) => (
+                  <TableRow key={out.id}>
+                    <TableCell>{out.amount}</TableCell>
+                    <TableCell>
+                      {format(out.updatedAt, "dd/MM/yyyy HH:mm")}
+                    </TableCell>
+                    <TableCell>{out.Collaborator.name}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        )}
 
-        <h2 className="mt-5 text-rose-950">Reservados:</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Quantidade</TableHead>
-              <TableHead>Data</TableHead>
-              <TableHead>Responsável</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {product.OutputOrder.map((out) => (
-              <TableRow key={out.id}>
-                <TableCell>{out.amount}</TableCell>
-                <TableCell>
-                  {format(out.updatedAt, "dd/MM/yyyy HH:mm")}
-                </TableCell>
-                <TableCell>{out.Collaborator.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-
-        {/* <h2 className="mt-5 text-rose-950">Aguardando:</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Quantidade</TableHead>
-              <TableHead>Data</TableHead>
-              <TableHead>Responsável</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {product.ReturnOrder.map((out) => (
-              <TableRow key={out.id}>
-                <TableCell>{out.amount}</TableCell>
-                <TableCell>
-                  {format(out.updatedAt, "dd/MM/yyyy HH:mm")}
-                </TableCell>
-                <TableCell>{out.CollaboratorOut?.name || "-"}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table> */}
+        {product.OutputOrder.length > 0 && (
+          <>
+            <h2 className="mt-5 text-rose-950">Reservados:</h2>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Quantidade</TableHead>
+                  <TableHead>Data</TableHead>
+                  <TableHead>Responsável</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {product.OutputOrder.map((out) => (
+                  <TableRow key={out.id}>
+                    <TableCell>{out.amount}</TableCell>
+                    <TableCell>
+                      {format(out.updatedAt, "dd/MM/yyyy HH:mm")}
+                    </TableCell>
+                    <TableCell>{out.Collaborator.name}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        )}
       </div>
 
       <div className="flex w-full items-end justify-end mt-20 mb-5 pr-5">
