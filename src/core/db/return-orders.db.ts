@@ -87,16 +87,18 @@ const dbReturnOrder = (db: PrismaClient) => ({
       throw new Error("Order not found");
     }
 
-    await db.returnOrder.delete({
-      where: { id: order_id },
+    await db.$transaction(async (tx) => {
+      await tx.returnOrder.delete({
+        where: { id: order_id },
+      });
+      await dbReturn(db).returnProduct(
+        order.Output,
+        order.amount,
+        order.product_id,
+        order.collaborator_id_out as string,
+        user_id
+      );
     });
-    await dbReturn(db).returnProduct(
-      order.Output,
-      order.amount,
-      order.product_id,
-      order.collaborator_id_out as string,
-      user_id
-    );
   },
 });
 
