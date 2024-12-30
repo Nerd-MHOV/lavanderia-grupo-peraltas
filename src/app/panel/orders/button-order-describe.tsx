@@ -9,10 +9,10 @@ const ButtonsOrderDescribe = ({ buttonText }: { buttonText: string }) => {
   };
 
   return (
-    <div className="flex justify-between px-8 ">
-      <Button className="bg-btnRed hover:bg-btnRedHover font-bold ">
+    <div className="flex justify-center px-8 ">
+      {/* <Button className="bg-btnRed hover:bg-btnRedHover font-bold ">
         Remover
-      </Button>
+      </Button> */}
 
       <Button
         className="bg-btnGreen hover:bg-btnGreenHover font-bold "
