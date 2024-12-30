@@ -54,7 +54,7 @@ const dbOutputOrder = (db: PrismaClient) => ({
         })
       : db.outputOrder.create({ data: dataOrder });
 
-    return db.$transaction([
+    const order = await db.$transaction([
       db.inventory.update({
         where: { product_id: product.id },
         data: {
@@ -68,6 +68,11 @@ const dbOutputOrder = (db: PrismaClient) => ({
         data: dataOrder,
       }),
     ]);
+
+    // Eventer emit
+    await fetch(`${process.env.NEXT_PUBLIC_IVMS_URL_SOCKET}/output-update`);
+
+    return order;
   },
   async confirmOrder(order_id: string, user_id: string) {
     const order = await db.outputOrder.findFirst({ where: { id: order_id } });
