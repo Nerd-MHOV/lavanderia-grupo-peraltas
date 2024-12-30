@@ -1,5 +1,5 @@
 import { Output, PrismaClient } from "@prisma/client";
-import dbReturn from "./return.db";
+import { returnProductActionArray } from "./return.db";
 
 const dbReturnOrder = (db: PrismaClient) => ({
   async get() {
@@ -87,18 +87,19 @@ const dbReturnOrder = (db: PrismaClient) => ({
       throw new Error("Order not found");
     }
 
-    await db.$transaction(async (tx) => {
-      await tx.returnOrder.delete({
+    await db.$transaction([
+      db.returnOrder.delete({
         where: { id: order_id },
-      });
-      await dbReturn(db).returnProduct(
+      }),
+      ...(await returnProductActionArray(
+        db,
         order.Output,
         order.amount,
         order.product_id,
         order.collaborator_id_out as string,
         user_id
-      );
-    });
+      )),
+    ]);
   },
 });
 

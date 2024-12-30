@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import dbOutput, { RetreatODT } from "./outputs.db";
+import { retreatActionsArray, RetreatODT } from "./outputs.db";
 
 type OutputOrderODT = Omit<RetreatODT, "user_id">;
 const dbOutputOrder = (db: PrismaClient) => ({
@@ -78,27 +78,27 @@ const dbOutputOrder = (db: PrismaClient) => ({
     const order = await db.outputOrder.findFirst({ where: { id: order_id } });
     if (!order) throw new Error("Order not found");
 
-    await db.$transaction(async (tx) => {
-      await tx.inventory.update({
+    const retreat = await retreatActionsArray(db, {
+      product: {
+        id: order.product_id,
+        quantity: order.amount,
+        finality: order.finality,
+      },
+      user_id,
+      collaborator_id: order.collaborator_id,
+    });
+    await db.$transaction([
+      db.inventory.update({
         where: { product_id: order.product_id },
         data: {
           amount: {
             increment: order.amount,
           },
         },
-      });
-      await tx.outputOrder.delete({ where: { id: order_id } });
-
-      await dbOutput(db).retreat({
-        product: {
-          id: order.product_id,
-          quantity: order.amount,
-          finality: order.finality,
-        },
-        user_id,
-        collaborator_id: order.collaborator_id,
-      });
-    });
+      }),
+      db.outputOrder.delete({ where: { id: order_id } }),
+      ...retreat,
+    ]);
   },
 });
 
