@@ -7,7 +7,7 @@ import React from 'react'
 
 interface CardPanelFinalityProps {
   disabled: boolean
-};
+}
 
 const CardPanelFinality = ({ disabled }: CardPanelFinalityProps) => {
   const [value, setValue] = React.useState<string>('collaborator');

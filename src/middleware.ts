@@ -13,7 +13,7 @@ export default async function middleware(req: NextRequest) {
         const cookie = cookies().get('session')?.value || '';
         const session = await decrypt(cookie);
 
-        // 3. redirect unauthed users
+        // 3. redirect unauthorized users
         if (!session?.userId) {
             return NextResponse.redirect(new URL('/login', req.nextUrl));
         }
@@ -23,7 +23,7 @@ export default async function middleware(req: NextRequest) {
         const cookie = cookies().get('session')?.value || '';
         const session = await decrypt(cookie);
 
-        // 3. redirect unauthed users
+        // 3. redirect unauthorized users
         if (session?.userId) {
             return NextResponse.redirect(new URL('/panel', req.nextUrl));
         }
