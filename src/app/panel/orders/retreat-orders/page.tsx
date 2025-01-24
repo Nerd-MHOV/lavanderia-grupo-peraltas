@@ -6,6 +6,7 @@ import PageClient from "./page.client";
 
 const OrdersPage = async () => {
   const outputOrders = (await getOutputOrdersGroupUser()).outputOrdersGroupUser;
+
   return (
     <>
       <Suspense>
