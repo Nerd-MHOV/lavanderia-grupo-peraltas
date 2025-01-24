@@ -13,15 +13,21 @@ const OrdersPage = async () => {
         <PageClient />
       </Suspense>
       <div className="px-5 py-5 flex justify-around">
-        {outputOrders.length === 0 && (
+        <div className="absolute top-4 w-full text-center">
+          <h1>
+            Solicitações de <b>RETIRADAS</b>
+          </h1>
+        </div>
+        {outputOrders.length === 0 ? (
           <div className="flex justify-center items-center w-full mt-20 bg-panelWhite p-7 rounded-xl shadow-2xl">
             <ChartNoAxesGantt />{" "}
             <h1 className="text-2xl font-bold text-center ">
               Não há pedidos de retirada pendentes
             </h1>
           </div>
+        ) : (
+          <ListRetreatOrders outputOrders={outputOrders} />
         )}
-        <ListRetreatOrders outputOrders={outputOrders} />
       </div>
     </>
   );
