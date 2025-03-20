@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "pnpm run services:up && pnpm run services:wait:database && pnpx prisma db push && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "services:up": "docker compose -f src/core/infra/compose.yaml up -d",
+    "services:stop": "docker compose -f src/core/infra/compose.yaml stop",
+    "services:down": "docker compose -f src/core/infra/compose.yaml down",
+    "services:wait:database": "tsx src/core/infra/wait-for-postgres.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -64,6 +68,7 @@
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsx": "^4.19.3",
     "typescript": "^5"
   }
 }
