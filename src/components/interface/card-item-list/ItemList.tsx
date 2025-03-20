@@ -7,12 +7,12 @@ interface ItemListProps extends React.HTMLAttributes<HTMLDivElement> {
   buttons?: {
     delete: () => void;
     add: () => void;
-    addQuantity: () => void;
     quantity: number;
   };
   title?: string;
   describe?: string;
   stock?: number;
+  onClick?: VoidFunction;
 }
 const ItemList = ({
   Icon,
@@ -20,6 +20,7 @@ const ItemList = ({
   title,
   describe,
   stock,
+  onClick = () => {},
   ...props
 }: ItemListProps) => {
   return (
@@ -35,19 +36,16 @@ const ItemList = ({
         <Icon className="text-white" width={30} height={30} />
       </BallContent>
       <div className="flex justify-between w-full items-center">
-        <div className="flex flex-col items-start">
+        <div
+          className="flex flex-col items-start cursor-pointer"
+          onClick={onClick}
+        >
           <h1 className="font-semibold text-base">{title}</h1>
           <p className="text-gray-600 text-sm">{describe}</p>
         </div>
         {buttons && (
           <div className="flex gap-3">
-            <BallContent
-              onClick={buttons.add}
-              onAuxClick={(e) => {
-                e.preventDefault();
-                buttons.addQuantity();
-              }}
-            >
+            <BallContent onClick={buttons.add}>
               <p>{buttons.quantity}</p>
             </BallContent>
             <BallContent

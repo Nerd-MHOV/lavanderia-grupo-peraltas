@@ -1,5 +1,5 @@
 "use client";
-import ItemList from "@/components/interface/card-item-list/ItemLIst";
+import ItemList from "@/components/interface/card-item-list/ItemList";
 import { CardPanel } from "@/components/interface/CardPanel";
 import { Button } from "@/components/ui/button";
 import { ScrollText, Shirt } from "lucide-react";
@@ -11,7 +11,7 @@ import { GetProductsInterface } from "@/core/server/product/getProducts";
 import { GetCollaboratorsInterface } from "@/core/server/collaborator/getCollaborators";
 import finalityProductTypeMap from "@/core/server/product/finalityProductTypeMap";
 import { toast } from "sonner";
-import DialogInputAmount from "./dialog-number-items";
+import DialogPanelChangeAmount from "./dialog-panel-change-amount";
 
 interface CardPanelRetreatProps {
   products: GetProductsInterface["products"][];
@@ -41,6 +41,17 @@ const CardPanelRetreat = ({
   const [productChangeInputAmount, setProductChangeInputAmount] = useState<
     GetProductsInterface["products"] | null
   >(null);
+  const [isOpenDialogChangeAmount, setIsOpenDialogChangeAmount] =
+    useState(false);
+
+  const openModalChangeAmount = () => {
+    setIsOpenDialogChangeAmount(true);
+  };
+
+  const changeAmountItem = (amount: number) => {
+    if (productChangeInputAmount) addProduct(productChangeInputAmount, amount);
+    setIsOpenDialogChangeAmount(false);
+  };
 
   useEffect(() => {
     const handleKeyOpen = (event: KeyboardEvent) => {
@@ -76,14 +87,19 @@ const CardPanelRetreat = ({
 
   return (
     <>
-      <DialogInputAmount
-        product={productChangeInputAmount}
-        addProduct={addProduct}
+      <DialogPanelChangeAmount
+        open={isOpenDialogChangeAmount}
+        setOpen={setIsOpenDialogChangeAmount}
+        onConfirm={changeAmountItem}
       />
       <CardPanel noHover title="Retiradas" Icon={ScrollText}>
         <div className="flex flex-col gap-2 my-4 ">
           {selectedProduct.map((product) => (
             <ItemList
+              onClick={() => {
+                setProductChangeInputAmount(product);
+                openModalChangeAmount();
+              }}
               id={itemFocused === product.id ? "newItemRef" : undefined}
               key={product.id}
               title={product.product}
@@ -96,14 +112,6 @@ const CardPanelRetreat = ({
                 },
                 add: () => {
                   addProduct(product);
-                },
-                addQuantity: () => {
-                  setProductChangeInputAmount(product);
-                  (
-                    document.querySelector(
-                      ".open-modal-input-number"
-                    ) as HTMLElement
-                  )?.click();
                 },
                 quantity: product.quantity || 0,
               }}
