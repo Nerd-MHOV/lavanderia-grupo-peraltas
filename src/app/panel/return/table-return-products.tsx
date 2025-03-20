@@ -26,12 +26,14 @@ const TableReturnProducts = ({
   removeOutputReturn,
   outputToReturn,
   title,
+  onClick = () => {},
 }: {
   title: string;
   outputs: GetCollaboratorsInterface["collaborators"]["Outputs"];
   outputToReturn: OutputsQuantity[];
   addOutputReturn: (output: OutputsQuantity) => void;
   removeOutputReturn: (output: OutputsQuantity) => void;
+  onClick: (output: OutputsQuantity) => void;
 }) => {
   return (
     <Table>
@@ -51,11 +53,23 @@ const TableReturnProducts = ({
           const prodFind = outputToReturn.find((p) => p.id === output.id);
           return (
             <TableRow key={output.id}>
-              <TableCell>{output.Product.product}</TableCell>
+              <TableCell
+                className="cursor-pointer"
+                onClick={() => {
+                  onClick(output);
+                }}
+              >
+                {output.Product.product}
+              </TableCell>
               <TableCell>{output.Product.size}</TableCell>
               <TableCell>{output.Product.service}</TableCell>
               <TableCell>{output.Product.type}</TableCell>
-              <TableCell className="font-bold justify-center">
+              <TableCell
+                onClick={() => {
+                  onClick(output);
+                }}
+                className="font-bold justify-center cursor-pointer"
+              >
                 <div className="flex gap-2 items-center">
                   {output.amount} unidades{" "}
                   {output.ReturnOrder.length > 0 ? (

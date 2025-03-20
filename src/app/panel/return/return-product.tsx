@@ -15,6 +15,7 @@ import { GetOutputsInterface } from "@/core/server/outputs/getOutputs";
 import useOutputToReturn from "./useOutputToReturn";
 import FormReturn from "./form-return";
 import { actionReturnOrderProducts } from "@/actions/serverActions/return-order-products";
+import DialogPanelChangeAmount from "../retreat/retreat-components/dialog-panel-change-amount";
 
 export type OutputsQuantity =
   GetCollaboratorsInterface["collaborators"]["Outputs"][0] & {
@@ -50,6 +51,22 @@ const RetrunProduct = ({
   >(null);
   const [dataAction, setDataAction] =
     React.useState<DataActionReturnPage | null>(null);
+  const [isOpenDialogChangeAmount, setIsOpenDialogChangeAmount] =
+    React.useState(false);
+  const [productChangeInputAmount, setProductChangeInputAmount] =
+    React.useState<OutputsQuantity | null>(null);
+
+  const openModalChangeAmount = (output: OutputsQuantity) => {
+    setProductChangeInputAmount(output);
+    setIsOpenDialogChangeAmount(true);
+  };
+
+  const changeAmountItem = (amount: number) => {
+    if (productChangeInputAmount) {
+      addOutputReturn(productChangeInputAmount, amount);
+    }
+    setIsOpenDialogChangeAmount(false);
+  };
 
   const withoutPending = useCallback(
     (outputs: OutputsQuantity[]): OutputsQuantity[] => {
@@ -121,6 +138,11 @@ const RetrunProduct = ({
         resultReader={resultReader}
         clear={clear}
       />
+      <DialogPanelChangeAmount
+        open={isOpenDialogChangeAmount}
+        setOpen={setIsOpenDialogChangeAmount}
+        onConfirm={changeAmountItem}
+      />
       <CardPanelCollaborator
         collaborators={collaborators}
         disabled
@@ -145,6 +167,7 @@ const RetrunProduct = ({
                 <>
                   <p className="text-slate-700">Pendências do colaborador:</p>
                   <TableReturnProducts
+                    onClick={openModalChangeAmount}
                     title="Lista de pendências do colaborador"
                     outputs={outputsCollaborator(selectedCollaborator)}
                     addOutputReturn={addOutputReturn}
@@ -157,6 +180,7 @@ const RetrunProduct = ({
                 <>
                   <p className="text-slate-700">Pendências do departamento:</p>
                   <TableReturnProducts
+                    onClick={openModalChangeAmount}
                     title="Lista de pendências do departamento"
                     outputs={outputsDepartment(selectedCollaborator)}
                     addOutputReturn={addOutputReturn}
