@@ -1,0 +1,6 @@
+{
+  "name": "Sistema de Lavanderia",
+  "short_name": "Lavanderia",
+  "start_url": "/",
+  "display": "standalone"
+}
