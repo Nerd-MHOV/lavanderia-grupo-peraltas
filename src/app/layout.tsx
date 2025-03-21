@@ -4,7 +4,9 @@ import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Lavanderia",
-  description: "App para controle interno de items de lavanderia - GRUPO PERALTAS",
+  description:
+    "App para controle interno de items de lavanderia - GRUPO PERALTAS",
+  manifest: "/mainfest.json",
 };
 
 export default function RootLayout({
