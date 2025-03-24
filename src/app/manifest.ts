@@ -4,19 +4,18 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Lavanderia",
     short_name: "Lavanderia",
-    description: "Lavanderia",
     start_url: "/",
     display: "standalone",
-    background_color: "#fff",
-    theme_color: "#fff",
+    background_color: "#FFFFFF",
+    theme_color: "#FFFFFF",
     icons: [
+      // {
+      //   src: "/favicon.ico",
+      //   sizes: "192x192",
+      //   type: "image/x-icon",
+      // },
       {
-        src: "/favicon.ico",
-        sizes: "192x192",
-        type: "image/x-icon",
-      },
-      {
-        src: "/imagens/GP.png",
+        src: "/images/GP.png",
         sizes: "512x512",
         type: "image/png",
       },
