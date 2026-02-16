@@ -14,7 +14,11 @@ const dbOutput = (db: PrismaClient) => ({
     return db.output.findMany({
       include: {
         Collaborator: true,
-        Product: true,
+        Product: {
+          include: {
+            BarCodes: true,
+          },
+        },
         ReturnOrder: true,
       },
     });

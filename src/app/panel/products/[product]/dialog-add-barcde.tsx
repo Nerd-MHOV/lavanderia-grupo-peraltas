@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button'
 import ButtonSpin from '@/components/ui/buttonSpin'
 import { Dialog, DialogHeader, DialogTrigger, DialogContent, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Plus } from 'lucide-react'
+import useRfidReader from '@/hooks/useRfidReader'
+import { NfcIcon, Plus } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useFormState } from 'react-dom'
 
@@ -13,6 +14,7 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
   const [state, action] = useFormState(actionRegisterBarcode, {} as StateActionRegisterBarcode)
   const [barcodes, setBarcodes] = useState<string[]>([]);
   const ref = useRef<HTMLInputElement>(null);
+  const { lastTag, isConnected, clear: clearRfid } = useRfidReader();
 
   const addToList = () => {
     const barcode = ref?.current?.value
@@ -25,6 +27,21 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
       })
     }
   }
+
+  const addCode = (code: string) => {
+    setBarcodes(prev => {
+      if (prev.includes(code)) return prev
+      return [...prev, code]
+    })
+  }
+
+  // Quando o leitor RFID lê uma tag, adiciona automaticamente à lista
+  useEffect(() => {
+    if (lastTag) {
+      addCode(lastTag.epc);
+    }
+  }, [lastTag]);
+
   // input with enter key
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -41,6 +58,7 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
   useEffect(() => {
     if (state.success) {
       setBarcodes([])
+      clearRfid()
     }
   }, [state.success])
   return (
@@ -54,11 +72,11 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
         <DialogHeader>
           <DialogTitle>Cadastrar Código </DialogTitle>
           <DialogDescription>
-            Use o leitor de códigos para inserir um novo código de barras.
+            Use o leitor de códigos ou aproxime tags RFID para cadastrar.
           </DialogDescription>
         </DialogHeader>
-        <form 
-        
+        <form
+
         action={(e) => {
           addToList()
           action(e)
@@ -66,10 +84,15 @@ const DialogAddBarcode = ({ product_id }: { product_id: string }) => {
           {
             state.message && <SlackMessage message={state.message} type={state.success ? 'success' : 'error'} />
           }
-          <div className='my-4'>
+          <div className='my-4 flex gap-2 items-center'>
             <Input ref={ref} type='text' placeholder='000021390' autoComplete='off' />
-            {state?.errors && <p className="text-red-500">{state.errors.barcodes}</p>}
+            {isConnected && (
+              <span title="Leitor RFID conectado">
+                <NfcIcon className='text-green-500' size={20} />
+              </span>
+            )}
           </div>
+          {state?.errors && <p className="text-red-500">{state.errors.barcodes}</p>}
           <ul className=' max-h-48 overflow-auto'>
             {barcodes.map(bc => (
               <ol key={bc} className='hover:bg-red-100 cursor-pointer p-1' onClick={() => {

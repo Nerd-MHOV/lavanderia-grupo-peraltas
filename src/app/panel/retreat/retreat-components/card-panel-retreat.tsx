@@ -6,6 +6,7 @@ import { ScrollText, Shirt } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import DialogSearchModal from "./dialog-search-modal";
 import useScanDetection from "@/lib/useScanDetection";
+import useRfidReader from "@/hooks/useRfidReader";
 import useSelectedProductsRetreat from "./useSelectedProductsRetreat";
 import { GetProductsInterface } from "@/core/server/product/getProducts";
 import { GetCollaboratorsInterface } from "@/core/server/collaborator/getCollaborators";
@@ -28,6 +29,9 @@ const CardPanelRetreat = ({
 }: CardPanelRetreatProps) => {
   const { addProduct, removeProduct, itemFocused, selectedProduct, clearList } =
     useSelectedProductsRetreat(collaborator);
+  const { lastTag } = useRfidReader();
+
+  // Leitura via HID (teclado/barcode scanner)
   useScanDetection({
     onComplete: (barcode) => {
       const find = products.find((prod) =>
@@ -37,6 +41,17 @@ const CardPanelRetreat = ({
     },
     minLength: 7,
   });
+
+  // Leitura via RFID IN907 (socket.io)
+  useEffect(() => {
+    if (lastTag) {
+      const find = products.find((prod) =>
+        prod.BarCodes.some((bc) => bc.code === lastTag.epc)
+      );
+      if (find) addProduct(find);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastTag]);
 
   const [productChangeInputAmount, setProductChangeInputAmount] = useState<
     GetProductsInterface["products"] | null

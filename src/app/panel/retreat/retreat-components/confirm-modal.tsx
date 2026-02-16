@@ -41,12 +41,14 @@ const ConfirmModal = <T,>({ dataAction, action, resultReader, products, collabor
 
 
   useEffect(() => {
-    if (resultReader && waiting && collaborator) {
-      if (CPFOnlyNumber(resultReader.id) === CPFOnlyNumber(collaborator?.cpf)) {
+    if (
+        // resultReader &&
+        waiting && collaborator) {
+      // if (CPFOnlyNumber(resultReader.id) === CPFOnlyNumber(collaborator?.cpf)) {
         setWaiting(false);
         action(dataAction!);
         closeModal();
-      }
+      // }
       clear()
     }
   }, [action, dataAction, resultReader, waiting, clear, collaborator])

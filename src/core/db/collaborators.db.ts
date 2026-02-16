@@ -6,7 +6,11 @@ const dbCollaborator = (db: PrismaClient) => ({
             include: {
                 Outputs: {
                     include: {
-                        Product: true,
+                        Product: {
+                            include: {
+                                BarCodes: true,
+                            }
+                        },
                         ReturnOrder: true
                     }
                 },

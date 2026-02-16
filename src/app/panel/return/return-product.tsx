@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect } from "react";
 import CardPanelCollaborator from "../retreat/retreat-components/card-panel-collaborator";
 import useFaceReader from "@/hooks/useFaceReader";
+import useRfidReader from "@/hooks/useRfidReader";
 import { GetCollaboratorsInterface } from "@/core/server/collaborator/getCollaborators";
 import { useFormState } from "react-dom";
 import {
@@ -43,6 +44,7 @@ const RetrunProduct = ({
     {} as StateActionReturnProducts
   );
   const { resultReader, clear } = useFaceReader([collaborators]);
+  const { lastTag } = useRfidReader();
   const { outputToReturn, addOutputReturn, removeOutputReturn } =
     useOutputToReturn();
 
@@ -112,6 +114,20 @@ const RetrunProduct = ({
     },
     [outputs, withoutPending]
   );
+
+  // Leitura via RFID IN907 — encontra o output pelo EPC da tag e adiciona à devolução
+  useEffect(() => {
+    if (!lastTag || !selectedCollaborator) return;
+    const allOutputs = [
+      ...outputsCollaborator(selectedCollaborator),
+      ...outputsDepartment(selectedCollaborator),
+    ];
+    const found = allOutputs.find((out) =>
+      out.Product.BarCodes.some((bc) => bc.code === lastTag.epc)
+    );
+    if (found && found.amount > 0) addOutputReturn(found);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastTag]);
 
   // reload page if success
   useEffect(() => {

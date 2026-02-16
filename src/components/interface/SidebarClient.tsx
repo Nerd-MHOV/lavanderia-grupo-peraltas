@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  NfcIcon,
   PackageSearch,
   ScanBarcode,
   Undo2,
@@ -47,6 +48,11 @@ const links = [
     link: "/panel/collaborators",
     icon: BookUser,
     title: "Colaboradores",
+  },
+  {
+    link: "/panel/rfid-setup",
+    icon: NfcIcon,
+    title: "Leitor RFID",
   },
 ];
 

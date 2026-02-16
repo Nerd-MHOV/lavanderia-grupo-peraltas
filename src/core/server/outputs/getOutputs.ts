@@ -1,5 +1,5 @@
 import db from "@/core/db/db";
-import { Collaborator, Output, Product, ReturnOrder } from "@prisma/client";
+import { BarCode, Collaborator, Output, Product, ReturnOrder } from "@prisma/client";
 
 const getOutputs = async (): Promise<{
     outputs: GetOutputsInterface['outputs'][]
@@ -11,7 +11,7 @@ const getOutputs = async (): Promise<{
 export interface GetOutputsInterface {
     outputs: ({
         Collaborator: Collaborator,
-        Product: Product,
+        Product: Product & { BarCodes: BarCode[] },
         ReturnOrder: ReturnOrder[],
     } & Output)
 }
