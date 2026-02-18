@@ -137,6 +137,20 @@ const io = new SocketIOServer(server, {
 io.on("connection", (socket) => {
   console.log(`[RFID] Cliente conectado: ${socket.id}`);
 
+  if (!rfidService.connected) {
+    rfidService
+      .connect()
+      .then(() => {
+        console.log("[RFID] Leitor conectado com sucesso");
+        console.log("[RFID] Iniciando inventário em tempo real...");
+        rfidService.startInventory();
+      })
+      .catch((err) => {
+        console.error(`[RFID] Falha ao conectar: ${err.message}`);
+        console.log("[RFID] Servidor ativo. Use POST /connect para tentar novamente.");
+      });
+  }
+
   socket.emit("status", {
     connected: rfidService.connected,
     reading: rfidService.reading,
