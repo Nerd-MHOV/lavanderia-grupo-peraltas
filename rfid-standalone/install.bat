@@ -1,17 +1,17 @@
 @echo off
-chcp 65001 >nul
-title Instalador Serviço RFID IN907 - Lavanderia Grupo Peraltas
+setlocal
+title Instalador Servico RFID IN907 - Lavanderia Grupo Peraltas
 
-echo ══════════════════════════════════════════
-echo   Instalador Serviço RFID IN907
+echo ==========================================
+echo   Instalador Servico RFID IN907
 echo   Lavanderia Grupo Peraltas
-echo ══════════════════════════════════════════
+echo ==========================================
 echo.
 
 :: Verificar Node.js
 where node >nul 2>&1
 if %ERRORLEVEL% neq 0 (
-    echo [ERRO] Node.js não encontrado!
+    echo [ERRO] Node.js nao encontrado!
     echo Baixe em: https://nodejs.org/
     echo Instale e execute este script novamente.
     pause
@@ -21,7 +21,7 @@ if %ERRORLEVEL% neq 0 (
 for /f "tokens=*" %%i in ('node -v') do set NODE_VERSION=%%i
 echo Node.js: %NODE_VERSION%
 
-:: Definir diretório de instalação
+:: Definir diretorio de instalacao
 set INSTALL_DIR=%USERPROFILE%\rfid-service
 echo.
 echo Instalando em: %INSTALL_DIR%
@@ -32,18 +32,18 @@ if not exist "%INSTALL_DIR%\src" mkdir "%INSTALL_DIR%\src"
 xcopy /Y /E "%~dp0src\*" "%INSTALL_DIR%\src\" >nul
 copy /Y "%~dp0package.json" "%INSTALL_DIR%\" >nul
 
-:: Instalar dependências
+:: Instalar dependencias
 echo.
-echo Instalando dependências...
+echo Instalando dependencias...
 cd /d "%INSTALL_DIR%"
 call npm install --production
 
-:: Configuração da porta
+:: Configuracao da porta
 echo.
 set /p RFID_PORT="Porta serial do leitor (ex: COM3): "
 if "%RFID_PORT%"=="" set RFID_PORT=COM3
 
-set /p SERVER_PORT="Porta do servidor HTTP (padrão: 3001): "
+set /p SERVER_PORT="Porta do servidor HTTP (padrao: 3001): "
 if "%SERVER_PORT%"=="" set SERVER_PORT=3001
 
 :: Criar arquivo .env
@@ -55,7 +55,7 @@ echo RFID_SERVER_PORT=%SERVER_PORT%
 echo RFID_DEDUP_MS=3000
 ) > "%INSTALL_DIR%\.env"
 
-:: Criar script de início
+:: Criar script de inicio
 (
 echo @echo off
 echo cd /d "%INSTALL_DIR%"
@@ -72,18 +72,19 @@ echo start /min "" npx tsx src/rfid-server.ts
 ) > "%STARTUP_DIR%\rfid-service.bat"
 
 echo.
-echo ══════════════════════════════════════════
-echo   Instalação concluída!
-echo ══════════════════════════════════════════
+echo ==========================================
+echo   Instalacao concluida!
+echo ==========================================
 echo.
 echo   Porta serial:  %RFID_PORT%
 echo   Servidor:      http://localhost:%SERVER_PORT%
 echo   Instalado em:  %INSTALL_DIR%
 echo.
-echo   O serviço vai iniciar automaticamente com o Windows.
+echo   O servico vai iniciar automaticamente com o Windows.
 echo   Para iniciar manualmente: %INSTALL_DIR%\iniciar-rfid.bat
 echo.
 echo   No sistema da lavanderia, configure:
 echo   NEXT_PUBLIC_RFID_URL_SOCKET="http://SEU_IP:%SERVER_PORT%"
 echo.
 pause
+endlocal

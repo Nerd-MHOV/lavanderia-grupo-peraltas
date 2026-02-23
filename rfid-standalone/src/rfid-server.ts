@@ -14,6 +14,7 @@
  *   RFID_DEDUP_MS   - Intervalo de deduplicação em ms (default: 3000)
  */
 
+import "dotenv/config";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { RfidService } from "./rfid-service";
@@ -48,7 +49,7 @@ const server = http.createServer((req, res) => {
         reading: rfidService.reading,
         tagCount: rfidService.tags.length,
         port: RFID_PORT,
-      })
+      }),
     );
     return;
   }
@@ -147,7 +148,9 @@ io.on("connection", (socket) => {
       })
       .catch((err) => {
         console.error(`[RFID] Falha ao conectar: ${err.message}`);
-        console.log("[RFID] Servidor ativo. Use POST /connect para tentar novamente.");
+        console.log(
+          "[RFID] Servidor ativo. Use POST /connect para tentar novamente.",
+        );
       });
   }
 
@@ -176,7 +179,9 @@ const rfidService = new RfidService({
 });
 
 rfidService.on("tag", (tag: RfidTag) => {
-  console.log(`[RFID] Tag: ${tag.epc} (RSSI: ${tag.rssi} dBm, Ant: ${tag.antenna})`);
+  console.log(
+    `[RFID] Tag: ${tag.epc} (RSSI: ${tag.rssi} dBm, Ant: ${tag.antenna})`,
+  );
   io.emit("rfid", tag);
 });
 
@@ -214,7 +219,9 @@ server.listen(SERVER_PORT, () => {
     })
     .catch((err) => {
       console.error(`[RFID] Falha ao conectar: ${err.message}`);
-      console.log("[RFID] Servidor ativo. Use POST /connect para tentar novamente.");
+      console.log(
+        "[RFID] Servidor ativo. Use POST /connect para tentar novamente.",
+      );
     });
 });
 
