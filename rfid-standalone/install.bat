@@ -63,13 +63,16 @@ echo npx tsx src/rfid-server.ts
 echo pause
 ) > "%INSTALL_DIR%\iniciar-rfid.bat"
 
-:: Criar atalho na pasta Startup (iniciar com Windows)
+:: Criar script de inicializacao silenciosa (sem janela) na pasta Startup
 set STARTUP_DIR=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
+
+:: Remover versao antiga se existir
+if exist "%STARTUP_DIR%\rfid-service.bat" del /f /q "%STARTUP_DIR%\rfid-service.bat"
+
 (
-echo @echo off
-echo cd /d "%INSTALL_DIR%"
-echo start /min "" npx tsx src/rfid-server.ts
-) > "%STARTUP_DIR%\rfid-service.bat"
+echo Set WshShell = CreateObject^("WScript.Shell"^)
+echo WshShell.Run "cmd /c cd /d ""%INSTALL_DIR%"" ^&^& npx tsx src/rfid-server.ts", 0, False
+) > "%STARTUP_DIR%\rfid-service.vbs"
 
 echo.
 echo ==========================================
